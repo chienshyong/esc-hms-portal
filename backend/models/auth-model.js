@@ -46,5 +46,15 @@ async function registerUser(username, password, callback) {
     });
 }
 
-module.exports = {loginUser, registerUser};
+const requireLogin = (req, res, next) => {
+  if (req.user) {
+    // User is logged in, proceed to the next middleware or route handler
+    next();
+  } else {
+    // User is not logged in, send an error response
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+module.exports = {loginUser, registerUser, requireLogin};
 

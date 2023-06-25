@@ -1,9 +1,14 @@
 const connection = require('./db.js');
 const bcrypt = require('bcrypt');
+const session = require('../app.js').session;
 
-async function loginUser(username, password, callback) {
-    // Retrieve the user record from the database based on the provided username
-    const query = 'SELECT * FROM tenant WHERE username = ?';
+const USERTYPE = Object.freeze({
+  TENANT : 'tenant',
+  LANDLORD : 'landlord'
+});
+
+async function loginUser(username, password, userType, callback) {
+    const query = 'SELECT * FROM ' + userType + ' WHERE username = ?';
     connection.query(query, [username], (err, results) => {
       if (err) return callback(err);
   
@@ -20,6 +25,7 @@ async function loginUser(username, password, callback) {
   
         if (isMatch) {
           // Passwords match, authentication successful
+          console.log("%s login for %s successful", userType, username)
           return callback(null, user);
         } else {
           // Passwords do not match
@@ -29,7 +35,7 @@ async function loginUser(username, password, callback) {
     });
   }
 
-async function registerUser(username, password, callback) {
+async function registerUser(username, password, userType, callback) {
     if(username.length == 0 || password.length == 0){
         const nullError = new Error('Error: Username or password empty');
         return callback(nullError);
@@ -37,24 +43,32 @@ async function registerUser(username, password, callback) {
     saltRounds = 10;
     bcrypt.hash(password, saltRounds, (err, hash) => {
         console.log("Password hash: " + hash);
-        const query = 'INSERT INTO tenant (username, password) VALUES (?, ?)';
-        const values = [username, hash];
-        connection.query(query, values, (error, results) => {
+        const query = 'INSERT INTO ' + userType + ' (username, password) VALUES (?, ?)';
+        connection.query(query, [username, hash], (error, results) => {
             if (error) return callback(error);
+            console.log("%s registration for %s successful", userType, username)
             return callback(null, username);
         });
     });
 }
 
-const requireLogin = (req, res, next) => {
-  if (req.user) {
-    // User is logged in, proceed to the next middleware or route handler
+//Middleware to only allow request if logged in as tenant
+const requireTenantLogin = (req, res, next) => {
+  if (req.session.user && req.session.userType === USERTYPE.TENANT) {
     next();
   } else {
-    // User is not logged in, send an error response
-    res.status(401).json({ error: 'Unauthorized' });
+    res.status(401).json({ error: 'Unauthorized - tenant only' });
   }
 };
 
-module.exports = {loginUser, registerUser, requireLogin};
+//Middleware to only allow request if logged in as landlord
+const requireLandlordLogin = (req, res, next) => {
+  if (req.session.user && req.session.userType === USERTYPE.LANDLORD) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Unauthorized - landlord only' });
+  }
+};
+
+module.exports = {USERTYPE, loginUser, registerUser, requireTenantLogin, requireLandlordLogin};
 

@@ -16,7 +16,7 @@ CREATE TABLE landlord (
 
 CREATE TABLE unit (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  address VARCHAR(50) NOT NULL,
+  address VARCHAR(50) UNIQUE NOT NULL,
   landlord_id INT NOT NULL,
   FOREIGN KEY (landlord_id) REFERENCES landlord (id),
   lease_id INT

@@ -30,11 +30,15 @@ app.use(
 
 //Define routes
 var authRouter = require('./routes/auth');
+var landlordRouter = require('./routes/landlord');
+var tenantRouter = require('./routes/tenant');
 app.use('/auth', authRouter);
+app.use('/landlord', landlordRouter);
+app.use('/tenant', tenantRouter);
 
 //Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-module.exports = app;
+module.exports = {app, session};

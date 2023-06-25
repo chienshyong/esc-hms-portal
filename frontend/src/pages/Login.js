@@ -9,36 +9,76 @@ function Login() {
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] = useState(false);
   let navigate = useNavigate();
   
+  //For radio button
+  const [selectedOption, setSelectedOption] = useState('tenant');
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  }
 
   const handleLogin = async () => {
-    try {
-      console.log("Attempting to login %s and %s", username, password)
-      const response = await api.post('/auth/login', {
-        username: username,
-        password: password
-      });
-      // Handle successful login response
-      console.log(response.data.message);
-      return navigate("/main");
-    } catch (error) {
-      console.log(error.response.data);
+    if(selectedOption === 'tenant'){
+      try {
+        console.log("Attempting to login %s and %s", username, password)
+        const response = await api.post('/auth/tenant-login', {
+          username: username,
+          password: password
+        });
+        // Handle successful login response
+        console.log(response.data.message);
+        return navigate("/main");
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    }
+    if(selectedOption === 'landlord'){
+      try {
+        console.log("Attempting to login %s and %s", username, password)
+        const response = await api.post('/auth/landlord-login', {
+          username: username,
+          password: password
+        });
+        // Handle successful login response
+        console.log(response.data.message);
+        return navigate("/main");
+      } catch (error) {
+        console.log(error.response.data);
+      }
     }
   };
 
   const handleRegister = async () => {
-    try {
-      console.log("Attempting to register %s and %s", username, password)
-      const response = await api.post('/auth/register', {
-        username: username,
-        password: password
-      });
-      if(response.status === 200){
-        console.log(response.data.message);
-        setIsRegistrationSuccessful(true);
-      } 
-    } catch (error) {
-      console.log(error.response.data);
-      setIsRegistrationSuccessful(false);
+    if(selectedOption === 'tenant'){
+      try {
+        console.log("Attempting to register %s and %s", username, password)
+        const response = await api.post('/auth/tenant-register', {
+          username: username,
+          password: password
+        });
+        if(response.status === 200){
+          console.log(response.data.message);
+          setIsRegistrationSuccessful(true);
+        } 
+      } catch (error) {
+        console.log(error.response.data);
+        setIsRegistrationSuccessful(false);
+      }
+    }
+    if(selectedOption === 'landlord'){
+      try {
+        console.log("Attempting to register %s and %s", username, password)
+        const response = await api.post('/auth/landlord-register', {
+          username: username,
+          password: password
+        });
+        if(response.status === 200){
+          console.log(response.data.message);
+          setIsRegistrationSuccessful(true);
+        } 
+      } catch (error) {
+        console.log(error.response.data);
+        setIsRegistrationSuccessful(false);
+      }
     }
   };
 
@@ -62,7 +102,7 @@ function Login() {
     <div className="App">
       <header className="App-header">
         <p>
-          Aoba's Landlord App
+          Housing Management System
         </p>
       </header>
       <div>
@@ -80,6 +120,29 @@ function Login() {
         <button onClick={handleRegister}>
           Register
         </button>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="tenant"
+              checked={selectedOption === 'tenant'}
+              onChange={handleOptionChange}
+            />
+            Tenant
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              value="landlord"
+              checked={selectedOption === 'landlord'}
+              onChange={handleOptionChange}
+            />
+            Landlord
+          </label>
+        </div>
+
+        
         {isRegistrationSuccessful ? (
         <p>Registration successful!</p>
         ) : (

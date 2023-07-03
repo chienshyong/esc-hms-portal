@@ -5,9 +5,9 @@ import {TextField} from '@mui/material'
 import {Button} from '@mui/material'
 import { Grid } from '@mui/material'
 import Image from 'next/image'
-import upload from '../../public/upload.svg'
+import upload from '../../../public/upload.svg'
 
-export default function OptionDetail({params}){
+export default function TenantForm({params}){
     const {form} = params
     return(
         <body style={{backgroundColor: "#F5F5F5"}}>

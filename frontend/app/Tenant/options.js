@@ -4,23 +4,23 @@ import Link from 'next/link'
 import React, { useState } from 'react';
 import Image from 'next/image'
 
-import lighting from '../public/options/lighting.svg'
-import aircon from '../public/options/aircon.svg'
-import electricity from '../public/options/electricity.svg'
-import cleanliness from '../public/options/cleanliness.svg'
-import security from '../public/options/security.svg'
-import horticulture from  '../public/options/horticulture.svg'
-import elevator from  '../public/options/elevator.svg'
-import others from  '../public/options/others.svg'
+import lighting from '../../public/options/lighting.svg'
+import aircon from '../../public/options/aircon.svg'
+import electricity from '../../public/options/electricity.svg'
+import cleanliness from '../../public/options/cleanliness.svg'
+import security from '../../public/options/security.svg'
+import horticulture from  '../../public/options/horticulture.svg'
+import elevator from  '../../public/options/elevator.svg'
+import others from  '../../public/options/others.svg'
 
-import lightingc from '../public/options/lightingc.svg'
-import airconc from '../public/options/airconc.svg'
-import electricityc from '../public/options/electricityc.svg'
-import cleanlinessc from '../public/options/cleanlinessc.svg'
-import securityc from '../public/options/securityc.svg'
-import horticulturec from  '../public/options/horticulturec.svg'
-import elevatorc from  '../public/options/elevatorc.svg'
-import othersc from  '../public/options/othersc.svg'
+import lightingc from '../../public/options/lightingc.svg'
+import airconc from '../../public/options/airconc.svg'
+import electricityc from '../../public/options/electricityc.svg'
+import cleanlinessc from '../../public/options/cleanlinessc.svg'
+import securityc from '../../public/options/securityc.svg'
+import horticulturec from  '../../public/options/horticulturec.svg'
+import elevatorc from  '../../public/options/elevatorc.svg'
+import othersc from  '../../public/options/othersc.svg'
 
 const options = [
   "Lighting",
@@ -73,7 +73,7 @@ export default function Options(){
                 onMouseEnter={() => setIndex(index)}
                 onMouseLeave={() => setIndex(null)}
               > 
-              <Link href={`/${options[index]}`}>
+              <Link href={`/Tenant/${options[index]}`}>
                 <Image
                 src={hoveredIndex === index ? hoveredimageUrls[index] : imageUrl}
                 alt={`Image ${index + 1}`}

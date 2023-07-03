@@ -10,7 +10,7 @@ Housing Management System for tenants and landlords
 
 ## Running
 1. cd frontend -> npm start
-2. cd backend -> nodemon ./app.js (nodemon refreshes the server everytime you make changes)
+2. cd backend -> npm run dev
 3. server runs on port 3001 and client on port 3000
 
 ## API Listing

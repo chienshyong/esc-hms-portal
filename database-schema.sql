@@ -18,8 +18,7 @@ CREATE TABLE unit (
   id INT PRIMARY KEY AUTO_INCREMENT,
   address VARCHAR(50) UNIQUE NOT NULL,
   landlord_id INT NOT NULL,
-  FOREIGN KEY (landlord_id) REFERENCES landlord (id),
-  lease_id INT
+  FOREIGN KEY (landlord_id) REFERENCES landlord (id)
 );
 
 CREATE TABLE lease (
@@ -36,15 +35,8 @@ CREATE TABLE lease (
   trade_type VARCHAR(50)
 );
 
-/*Add foreign key of lease ID to unit table, have to do this after lease table created*/
-ALTER TABLE unit ADD CONSTRAINT lease_foreign_key FOREIGN KEY (lease_id) REFERENCES lease (id);
-
 CREATE TABLE svc_request (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  tenant_id INT NOT NULL,
-  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
-  landlord_id INT NOT NULL,
-  FOREIGN KEY (landlord_id) REFERENCES landlord (id),
   lease_id INT,
   FOREIGN KEY (lease_id) REFERENCES lease (id),
   submit_time DATETIME,

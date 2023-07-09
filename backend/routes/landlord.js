@@ -30,4 +30,13 @@ router.delete('/remove-unit', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
+//TODO
+router.post('/add-lease', authModel.requireLandlordLogin, (req, res) => {
+    const {tenantUsername, unitID, monthlyRental, commencementDate, expiryDate, areaInSq, tradeType} = req.body;
+    leaseModel.addLease(tenantUsername, unitID, monthlyRental, commencementDate, expiryDate, areaInSq, tradeType, (err, results) => {
+        if (err) { return res.status(400).send(err.message); }
+        res.status(200).json(results); 
+    });
+});
+
 module.exports = router;

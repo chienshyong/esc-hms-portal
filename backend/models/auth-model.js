@@ -1,6 +1,5 @@
 const connection = require('./db.js');
 const bcrypt = require('bcrypt');
-const session = require('../app.js').session;
 
 const USERTYPE = Object.freeze({
   TENANT : 'tenant',

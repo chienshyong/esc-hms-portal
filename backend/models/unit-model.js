@@ -1,5 +1,4 @@
 const connection = require('./db.js');
-const session = require('../app.js').session;
 
 async function addUnit(address, landlordID, callback) {
     if(address.length == 0 || landlordID.length == 0){

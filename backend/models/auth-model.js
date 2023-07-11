@@ -1,6 +1,5 @@
 const connection = require('./db.js');
 const bcrypt = require('bcrypt');
-const session = require('../app.js').session;
 
 const USERTYPE = Object.freeze({
   TENANT : 'tenant',
@@ -36,20 +35,28 @@ async function loginUser(username, password, userType, callback) {
   }
 
 async function registerUser(username, password, userType, callback) {
-    if(username.length == 0 || password.length == 0){
-        const nullError = new Error('Error: Username or password empty');
-        return callback(nullError);
-    }
-    saltRounds = 10;
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-        console.log("Password hash: " + hash);
-        const query = 'INSERT INTO ' + userType + ' (username, password) VALUES (?, ?)';
-        connection.query(query, [username, hash], (error, results) => {
-            if (error) return callback(error);
-            console.log("%s registration for %s successful", userType, username)
-            return callback(null, username);
-        });
-    });
+  if(username.length == 0 || password.length == 0){
+      const nullError = new Error('Error: Username or password empty');
+      return callback(nullError);
+  }
+  saltRounds = 10;
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+      console.log("Password hash: " + hash);
+      const query = 'INSERT INTO ' + userType + ' (username, password) VALUES (?, ?)';
+      connection.query(query, [username, hash], (error, results) => {
+          if (error) return callback(error);
+          console.log("%s registration for %s successful", userType, username)
+          return callback(null, username);
+      });
+  });
+}
+
+async function linkEmail(id, userType, email, callback) {
+  const query = `UPDATE ${userType} SET email = ? WHERE id = ?`;
+  connection.query(query, [email, id], (error, results) => {
+    if (error) return callback(error);
+    return callback(null, results);
+});
 }
 
 //Middleware to only allow request if logged in as tenant
@@ -70,5 +77,5 @@ const requireLandlordLogin = (req, res, next) => {
   }
 };
 
-module.exports = {USERTYPE, loginUser, registerUser, requireTenantLogin, requireLandlordLogin};
+module.exports = {USERTYPE, loginUser, registerUser, requireTenantLogin, requireLandlordLogin, linkEmail};
 

@@ -2,6 +2,7 @@ const express = require('express');
 const authModel = require('../models/auth-model');
 const unitModel = require('../models/unit-model');
 const leaseModel = require('../models/lease-model');
+const svcModel = require('../models/svc-model');
 var router = express.Router();
 
 router.put('/link-email', authModel.requireLandlordLogin, (req, res) => {
@@ -73,5 +74,58 @@ router.patch('/terminate-lease', authModel.requireLandlordLogin, (req, res) => {
         res.status(200).json(results); 
     });
 })
+
+router.get('/get-svc-requests', authModel.requireLandlordLogin, (req, res) => {
+    const landlordID = req.session.user.id;
+    svcModel.getSvcRequestByLandlord(landlordID, (err, results) => {
+        if (err) { return res.status(400).send(err.message); }
+        res.status(200).json(results); 
+    });
+});
+
+router.patch('/accept-svc-request', authModel.requireLandlordLogin, (req, res) => {
+    const landlordID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.ACCEPTED, (err, results) => {
+                if (err) { return res.status(400).send(err.message); }
+                res.status(200).json(results); 
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
+
+router.patch('/reject-svc-request', authModel.requireLandlordLogin, (req, res) => {
+    const landlordID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.REJECTED, (err, results) => {
+                if (err) { return res.status(400).send(err.message); }
+                res.status(200).json(results); 
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
+
+router.patch('/complete-svc-request', authModel.requireLandlordLogin, (req, res) => {
+    const landlordID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.COMPLETED, (err, results) => {
+                if (err) { return res.status(400).send(err.message); }
+                res.status(200).json(results); 
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
 
 module.exports = router;

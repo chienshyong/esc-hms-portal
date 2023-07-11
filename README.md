@@ -20,8 +20,11 @@ Backend: nodemon ./app.js
 __Require login session as Tenant:__
 - PUT tenant/link-email: email
 - GET tenant/get-leases
-- GET tenant/get-svc-requests __TODO__
+- GET tenant/get-svc-requests
 - POST tenant/create-svc-request: leaseID, title, description
+- PATCH tenant/svc-accept-quotation __TODO__
+- PATCH tenant/cancel-svc-request: svcID
+- PATCH tenant/svc-feedback: svcID, feedback
 
 __Require login session as Landlord:__
 - PUT landlord/link-email: email
@@ -32,4 +35,8 @@ __Require login session as Landlord:__
 - GET landlord/get-leases
 - DELETE landlord/remove-lease: id
 - PATCH landlord/terminate-lease: id, terminationDate
-- GET landlord/get-svc-requests __TODO__
+- GET landlord/get-svc-requests
+- PATCH landlord/reject-svc-request: svcID
+- PATCH landlord/accept-svc-request: svcID
+- PATCH landlord/svc-add-quotation __TODO__
+- PATCH landlord/complete-svc-request: svcID

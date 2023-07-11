@@ -28,7 +28,7 @@ async function getLeasesByTenant(tenantID, callback) {
 }
 
 async function getLeasesByLandlord(landlordID, callback) {
-    const query = 'SELECT lease.* FROM lease JOIN unit ON lease.unit_id = unit.id JOIN landlord ON unit.landlord_id = landlord.id WHERE landlord.id = ?';
+    const query = 'SELECT lease.* FROM lease JOIN unit ON lease.unit_id = unit.id WHERE unit.landlord_id = ?';
     connection.query(query, [landlordID], (err, results) => {
         if (err) return callback(err);
         console.log("getLeases successful, %i records fetched", results.length);

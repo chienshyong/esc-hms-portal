@@ -75,6 +75,14 @@ async function addSvcFeedback(svcID, feedback, callback){
     });
 }
 
+async function addSvcQuotation(filePath, svcID, quotAmount, callback){
+    const query = `UPDATE svc_request SET status = "quot_pending", quot_required = TRUE, quot_amount = ?, quot_attachment = ? WHERE id = ?`;
+    connection.query(query, [quotAmount, filePath, svcID], (err, results) => {
+        if (err) return callback(err);
+        return callback(null,results);
+    });
+}
+
 //Helper funcs to check if user is authorized to modify a svc request
 
 async function verifyMatchingTenantAndSVC(tenantID, svcID, callback){
@@ -105,4 +113,4 @@ async function verifyMatchingLandlordAndSVC(landlordID, svcID, callback){
     });
 }
 
-module.exports = {STATUS, createSvcRequest, getSvcRequestByTenant, getSvcRequestByLandlord, changeSvcRequestStatus, addSvcFeedback, verifyMatchingLandlordAndSVC, verifyMatchingTenantAndSVC};
+module.exports = {STATUS, createSvcRequest, getSvcRequestByTenant, getSvcRequestByLandlord, changeSvcRequestStatus, addSvcFeedback, verifyMatchingLandlordAndSVC, verifyMatchingTenantAndSVC, addSvcQuotation};

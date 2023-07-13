@@ -22,6 +22,7 @@ __Require login session as Tenant:__
 - GET tenant/get-leases
 - GET tenant/get-svc-requests
 - POST tenant/create-svc-request: leaseID, title, description
+- GET tenant/svc-get-quotation __TODO__
 - PATCH tenant/svc-accept-quotation __TODO__
 - PATCH tenant/cancel-svc-request: svcID
 - PATCH tenant/svc-feedback: svcID, feedback
@@ -38,5 +39,5 @@ __Require login session as Landlord:__
 - GET landlord/get-svc-requests
 - PATCH landlord/reject-svc-request: svcID
 - PATCH landlord/accept-svc-request: svcID
-- PATCH landlord/svc-add-quotation __TODO__
+- PATCH landlord/svc-add-quotation: file, svcID, quotationAmount
 - PATCH landlord/complete-svc-request: svcID

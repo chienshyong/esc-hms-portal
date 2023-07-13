@@ -3,6 +3,7 @@ const authModel = require('../models/auth-model');
 const unitModel = require('../models/unit-model');
 const leaseModel = require('../models/lease-model');
 const svcModel = require('../models/svc-model');
+const upload = require('../models/upload-middleware');
 var router = express.Router();
 
 router.put('/link-email', authModel.requireLandlordLogin, (req, res) => {
@@ -119,6 +120,27 @@ router.patch('/complete-svc-request', authModel.requireLandlordLogin, (req, res)
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
         if(isAuth){
             svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.COMPLETED, (err, results) => {
+                if (err) { return res.status(400).send(err.message); }
+                res.status(200).json(results); 
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
+
+router.patch('/svc-add-quotation', authModel.requireLandlordLogin, upload.single('file'), (req, res) => {
+    console.log(req.file); //Log uploaded file data
+    const landlordID = req.session.user.id;
+    const filePath = req.file.path;
+    const svcID = req.body.svcID;
+    const quotationAmount = req.body.quotationAmount;
+    if(filePath == null || svcID == null || quotationAmount == null){
+        return res.status(400).json({ message: 'Missing fields' });
+    }
+    svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.addSvcQuotation(filePath, svcID, quotationAmount, (err, results) => {
                 if (err) { return res.status(400).send(err.message); }
                 res.status(200).json(results); 
             });

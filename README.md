@@ -22,8 +22,8 @@ __Require login session as Tenant:__
 - GET tenant/get-leases
 - GET tenant/get-svc-requests
 - POST tenant/create-svc-request: leaseID, title, description
-- GET tenant/svc-get-quotation __TODO__
-- PATCH tenant/svc-accept-quotation __TODO__
+- GET tenant/get-svc-quotation: svcID
+- PATCH tenant/accept-svc-quotation
 - PATCH tenant/cancel-svc-request: svcID
 - PATCH tenant/svc-feedback: svcID, feedback
 

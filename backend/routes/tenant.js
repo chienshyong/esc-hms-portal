@@ -53,6 +53,42 @@ router.patch('/cancel-svc-request', authModel.requireTenantLogin, (req, res) => 
     });
 });
 
+router.get('/get-svc-quotation', authModel.requireTenantLogin, (req, res) => {
+    const tenantID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.getFilePathFromSvcID(svcID, (err, path) => {
+                if (err) { return res.status(400).send(err.message); }
+                console.log("File has been requested: " + path);
+                res.download(path, (error) => {
+                    if (error) {
+                      console.error('Error downloading file:', error);
+                      res.status(500).json({ error: 'Failed to download file' });
+                    }
+                });
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
+
+router.patch('/accept-svc-quotation', authModel.requireTenantLogin, (req, res) => {
+    const tenantID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.acceptSvcQuotation(svcID, (err, results) => {
+                if (err) { return res.status(400).send(err.message); }
+                res.status(200).json(results); 
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
+
 router.patch('/svc-feedback', authModel.requireTenantLogin, (req, res) => {
     const tenantID = req.session.user.id;
     const {svcID, feedback} = req.body;

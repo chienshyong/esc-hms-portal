@@ -75,6 +75,14 @@ async function addSvcFeedback(svcID, feedback, callback){
     });
 }
 
+async function acceptSvcQuotation(svcID, callback){
+    const query = `UPDATE svc_request SET quot_accepted = TRUE, status = "accepted" WHERE id = ?`;
+    connection.query(query, [svcID], (err, results) => {
+        if (err) return callback(err);
+        return callback(null,results);
+    });
+}
+
 async function addSvcQuotation(filePath, svcID, quotAmount, callback){
     const query = `UPDATE svc_request SET status = "quot_pending", quot_required = TRUE, quot_amount = ?, quot_attachment = ? WHERE id = ?`;
     connection.query(query, [quotAmount, filePath, svcID], (err, results) => {
@@ -113,4 +121,15 @@ async function verifyMatchingLandlordAndSVC(landlordID, svcID, callback){
     });
 }
 
-module.exports = {STATUS, createSvcRequest, getSvcRequestByTenant, getSvcRequestByLandlord, changeSvcRequestStatus, addSvcFeedback, verifyMatchingLandlordAndSVC, verifyMatchingTenantAndSVC, addSvcQuotation};
+async function getFilePathFromSvcID(svcID, callback){
+    const query = 'SELECT quot_attachment FROM svc_request WHERE id = ?'
+    connection.query(query, [svcID], (err, results) => {
+        if (err) return callback(err);
+        if (results.length === 0){
+            return callback(new Error("File not found :("));
+        }
+        return callback(null,results[0].quot_attachment);
+    });
+}
+
+module.exports = {STATUS, createSvcRequest, getSvcRequestByTenant, getSvcRequestByLandlord, changeSvcRequestStatus, addSvcFeedback, verifyMatchingLandlordAndSVC, verifyMatchingTenantAndSVC, addSvcQuotation, getFilePathFromSvcID, acceptSvcQuotation};

@@ -21,7 +21,9 @@ __Require login session as Tenant:__
 - PUT tenant/link-email: email
 - GET tenant/get-leases
 - GET tenant/get-svc-requests
-- POST tenant/create-svc-request: leaseID, title, description
+- GET tenant/get-svc-request-details: svcID
+- GET tenant/get-svc-request-photo: svcID
+- POST tenant/create-svc-request: leaseID, title, description, photo
 - GET tenant/get-svc-quotation: svcID
 - PATCH tenant/accept-svc-quotation
 - PATCH tenant/cancel-svc-request: svcID
@@ -37,6 +39,8 @@ __Require login session as Landlord:__
 - DELETE landlord/remove-lease: id
 - PATCH landlord/terminate-lease: id, terminationDate
 - GET landlord/get-svc-requests
+- GET landlord/get-svc-request-details: svcID
+- GET landlord/get-svc-request-photo: svcID
 - PATCH landlord/reject-svc-request: svcID
 - PATCH landlord/accept-svc-request: svcID
 - PATCH landlord/svc-add-quotation: file, svcID, quotationAmount

@@ -9,7 +9,7 @@ const STATUS = Object.freeze({
     CANCELED : 'canceled'
 });
 
-async function createSvcRequest(tenantID, leaseID, title, description, callback){
+async function createSvcRequest(tenantID, leaseID, title, description, photoPath, callback){
     const now = new Date();
     const formattedDateTime = now.toISOString().slice(0, 19).replace('T', ' '); 
     //First check if unit assoc with lease is owned by logged in landlord
@@ -22,25 +22,36 @@ async function createSvcRequest(tenantID, leaseID, title, description, callback)
         if(results[0].id != tenantID){
             return callback(new Error('Unauthorized: User does not own this lease'));
         }
-        query = 'INSERT INTO svc_request (lease_id, submit_time, status, title, description) VALUES (?, ?, ?, ?, ?)';
-        connection.query(query, [leaseID, formattedDateTime, STATUS.NEW, title, description], (err, results) => {
+        query = 'INSERT INTO svc_request (lease_id, submit_time, status, title, description, photo_path) VALUES (?, ?, ?, ?, ?, ?)';
+        connection.query(query, [leaseID, formattedDateTime, STATUS.NEW, title, description, photoPath], (err, results) => {
             if (err) return callback(err);
             return callback(null,results);
         })
     });
 }
 
+//Returns only ID, lease ID, title and status of ALL svc requests
 async function getSvcRequestByTenant(tenantID, callback){
-    const query = 'SELECT svc_request.* from svc_request JOIN lease ON svc_request.lease_id = lease.id WHERE lease.tenant_id = ?';
+    const query = 'SELECT svc_request.id, lease_id, status, title from svc_request JOIN lease ON svc_request.lease_id = lease.id WHERE lease.tenant_id = ?';
     connection.query(query, [tenantID], (err, results) => {
         if (err) return callback(err);
         return callback(null,results);
     });
 }
 
+//Returns only ID, lease ID, title and status of ALL svc requests
 async function getSvcRequestByLandlord(landlordID, callback){
-    const query = 'SELECT svc_request.* from svc_request JOIN lease ON svc_request.lease_id = lease.id JOIN unit ON lease.unit_id = unit.id WHERE unit.landlord_id = ?';
+    const query = 'SELECT svc_request.id, lease_id, status, title from svc_request JOIN lease ON svc_request.lease_id = lease.id JOIN unit ON lease.unit_id = unit.id WHERE unit.landlord_id = ?';
     connection.query(query, [landlordID], (err, results) => {
+        if (err) return callback(err);
+        return callback(null,results);
+    });
+}
+
+//Returns all details of specific SVC request
+async function getSvcRequestDetails(svcID, callback){
+    const query = 'SELECT * from svc_request WHERE id = ?';
+    connection.query(query, [svcID], (err, results) => {
         if (err) return callback(err);
         return callback(null,results);
     });
@@ -121,7 +132,18 @@ async function verifyMatchingLandlordAndSVC(landlordID, svcID, callback){
     });
 }
 
-async function getFilePathFromSvcID(svcID, callback){
+async function getPhotoPathFromSvcID(svcID, callback){
+    const query = 'SELECT photo_path FROM svc_request WHERE id = ?'
+    connection.query(query, [svcID], (err, results) => {
+        if (err) return callback(err);
+        if (results.length === 0){
+            return callback(new Error("File not found :("));
+        }
+        return callback(null,results[0].photo_path);
+    });
+}
+
+async function getQuotationPathFromSvcID(svcID, callback){
     const query = 'SELECT quot_attachment FROM svc_request WHERE id = ?'
     connection.query(query, [svcID], (err, results) => {
         if (err) return callback(err);
@@ -132,4 +154,4 @@ async function getFilePathFromSvcID(svcID, callback){
     });
 }
 
-module.exports = {STATUS, createSvcRequest, getSvcRequestByTenant, getSvcRequestByLandlord, changeSvcRequestStatus, addSvcFeedback, verifyMatchingLandlordAndSVC, verifyMatchingTenantAndSVC, addSvcQuotation, getFilePathFromSvcID, acceptSvcQuotation};
+module.exports = {STATUS, getPhotoPathFromSvcID, getSvcRequestDetails, createSvcRequest, getSvcRequestByTenant, getSvcRequestByLandlord, changeSvcRequestStatus, addSvcFeedback, verifyMatchingLandlordAndSVC, verifyMatchingTenantAndSVC, addSvcQuotation, getQuotationPathFromSvcID, acceptSvcQuotation};

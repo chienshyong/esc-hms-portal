@@ -48,5 +48,6 @@ CREATE TABLE svc_request (
   quot_amount FLOAT(24),
   quot_accepted BOOLEAN,
   quot_attachment VARCHAR(255),
+  photo_path VARCHAR(255)
   feedback INT
 );

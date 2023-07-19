@@ -15,7 +15,6 @@ export const auth = ctx => {
       ctx.res.writeHead(302, { Location: '/login' })
       ctx.res.end()
     } else {
-      Router.push('/login')
     }
   }
 
@@ -26,7 +25,6 @@ export const logout = () => {
   cookie.remove('token')
   // to support logging out from all windows
   window.localStorage.setItem('logout', Date.now())
-  Router.push('/login')
 }
 
 export const withAuthSync = WrappedComponent => {
@@ -34,7 +32,6 @@ export const withAuthSync = WrappedComponent => {
     const syncLogout = event => {
       if (event.key === 'logout') {
         console.log('logged out from storage!')
-        Router.push('/login')
       }
     }
 

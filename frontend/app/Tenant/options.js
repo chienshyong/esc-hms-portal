@@ -57,7 +57,6 @@ const hoveredimageUrls = [
 
 export default function Options(){
     const [hoveredIndex, setIndex] = useState(null)
-
     return(
         <Grid container sx={{padding:"0 10vw"}}>
             {imageUrls.map((imageUrl, index) => (

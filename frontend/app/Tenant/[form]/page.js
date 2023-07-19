@@ -8,7 +8,7 @@ import Image from 'next/image'
 import upload from '../../../public/upload.svg'
 
 export default function TenantForm({params}){
-    const {form} = params
+    const form = String(params.form).charAt(0).toUpperCase() + String(params.form).slice(1);
     return(
         <body style={{backgroundColor: "#F5F5F5"}}>
             <Typography variant="h4" fontWeight="bold" align='center' margin="3ch 0 0 0">{form}</Typography>

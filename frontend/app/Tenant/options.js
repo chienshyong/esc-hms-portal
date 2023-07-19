@@ -23,14 +23,14 @@ import elevatorc from  '../../public/options/elevatorc.svg'
 import othersc from  '../../public/options/othersc.svg'
 
 const options = [
-  "Lighting",
-  "Aircon",
-  "Electricity",
-  "Cleanliness",
-  "Security",
-  "Horticulture",
-  "Elevator",
-  "Others",
+  "lighting",
+  "aircon",
+  "electricity",
+  "cleanliness",
+  "security",
+  "horticulture",
+  "elevator",
+  "others",
 ]
 
 const imageUrls = [
@@ -73,7 +73,7 @@ export default function Options(){
                 onMouseEnter={() => setIndex(index)}
                 onMouseLeave={() => setIndex(null)}
               > 
-              <Link href={`/Tenant/${options[index]}`}>
+              <Link href={`/tenant/${options[index]}`}>
                 <Image
                 src={hoveredIndex === index ? hoveredimageUrls[index] : imageUrl}
                 alt={`Image ${index + 1}`}

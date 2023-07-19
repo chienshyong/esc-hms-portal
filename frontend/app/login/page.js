@@ -1,5 +1,6 @@
 'use client'
 import * as React from 'react'
+import {useState} from 'react'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import { Grid } from '@mui/material'
@@ -7,16 +8,19 @@ import {Typography} from '@mui/material'
 import {Button} from '@mui/material'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import {Hidden} from '@mui/material'
 import Image from 'next/image'
 import house from '../../public/house.svg'
-import {Hidden} from '@mui/material'
-
-import { roleHook} from './code'
+import {roleHook, handleLogin} from './code'
+import { useRouter } from 'next/navigation'
 
 
 export default function Login(){
 
     const {role,handleRole} =  roleHook()
+    const [userdata, setUserdata] = useState({username: "", password: ""});
+    const router = useRouter();
+    var success = false;
 
     return(
         <body style={{backgroundColor: "#F5F5F5"}}>
@@ -53,6 +57,8 @@ export default function Login(){
                     <Box component="form" sx={{'& .MuiTextField-root': { m:1, width: '40ch' },}} noValidate autoComplete="off">
                         <TextField
                             id="outlined-username-input"
+                            value={userdata.username}
+                            onChange={(e) => {setUserdata(Object.assign({}, userdata, { username: e.target.value }))}}
                             label="Username"
                             type="username"
                             autoComplete="current-username"
@@ -61,6 +67,8 @@ export default function Login(){
                     <Box component="form" sx={{'& .MuiTextField-root': { m: 1, width: '40ch' },}} noValidate autoComplete="off">
                         <TextField
                             id="outlined-password-input"
+                            value={userdata.password}
+                            onChange={(e) => {setUserdata(Object.assign({}, userdata, { password: e.target.value }))}}
                             label="Password"
                             type="password"
                             autoComplete="current-password"
@@ -69,7 +77,19 @@ export default function Login(){
                     </div>    
 
                     <Button 
-                    href="/"
+                    onClick={async () => {
+                        success = await handleLogin(role, userdata.username, userdata.password, "http://localhost:3001")
+                        console.log(role)
+                        console.log(userdata.username)
+                        console.log(userdata.password)
+                        console.log(success)
+                        if (success === true) {
+                            router.push(`/${role}`);
+                        }
+                        else {
+                            console.log("login failed")
+                        }
+                    } }
                     variant="contained" 
                     style={{borderRadius: 15,
                       backgroundColor: "#6C63FF",

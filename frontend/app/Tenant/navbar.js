@@ -47,11 +47,11 @@ export default function Navbar() {
             <ListItem style={{display:'flex', justifyContent:'center'}} divider>
               <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
             </ListItem>
-            <ListItemButton href="\Tenant" divider>
+            <ListItemButton href="\tenant" divider>
               <ListItemIcon><NoteAltOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="New Case"/>  
             </ListItemButton>
-            <ListItemButton href="\Tenant\trackcases" divider>
+            <ListItemButton href="\tenant\trackcases" divider>
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Track Cases"/>  
             </ListItemButton>
@@ -67,11 +67,11 @@ export default function Navbar() {
               <ListItem style={{display:'flex', justifyContent:'center'}} divider>
                 <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
               </ListItem>
-              <ListItemButton href="\Tenant" divider>
+              <ListItemButton href="\tenant" divider>
                 <ListItemIcon><NoteAltOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
                 <ListItemText primary="New Case"/>  
               </ListItemButton>
-              <ListItemButton href="\Tenant\trackcases" divider>
+              <ListItemButton href="\tenant\trackcases" divider>
                 <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
                 <ListItemText primary="Track Cases"/>  
               </ListItemButton>

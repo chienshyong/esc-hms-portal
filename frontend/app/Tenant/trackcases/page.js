@@ -1,12 +1,13 @@
 'use client'
-import * as React from 'react'
-import { Typography, Grid, Box} from "@mui/material"
+import React, { useState } from 'react';
+import { Typography, Grid} from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from '../navbar';
 import SplitButton from './splitbutton';
 import ToggleView from './toggleview';
 import SearchField from './search';
-import ColumnWithBoxes from './column';
+import DashboardView from './dashboardview';
+import ListView from './listview';
 
 const theme = createTheme({
     palette: {
@@ -21,8 +22,16 @@ const theme = createTheme({
   
 
 export default function TrackCases(){
+    const [view, setView] = useState('right');
+
+    const handleViewChange = (newView) => {
+        if (view != null && newView != null){
+            setView(newView);
+        }
+    };
+
     return(
-        <body>
+        <div>
             <ThemeProvider theme={theme}>
                 <Grid container space={2}>
                     <Grid item xs={2}>
@@ -32,26 +41,21 @@ export default function TrackCases(){
                         <Typography margin="1ch 0 0.5ch 0" variant="h4">Service Tickets</Typography>
                         <Grid container direction={{ xs: 'column', sm: 'column', lg: 'row' }} spacing={{ xs: 1, sm: 1, lg: 0 }}>
                             <Grid item xs={7}>
-                                <ToggleView />
+                                <ToggleView view={view} onChange={handleViewChange} />
                             </Grid>
-                            <Grid item container xs={5}>
-                                <Grid item marginRight={2}>
-                                    <SplitButton />
+                            <Grid item container xs={5} justifyContent={{lg:"center"}}>
+                                <Grid item>
+                                    {view === 'left' ?  <SplitButton/> : null}
                                 </Grid>
                                 <Grid item>
                                     <SearchField />
                                 </Grid>
                              </Grid>
                         </Grid>
-                        <Box sx={{display:"flex",gap: 2}}>
-                            {/* The number of columns (categories, status, tenants) is dynamic but i place it as this first */}
-                            <ColumnWithBoxes/>
-                            <ColumnWithBoxes/>
-                            <ColumnWithBoxes/>
-                        </Box>
+                        {view === 'left' ? <DashboardView /> : <ListView />}
                     </Grid>
                 </Grid>
             </ThemeProvider>
-        </body>
+        </div>
     )
 }

@@ -11,7 +11,7 @@ export function roleHook(){
     return {role,handleRole}
 }
 
-export const handleLogin = async () => {
+export const handleLogin = async (selectedOption, username, password, api, navigate) => {
     if(selectedOption === 'tenant'){
       try {
         console.log("Attempting to login %s and %s", username, password)
@@ -24,6 +24,7 @@ export const handleLogin = async () => {
         return navigate("/main");
       } catch (error) {
         console.log(error.response.data);
+        throw error;
       }
     }
     if(selectedOption === 'landlord'){
@@ -38,6 +39,7 @@ export const handleLogin = async () => {
         return navigate("/main");
       } catch (error) {
         console.log(error.response.data);
+        throw error;
       }
     }
   };

@@ -4,6 +4,10 @@ import React from 'react';
 import { Stack,Paper,Typography,Divider, Link,CardActionArea,Box } from '@mui/material';
 import { Phone,Email,Grid3x3 } from '@mui/icons-material';
 
+
+// TO DO: Fill in the boxes aka feilds of each case. 
+// TO DO: There is a link portion Tenant/trackcases/${box.id}. Can change it to dheeptha's form to link them.
+
 export default function ColumnWithBoxes() {
   const boxes = [
     { id: 1, name: 'Box 1'},

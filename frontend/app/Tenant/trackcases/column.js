@@ -34,7 +34,7 @@ export default function ColumnWithBoxes() {
             </Box>
         </Box>
       {boxes.map((box, index) => (
-        <Link key={box.id} style={{ textDecoration: 'none' }} href={`/trackcases/${box.id}`}>
+        <Link key={box.id} style={{ textDecoration: 'none' }} href={`Tenant/trackcases/${box.id}`}>
           <CardActionArea key={index}
           component={Paper}
           sx={{

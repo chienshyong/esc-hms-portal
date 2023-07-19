@@ -33,7 +33,7 @@ export default function SplitButton() {
 
   return (
     <React.Fragment>
-      <ButtonGroup variant="outlined" ref={anchorRef} aria-label="split button">
+      <ButtonGroup variant="outlined" ref={anchorRef} aria-label="split button" style={{marginRight:"15px"}}>
         <Button onClick={handleClick} color = "secondary" size="small">{options[selectedIndex]}</Button>
         <Button
           size="small"

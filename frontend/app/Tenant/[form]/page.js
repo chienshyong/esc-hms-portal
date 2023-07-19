@@ -12,9 +12,6 @@ export default function TenantForm({params}){
     return(
         <body style={{backgroundColor: "#F5F5F5"}}>
             <Typography variant="h4" fontWeight="bold" align='center' margin="3ch 0 0 0">{form}</Typography>
-            <Typography variant="overline" align='center' display="block" gutterBottom>
-            ServiceRequestID: SR00001
-            </Typography>
             <Grid container 
             display= 'flex'
             direction="column"

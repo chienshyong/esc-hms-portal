@@ -84,6 +84,42 @@ router.get('/get-svc-requests', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
+router.get('/get-svc-request-details', authModel.requireLandlordLogin, (req, res) => {
+    const landlordID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.getSvcRequestDetails(svcID, (err, results) => {
+                if (err) { return res.status(400).send(err.message); }
+                res.status(200).json(results); 
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to modify this SVC request' });
+        }
+    });
+});
+
+router.get('/get-svc-request-photo', authModel.requireLandlordLogin, (req, res) => {
+    const landlordID = req.session.user.id;
+    const svcID = req.body.svcID;
+    svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
+        if(isAuth){
+            svcModel.getPhotoPathFromSvcID(svcID, (err, path) => {
+                if (err) { return res.status(400).send(err.message); }
+                console.log("File has been requested: " + path);
+                res.download(path, (error) => {
+                    if (error) {
+                      console.error('Error downloading file:', error);
+                      res.status(500).json({ error: 'Failed to download file' });
+                    }
+                });
+            });
+        } else{
+            return res.status(401).json({ message: 'Unauthorized to access this SVC request' });
+        }
+    });
+});
+
 router.patch('/accept-svc-request', authModel.requireLandlordLogin, (req, res) => {
     const landlordID = req.session.user.id;
     const svcID = req.body.svcID;

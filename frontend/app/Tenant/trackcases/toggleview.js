@@ -9,33 +9,28 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
       border: 'none',
       height: 20,
       '&:not(:last-child)': {
-          borderRight: '1px solid black', // Add the right border to all except the last toggle button
+          borderRight: '1px solid black', 
       },
       '&.Mui-selected': {
-          backgroundColor: 'transparent', // Change the background color of the selected toggle button
-          color: '#6C63FF', // Change the text color of the selected toggle button
-          '&:hover': {
-              backgroundColor: 'transparent', // Remove the hover background color
-          },
-        },
-      '&:hover': {
-          backgroundColor: 'transparent', // Remove the hover background color
-      },
+          backgroundColor: 'transparent', 
+          color: '#6C63FF', 
+      }
     },
   }));
 
-export default function ToggleView() {
-    // for selection of views
-    const [alignment, setAlignment] = React.useState('left');
+export default function ToggleView({ view, onChange }) {
 
-    const handleAlignment = (event, newAlignment) => {
-        setAlignment(newAlignment);
+    const handleViewChange = (event, newView) => {
+        if (onChange) {
+          onChange(newView);
+        }
     };
 
     return(
         <Box sx={{width: 250, height: 30, border: '1px solid grey', borderRadius: 1, display:"flex",justifyContent:"center",alignItems:"center"}}>
             <Typography variant="text" color="primary">Show as:</Typography>
-            <StyledToggleButtonGroup  size="small" value={alignment} exclusive onChange={handleAlignment} aria-label="text alignment">
+            <StyledToggleButtonGroup  size="small" value={view} exclusive onChange={handleViewChange} 
+            aria-label="text alignment">
                 <ToggleButton value="left" aria-label="left aligned"><Dashboard/>Board</ToggleButton>
                 <ToggleButton value="right" aria-label="right aligned"><List/>List</ToggleButton>
             </StyledToggleButtonGroup>

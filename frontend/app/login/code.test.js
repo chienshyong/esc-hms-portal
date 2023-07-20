@@ -1,64 +1,111 @@
-import React from 'react';
+import * as React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
-import { roleHook, handleLogin } from './code';
+import { roleHook, handleLogin } from '@/app/login/code';
+import { login } from '@/utils/login';
+
+// Mock the 'fetch' function
+global.fetch = jest.fn();
+
+// Mock the 'login' function from '@/utils/login'
+jest.mock('@/utils/login', () => ({
+  login: jest.fn(),
+}));
 
 describe('roleHook', () => {
-  test('returns initial role as "tenant"', () => {
+  it('should initialize with the default role as "tenant"', () => {
     const { result } = renderHook(() => roleHook());
     expect(result.current.role).toBe('tenant');
   });
 
-  test('updates role when handleRole is called', () => {
+  it('should change the role when handleRole is called', () => {
     const { result } = renderHook(() => roleHook());
-    const { handleRole } = result.current;
+    const newRole = 'landlord';
+
     act(() => {
-      handleRole(null, 'landlord');
+      result.current.handleRole({}, newRole);
     });
-    expect(result.current.role).toBe('landlord');
+
+    expect(result.current.role).toBe(newRole);
   });
 });
 
 describe('handleLogin', () => {
-  test('performs tenant login successfully', async () => {
-    const selectedOption = 'tenant';
-    const username = 'testUser';
-    const password = 'testPassword';
-    const api = {
-      post: jest.fn().mockResolvedValue({ data: { message: 'Login successful' } })
-    };
-    const navigate = jest.fn();
-
-    await handleLogin(selectedOption, username, password, api, navigate);
-
-    expect(api.post).toHaveBeenCalledWith('/auth/tenant-login', { username, password });
-    expect(navigate).toHaveBeenCalledWith('/main');
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('performs landlord login successfully', async () => {
+  it('should login as tenant', async () => {
+    const selectedOption = 'tenant';
+    const username = 'testuser';
+    const password = 'testpassword';
+    const api = 'API URL';
+
+    // Mock the fetch function for tenant login
+    global.fetch.mockResolvedValueOnce({
+      status: 200,
+      json: () => Promise.resolve({ token: 'fakeToken' }),
+    });
+
+    await expect(handleLogin(selectedOption, username, password, api)).resolves.toBe(true);
+
+    // Ensure fetch was called with the correct URL and requestOptions
+    expect(fetch).toHaveBeenCalledWith(`${api}/auth/tenant-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    // Ensure 'login' function from '@/utils/login' was called with the expected token
+    expect(login).toHaveBeenCalledWith({ token: 'fakeToken' });
+  });
+
+  it('should login as landlord', async () => {
     const selectedOption = 'landlord';
-    const username = 'testUser';
-    const password = 'testPassword';
-    const api = {
-      post: jest.fn().mockResolvedValue({ data: { message: 'Login successful' } })
-    };
-    const navigate = jest.fn();
+    const username = 'testuser';
+    const password = 'testpassword';
+    const api = 'API URL';
 
-    await handleLogin(selectedOption, username, password, api, navigate);
+    // Mock the fetch function for landlord login
+    global.fetch.mockResolvedValueOnce({
+      status: 200,
+      json: () => Promise.resolve({ token: 'fakeToken' }),
+    });
 
-    expect(api.post).toHaveBeenCalledWith('/auth/landlord-login', { username, password });
-    expect(navigate).toHaveBeenCalledWith('/main');
+    await expect(handleLogin(selectedOption, username, password, api)).resolves.toBe(true);
+
+    // Ensure fetch was called with the correct URL and requestOptions
+    expect(fetch).toHaveBeenCalledWith(`${api}/auth/landlord-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    // Ensure 'login' function from '@/utils/login' was called with the expected token
+    expect(login).toHaveBeenCalledWith({ token: 'fakeToken' });
   });
 
-  test('throws an error when login fails', async () => {
+  it('should throw an error if login fails', async () => {
     const selectedOption = 'tenant';
-    const username = 'testUser';
-    const password = 'testPassword';
-    const errorResponse = { response: { data: { error: 'Login failed' } } };
-    const api = {
-      post: jest.fn().mockRejectedValue(errorResponse)
-    };
-    const navigate = jest.fn();
+    const username = 'testuser';
+    const password = 'testpassword';
+    const api = 'API URL';
 
-    await expect(handleLogin(selectedOption, username, password, api, navigate)).rejects.toEqual(errorResponse);
+    // Mock the fetch function to return an error response
+    global.fetch.mockResolvedValueOnce({
+      status: 401,
+      statusText: 'Unauthorized',
+    });
+
+    await expect(handleLogin(selectedOption, username, password, api)).rejects.toThrowError();
+
+    // Ensure fetch was called with the correct URL and requestOptions
+    expect(fetch).toHaveBeenCalledWith(`${api}/auth/tenant-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    // Ensure 'login' function from '@/utils/login' was not called since login failed
+    expect(login).not.toHaveBeenCalled();
   });
 });

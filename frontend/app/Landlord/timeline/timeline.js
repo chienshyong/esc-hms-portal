@@ -34,7 +34,7 @@ export function FileView({ fileName }) {
       description: '20/12/2022 12:02:00 PM', // Can change this to represent actual date and time 
       content: (
         <React.Fragment>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' , marginTop: '30px' }}>
             <Box
               component="form"
               sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
@@ -46,6 +46,7 @@ export function FileView({ fileName }) {
                 label="Name"
                 type="text"
                 autoComplete="Enter your name"
+                defaultValue = "John Tan"
               />
             </Box>
             <Box
@@ -59,6 +60,7 @@ export function FileView({ fileName }) {
                 label="Email"
                 type="email"
                 autoComplete="Enter your email"
+                value = "john@7eleven.com"
               />
             </Box>
           </div>
@@ -74,6 +76,7 @@ export function FileView({ fileName }) {
                 label="Contact Number"
                 type="tel"
                 autoComplete="Enter your contact number"
+                defaultValue = "900000"
               />
             </Box>
             <Box
@@ -87,6 +90,7 @@ export function FileView({ fileName }) {
                 label="Lease ID"
                 type="text"
                 autoComplete="Enter your lease ID"
+                defaultValue = "RC/0001"
               />
             </Box>
           </div>
@@ -107,6 +111,7 @@ export function FileView({ fileName }) {
                 id="outlined-problem-input"
                 type="text"
                 autoComplete="Describe the problem"
+                defaultValue = "Some stain on the wall"
               />
             </Box>
           </div>
@@ -118,7 +123,7 @@ export function FileView({ fileName }) {
       description: '20/12/2022 4:00:00 PM',
       content: (
         <React.Fragment>
-          <div>
+          <div style={{ marginTop: '30px' }}>
             <Box
               component="form"
               sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
@@ -130,10 +135,11 @@ export function FileView({ fileName }) {
                 label="Amount"
                 type="text"
                 autoComplete="Enter the quotation amount"
+                defaultValue = "$500"
               />
             </Box>
           </div>
-          <div>
+          <div style={{ marginTop: '30px' }}>
           <Typography display="block"> Upload Screenshot </Typography>
               {/* Can change this to get the actual file name later: */}
               <FileView fileName="quotes/quotation0001.pdf" /> 

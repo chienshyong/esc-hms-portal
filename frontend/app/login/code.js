@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { login } from '@/utils/login';
+import { api } from '../layout';
 
 export function roleHook(){
     const [role, setRole] = React.useState(() => 'tenant');
@@ -12,7 +13,7 @@ export function roleHook(){
     return {role,handleRole}
 }
 
-export const handleLogin = async (selectedOption, username, password, api) => {
+export const handleLogin = async (selectedOption, username, password) => {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -26,8 +27,8 @@ export const handleLogin = async (selectedOption, username, password, api) => {
         console.log("Attempting to login %s and %s", username, password)
         const response = await fetch(`${api}/auth/tenant-login`, requestOptions);
         if (response.status === 200) {
-          const { token } = await response.json()
-          await login({ token })
+          //const { token } = await response.json()
+          //await login({ token })
           return true
         } else {
           console.log('Login failed.')

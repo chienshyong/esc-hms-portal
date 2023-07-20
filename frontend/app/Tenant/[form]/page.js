@@ -7,9 +7,12 @@ import { Grid } from '@mui/material'
 import Image from 'next/image'
 import upload from '../../../public/upload.svg'
 import Navbar from '../navbar'
+import { useState } from 'react'
+import { handleTenantForm } from './code'
 
 export default function TenantForm({params}){
     const form = String(params.form).charAt(0).toUpperCase() + String(params.form).slice(1);
+    const [formdata, setFormdata] = useState("")
     return(
         <div>
             <Navbar></Navbar>
@@ -29,7 +32,10 @@ export default function TenantForm({params}){
                     maxWidth: '100%',
                     }}
                 >
-                    <TextField fullWidth label="Describe the Problem" id="description" multiline margin="dense" rows={4}/>
+                    <TextField fullWidth label="Describe the Problem" id="description" multiline margin="dense" rows={4}
+                    value = {formdata}
+                    onChange={(e) => {setFormdata(e.target.value)}}
+                    />
                 </Box>
                 <Box
                    sx={{
@@ -52,7 +58,16 @@ export default function TenantForm({params}){
                     </Image>
                 </Box>
                 <Button 
-                href="/"
+                onClick={async () => {
+                    success = await handleTenantForm(1, form, formdata) //NOTE - Placeholder values!
+                    if (success === true) {
+                        console.log("Upload Success")
+                        router.push(`/tenant`);
+                    }
+                    else {
+                        console.log("Upload failed.")
+                    }
+                }}
                 variant="contained" 
                 style={{borderRadius: 15,
                 backgroundColor: "#38BC3B",

@@ -68,7 +68,11 @@ router.get('/get-svc-request-photo', authModel.requireTenantLogin, (req, res) =>
 
 router.post('/create-svc-request', authModel.requireTenantLogin, upload.single('photo'), (req, res) => {
     console.log(req.file); //Log uploaded file data
-    const photoPath = req.file.path;
+    console.log("creating tenant svc req")
+    if (req.file != undefined) {
+    const photoPath = req.file.path;}
+    else { const photoPath = undefined}
+    console.log(req.session)
     const tenantID = req.session.user.id;
     const {leaseID, title, description} = req.body;
     svcModel.createSvcRequest(tenantID, leaseID, title, description, photoPath, (err, results) => {

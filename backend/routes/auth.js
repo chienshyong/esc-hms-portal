@@ -13,7 +13,9 @@ router.post('/tenant-login', (req, res) => {
         // Use these to check if user has logged in, and whether they are tenant or landlord
         req.session.user = user; //User's ID, username, password and email.
         req.session.userType = authmodel.USERTYPE.TENANT; //'tenant' or 'landlord' or 'admin'
-        res.status(200).json({ message: 'User login successful' }); //200 OK
+        console.log(req.session)
+        //res.status(200).json({ message: 'User login successful' });
+        res.status(200).json({token:req.sessionID});
     });
 });
   
@@ -37,7 +39,9 @@ router.post('/landlord-login', (req, res) => {
         }
         req.session.user = user;
         req.session.userType = authmodel.USERTYPE.LANDLORD;
-        res.status(200).json({ message: 'User login successful' });
+        console.log(user)
+        //res.status(200).json({ message: 'User login successful' });
+        res.status(200).json({token:req.sessionID});
     });
 });
   

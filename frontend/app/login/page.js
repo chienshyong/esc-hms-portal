@@ -10,9 +10,10 @@ import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import {Hidden} from '@mui/material'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import house from '../../public/house.svg'
 import {roleHook, handleLogin} from './code'
-import { useRouter } from 'next/navigation'
+import { api } from '../layout'
 
 
 export default function Login(){
@@ -78,11 +79,11 @@ export default function Login(){
 
                     <Button 
                     onClick={async () => {
-                        success = await handleLogin(role, userdata.username, userdata.password, "http://localhost:3001")
-                        console.log(role)
-                        console.log(userdata.username)
-                        console.log(userdata.password)
-                        console.log(success)
+                        success = await handleLogin(role, userdata.username, userdata.password, api)
+                        // console.log(role)
+                        // console.log(userdata.username)
+                        // console.log(userdata.password)
+                        // console.log(success)
                         if (success === true) {
                             router.push(`/${role}`);
                         }

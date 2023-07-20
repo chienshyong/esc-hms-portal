@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session)
 const app = express();
 const port = 3001;
 
@@ -15,7 +17,9 @@ function logRequests(req, res, next) {
 app.use(logRequests);
 
 //Handle preflight requests
-app.use(cors());
+app.use(cors({origin: true, credentials: true}));
+
+app.use(cookieParser());
 
 //Middleware to parse JSON
 app.use(express.json()); 
@@ -23,6 +27,9 @@ app.use(express.json());
 //Express session (for persistent authentication)
 app.use(
   session({
+    store: new MemoryStore({
+      checkPeriod: 86400000
+    }),
     secret: '123456',
     resave: 'false'
   })

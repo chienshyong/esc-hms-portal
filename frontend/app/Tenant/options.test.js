@@ -1,6 +1,7 @@
 const { render, screen, fireEvent } = require('@testing-library/react');
 const Options = require('./options');
 
+
 describe('Options', () => {
   test('renders images and links correctly', () => {
     render(Options);

@@ -6,11 +6,13 @@ import {Button} from '@mui/material'
 import { Grid } from '@mui/material'
 import Image from 'next/image'
 import upload from '../../../public/upload.svg'
+import Navbar from '../navbar'
 
 export default function TenantForm({params}){
     const form = String(params.form).charAt(0).toUpperCase() + String(params.form).slice(1);
     return(
-        <body style={{backgroundColor: "#F5F5F5"}}>
+        <div>
+            <Navbar></Navbar>
             <Typography variant="h4" fontWeight="bold" align='center' margin="3ch 0 0 0">{form}</Typography>
             <Grid container 
             display= 'flex'
@@ -59,6 +61,6 @@ export default function TenantForm({params}){
                 </Button>
 
             </Grid>
-        </body>
+        </div>
     )
 }

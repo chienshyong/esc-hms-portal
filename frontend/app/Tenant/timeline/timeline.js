@@ -184,7 +184,7 @@ export function FileView({ fileName }) {
                 <div style={{ display: 'flex' , marginTop: '30px'}}>
                 <Box
                   component="form"
-                  sx={{ '& .MuiTextField-root': { m: 1, width: '80ch', height: '700px' , maxWidth:'100%'} }}
+                  sx={{ '& .MuiTextField-root': { m: 1, width: '80ch'} }}
                   noValidate
                   autoComplete="off"
                 >

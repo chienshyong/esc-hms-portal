@@ -7,7 +7,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import {CheckBox}  from '@mui/icons-material';
+import Checkbox  from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Rating from '@mui/material/Rating';
 
@@ -39,13 +39,68 @@ export function FileView({ fileName }) {
   export default function Timeline() {
     const [activeStep, setActiveStep] = React.useState(0);
     const [completed, setCompleted] = React.useState({});
-    const [isChecked, setIsChecked] = React.useState(false);
+    const [isCheckedAccept, setIsCheckedAccept] = React.useState(false);
+    const [isCheckedReject, setIsCheckedReject] = React.useState(false);
     const [rating, setRating] = React.useState(0);
 
-  const handleCheckboxChange = () => {
+
+    const handleCheckboxChange = (event) => {
+        const { name, checked } = event.target;
     
-    setIsChecked(!isChecked);
-  };
+        if (name === "accept") {
+          setIsCheckedAccept(checked);
+          setIsCheckedReject(false);
+        } else if (name === "reject") {
+          setIsCheckedReject(checked);
+          setIsCheckedAccept(false);
+        }
+      };
+
+      const renderContentCheckbox = () => {
+        if (isCheckedAccept){
+            return (
+                <React.Fragment>
+                    <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px', marginLeft: '20px' }}>
+                        <Typography variant="body1"> INSTRUCTIONS :</Typography>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' , marginLeft: '20px'}}>
+                        <Typography variant="body2"> The standard Lorem Ipsum passage, used since the 1500s
+                                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+                                                    Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
+                                                    "Sed ut perspiciatis unde" 
+                        </Typography>
+                    </div>
+                </React.Fragment>
+            )
+        }
+        else if (isCheckedReject){
+            return (
+                <React.Fragment>
+                    <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' , marginLeft: '30px'}}>
+                        <Typography variant="body1"> COMMENTS :</Typography>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' , marginTop: '10px' , marginLeft: '20px'}}>
+                        <Box
+                            component="form"
+                            sx={{ '& .MuiTextField-root': { m: 1, width: '80ch'} }}
+                            noValidate
+                            autoComplete="off"
+                        >
+                        <TextField
+                            id="outlined-comments-input"
+                            label="Type your comments"
+                            type="text"
+                            autoComplete="Enter your comments"
+                            size = "large"
+                        />
+                        </Box>
+                    </div>
+                </React.Fragment>
+            )
+        }
+      }
+
+  
 
   const handleRatingChange = (event, newRating) => {
     setRating(newRating);
@@ -57,7 +112,7 @@ export function FileView({ fileName }) {
           description: '20/12/2022 12:02:00 PM', // Can change this to represent actual date and time 
           content: (
             <React.Fragment>
-              <div style={{ display: 'flex' , marginTop: '30px' }}>
+              <div style={{ display: 'flex' , marginTop: '30px' , marginLeft: '20px'}}>
                 <Box
                   component="form"
                   sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
@@ -87,7 +142,7 @@ export function FileView({ fileName }) {
                   />
                 </Box>
               </div>
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex' , marginLeft: '20px'}}>
                 <Box
                   component="form"
                   sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
@@ -117,13 +172,13 @@ export function FileView({ fileName }) {
                   />
                 </Box>
               </div>
-              <div style={{ marginTop: '30px' }}>
+              <div style={{ marginTop: '30px' , marginLeft: '20px'}}>
               <Typography display="block"> Upload Screenshot </Typography>
                   {/* Can change this to get the actual file name later: */}
                   <FileView fileName="cleanliness.jpg" /> 
               </div>
-              <div style={{ marginTop: '30px' }}>
-              <Typography display="block"> Describe the problem </Typography>
+              <div style={{ marginTop: '30px', marginLeft: '20px' }}>
+              <Typography display="block"> Describe the problem : </Typography>
               <Box
                   component="form"
                   sx={{ '& .MuiTextField-root': { m: 1, width: '80ch' } }}
@@ -146,20 +201,12 @@ export function FileView({ fileName }) {
           description: '20/12/2022 4:00:00 PM',
           content: (
             <React.Fragment>
-              <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' }}>
-              <FormControlLabel control={<CheckBox checked={isChecked} onChange={handleCheckboxChange}/>} label="Accept" />
+              <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' , marginLeft: '20px'}}>
+              <FormControlLabel control={<Checkbox checked={isCheckedAccept} onChange={handleCheckboxChange}/>} name="accept" label="Accept" sx={{ marginRight: '50px' }}/>
+              
+              <FormControlLabel control={<Checkbox checked={isCheckedReject} onChange={handleCheckboxChange}/>} name="reject" label="Reject" />
               </div>
-              <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' }}>
-              <Typography variant="body1"> Instructions:</Typography>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' }}>
-              <Typography variant="body2"> The standard Lorem Ipsum passage, used since the 1500s
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-            Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-            "Sed ut perspiciatis unde" </Typography>
-                </div>
-                    
-            
+              {renderContentCheckbox()}
             </React.Fragment>
           ),
         },

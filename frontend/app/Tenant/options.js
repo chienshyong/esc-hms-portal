@@ -61,6 +61,7 @@ export default function Options(){
         <Grid container sx={{padding:"0 10vw"}}>
             {imageUrls.map((imageUrl, index) => (
               <Grid item xs={6} sm={4} md={4} lg={3} 
+                key={index}
                 sx={{display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

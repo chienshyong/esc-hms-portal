@@ -8,13 +8,13 @@ import { Phone,Email,Grid3x3 } from '@mui/icons-material';
 // TO DO: Fill in the boxes aka feilds of each case. 
 // TO DO: There is a link portion Tenant/trackcases/${box.id}. Can change it to dheeptha's form to link them.
 
-export default function ColumnWithBoxes() {
+export default function ColumnWithBoxes({ option }) {
   const boxes = [
     { id: 1, name: 'Box 1'},
-    { id: 2, name: 'Box 2'},
-    { id: 3, name: 'Box 3'},
-    { id: 4, name: 'Box 4'},
-    { id: 5, name: 'Box 5'},
+    // { id: 2, name: 'Box 2'},
+    // { id: 3, name: 'Box 3'},
+    // { id: 4, name: 'Box 4'},
+    // { id: 5, name: 'Box 5'},
   ]; // Example array of boxes with corrresonding ids
 
   return (
@@ -32,13 +32,14 @@ export default function ColumnWithBoxes() {
       }}
     >
         <Box sx={{display:"flex", alignItems:"center"}}>
-            <Typography variant="subtitle2" marginRight={1}>Electricity</Typography>
+            <Typography variant="subtitle2" marginRight={1}>{option}</Typography>
             <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",fontSize: '12px', fontWeight: 'bold',backgroundColor:"#D9D9D9",borderRadius: 1, width:'30px',height:"15px"}}>
                 {boxes.length}
             </Box>
         </Box>
       {boxes.map((box, index) => (
-        <Link key={box.id} style={{ textDecoration: 'none' }} href={`Tenant/trackcases/${box.id}`}>
+        // TO DO: Please change link
+        <Link key={box.id} style={{ textDecoration: 'none' }} href={`tenant/timeline`}>
           <CardActionArea key={index}
           component={Paper}
           sx={{

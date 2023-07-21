@@ -1,43 +1,54 @@
 'use client'
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
-import { DoDisturb } from '@mui/icons-material';
 
 // This is an example, input data feild here
 // TO DO: The close case button does not remove anything yet
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
+  { field: 'id', headerName: 'ID', width: 130, 
+  renderCell: (params) => (
+    // TO DO: Link the id of the link here
+    // <Link href={`/tenant/${params.value}`}>
+    //   {params.value}
+    // </Link>
+
+    // Hardcoded Example
+    <Link href={`/tenant/timeline`}>
+      {params.value}
+    </Link>
+  ), },
+  { field: 'name', headerName: 'Name', width: 130 },
+  { field: 'timeOfRequest', headerName: 'Time of Request', width: 130 },
   {
-    field: 'age',
-    headerName: 'Age',
+    field: 'requestType',
+    headerName: 'Request Type',
+    width: 130
+  },
+  {
+    field: 'quotationRequired',
+    headerName: 'Quotation Required',
+    width: 150
+  },
+  {
+    field: 'quotationAmount',
+    headerName: 'Quotation Amount',
     type: 'number',
-    width: 90,
+    width: 130,
   },
   {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    field: 'quotationUploadedBy',
+    headerName: 'Quotation Uploaded By',
+    width: 180,
   },
+  { field: 'completedTime', headerName: 'Completed Time', width: 130 },
+  { field: 'status', headerName: 'Status', width: 130 },
+  { field: 'feedbackRating', headerName: 'Feedback Rating', type: 'number', width: 130, },
 ];
 
 const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  { id: "SR00001", name:"Johnathan Tan", timeOfRequest: '20/12/2022  12:02:00 PM', requestType: 'Electricity', quotationRequired: 'Y', quotationAmount:500,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
+  { id: "SR00002", name:"Johnathan Tan", timeOfRequest: '22/12/2022  12:02:00 PM', requestType: 'Cleanliness', quotationRequired: 'N', quotationAmount:0,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
 ];
 
 export default function ListView() {
@@ -57,7 +68,6 @@ export default function ListView() {
               checkboxSelection
             />
          </div>
-         <Button size= "small" variant="contained" style={{backgroundColor: "red"}} startIcon={<DoDisturb />}>Close Case</Button>
     </div>
   );
 }

@@ -2,12 +2,12 @@
 import {Typography} from '@mui/material'
 import { Grid } from '@mui/material'
 
-import Options from "./options"
+import Options from './options'
 import Navbar from './navbar'
 
 export default function TenantOptions() {
   return (
-    <body>
+    <main>
       <Navbar></Navbar>
       <Grid container style={{width:"100vw",height:"100vh",justifyContent:"center",alignItems:"center"}}>
         <Grid item container xs={9}
@@ -16,7 +16,7 @@ export default function TenantOptions() {
           <Options/>
         </Grid>
       </Grid>
-    </body>
+    </main>
   )
 }
 

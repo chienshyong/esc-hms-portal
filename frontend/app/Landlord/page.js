@@ -2,5 +2,5 @@
 import { redirect } from 'next/navigation'
 
 export default function LandlordPage() {
-  redirect("/landlord/trackcases")
+  redirect("/landlord/manageunits")
 }

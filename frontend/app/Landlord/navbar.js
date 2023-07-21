@@ -1,6 +1,6 @@
 'use client'
 import { styled } from "@mui/material/styles";
-import { AccountBox, SpaceDashboardOutlined ,NoteAltOutlined,Menu } from "@mui/icons-material";
+import { AccountBox, SpaceDashboardOutlined ,ApartmentOutlined,Menu } from "@mui/icons-material";
 
 import React from 'react';
 import {
@@ -47,11 +47,11 @@ export default function Navbar() {
             <ListItem style={{display:'flex', justifyContent:'center'}} divider>
               <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
             </ListItem>
-            <ListItemButton href="\tenant" divider>
-              <ListItemIcon><NoteAltOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
-              <ListItemText primary="New Case"/>  
+            <ListItemButton href="\landlord\manageunits" divider>
+              <ListItemIcon><ApartmentOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Manage Units"/>  
             </ListItemButton>
-            <ListItemButton href="\tenant\trackcases" divider>
+            <ListItemButton href="\landlord\trackcases" divider>
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Track Cases"/>  
             </ListItemButton>
@@ -63,19 +63,19 @@ export default function Navbar() {
             <Menu />
           </IconButton>
           <Drawer anchor="left" open={open} onClose={handleDrawerClose}>
-            <List>
-              <ListItem style={{display:'flex', justifyContent:'center'}} divider>
-                <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
-              </ListItem>
-              <ListItemButton href="\tenant" divider>
-                <ListItemIcon><NoteAltOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
-                <ListItemText primary="New Case"/>  
-              </ListItemButton>
-              <ListItemButton href="\tenant\trackcases" divider>
-                <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
-                <ListItemText primary="Track Cases"/>  
-              </ListItemButton>
-            </List>
+          <List>
+            <ListItem style={{display:'flex', justifyContent:'center'}} divider>
+              <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
+            </ListItem>
+            <ListItemButton href="\landlord\manageunits" divider>
+              <ListItemIcon><ApartmentOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Manage Units"/>  
+            </ListItemButton>
+            <ListItemButton href="\landlord\trackcases" divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Track Cases"/>  
+            </ListItemButton>
+          </List>
           </Drawer>
         </div>
       )}

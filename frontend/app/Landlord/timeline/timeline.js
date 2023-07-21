@@ -236,7 +236,7 @@ export function FileView({ fileName }) {
                     Back
                   </Button>
                   <Button variant="contained" onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? 'Close case' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Close Case' : 'Next'}
                   </Button>
                 </Box>
               </React.Fragment>

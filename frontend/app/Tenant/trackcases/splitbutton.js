@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
 import { Button,ButtonGroup,ClickAwayListener,Grow,Paper,Popper,MenuItem,MenuList } from '@mui/material';
 
-const options = ['Status','Categories','Tenants'];
+const options = ['Status','Categories'];
 
 export default function SplitButton() {
   const [open, setOpen] = React.useState(false);

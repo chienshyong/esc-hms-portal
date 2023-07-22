@@ -3,10 +3,10 @@ import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'HMS Portal',
-  description: 'Created by Group C414',
-}
+// export const metadata = {
+//   title: 'HMS Portal',
+//   description: 'Created by Group C414',
+// }
 
 export const api = "http://localhost:3001"
 

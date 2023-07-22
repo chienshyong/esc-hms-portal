@@ -1,6 +1,7 @@
 'use client'
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { Link } from '@mui/material';
 
 // This is an example, input data feild here
 // TO DO: The close case button does not remove anything yet

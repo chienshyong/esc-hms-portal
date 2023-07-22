@@ -119,7 +119,7 @@ export default function UnitForm() {
                       onChange={handleInputChange}
                       required
                     />
-                      <Button variant="contained" style={{backgroundColor: '#6C63FF'}} type="submit">
+                      <Button variant="contained" style={{backgroundColor: '#6C63FF', marginBottom:"25px"}} type="submit">
                         Submit
                       </Button>
                     </Box>

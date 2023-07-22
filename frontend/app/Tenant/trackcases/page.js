@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { Typography, Grid} from "@mui/material"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from '../navbar';
-import SplitButton from './splitbutton';
 import ToggleView from './toggleview';
 import SearchField from './search';
 import DashboardView from './dashboardview';
 import ListView from './listview';
+import SplitButton from './splitbutton';
 
 const theme = createTheme({
     palette: {
@@ -43,7 +43,7 @@ export default function TrackCases(){
                             <Grid item xs={7}>
                                 <ToggleView view={view} onChange={handleViewChange} />
                             </Grid>
-                            <Grid item container xs={5} justifyContent={{lg:"center"}}>
+                            <Grid item container xs={5} justifyContent={{lg:"center"}} rowGap={1}>
                                 <Grid item>
                                     {view === 'left' ?  <SplitButton/> : null}
                                 </Grid>

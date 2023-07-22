@@ -84,9 +84,9 @@ export default function ManageUnits() {
             </Grid>
             <Grid item xs={10}>
                 <Typography margin="1ch 0 0.5ch 0" variant="h4">Manage Units</Typography>
-                <Box sx={{display:'flex',columnGap:"15px",marginBottom:"15px"}}>
+                <Box sx={{display:'flex',columnGap:"15px",rowGap:"15px",marginBottom:"15px",flexDirection:{xs: 'column',sm: 'row',}}}>
                     <SearchField/>
-                    <Button size= "small" variant="contained" style={{backgroundColor: '#6C63FF'}} startIcon={<Add />} href='/landlord/unit'>Add Unit</Button>
+                    <Button variant="contained"  sx={{ width: 150, padding: 0.5, backgroundColor:"#6C63FF"}} startIcon={<Add />} href='/landlord/unit'>Add Unit</Button>
                 </Box>
                 <Box sx={{ height: 400, width: '90%' }}>
                     <DataGrid

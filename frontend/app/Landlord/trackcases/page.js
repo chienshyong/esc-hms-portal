@@ -43,7 +43,7 @@ export default function TrackCases(){
                             <Grid item xs={7}>
                                 <ToggleView view={view} onChange={handleViewChange} />
                             </Grid>
-                            <Grid item container xs={5} justifyContent={{lg:"center"}}>
+                            <Grid item container xs={5} justifyContent={{lg:"center"}} rowGap={1}>
                                 <Grid item>
                                     {view === 'left' ?  <SplitButton/> : null}
                                 </Grid>

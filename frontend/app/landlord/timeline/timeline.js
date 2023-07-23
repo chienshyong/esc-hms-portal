@@ -95,7 +95,7 @@ export function FileView({ fileName }) {
             </Box>
           </div>
           <div style={{ marginTop: '30px' }}>
-          <Typography display="block"> Upload Screenshot </Typography>
+          <Typography display="block"> View Screenshot </Typography>
               {/* Can change this to get the actual file name later: */}
               <FileView fileName="cleanliness.jpg" /> 
           </div>
@@ -140,7 +140,7 @@ export function FileView({ fileName }) {
             </Box>
           </div>
           <div style={{ marginTop: '30px' }}>
-          <Typography display="block"> Upload Screenshot </Typography>
+          <Typography display="block"> Upload Quotation </Typography>
               {/* Can change this to get the actual file name later: */}
               <FileView fileName="quotes/quotation0001.pdf" /> 
           </div>

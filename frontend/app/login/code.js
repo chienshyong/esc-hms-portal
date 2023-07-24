@@ -27,9 +27,9 @@ export const handleLogin = async (selectedOption, username, password) => {
         console.log("Attempting to login %s and %s", username, password)
         const response = await fetch(`${api}/auth/tenant-login`, requestOptions);
         if (response.status === 200) {
-          //const { token } = await response.json()
+          const { token } = await response.json()
           //await login({ token })
-          return true
+          //return true
         } else {
           console.log('Login failed.')
           let error = new Error(response.statusText)

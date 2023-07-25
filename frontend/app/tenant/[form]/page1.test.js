@@ -6,7 +6,7 @@
 import { render, screen } from '@testing-library/react';
 
 //imports the TenantForm component from the page.js file but actually should create a tenant form for test
-import TenantForm from './TenantForm'; 
+import TenantForm from './page'; 
 
 
 

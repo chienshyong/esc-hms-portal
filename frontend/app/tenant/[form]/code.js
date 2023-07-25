@@ -1,5 +1,3 @@
-import { api } from "@/app/layout"
-
 export const handleTenantForm = async (leaseID, title, description) => {
     const requestOptions = {
         method: "POST",
@@ -13,7 +11,7 @@ export const handleTenantForm = async (leaseID, title, description) => {
     }
     try {
         console.log("Submitting form")
-        const response = await fetch(`${api}/tenant/create-svc-request`, requestOptions)
+        const response = await fetch(`${process.env.api}/tenant/create-svc-request`, requestOptions)
         if (response.status === 200) {
             return true
         } else {

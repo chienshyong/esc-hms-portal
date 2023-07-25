@@ -2,18 +2,14 @@
 import React, { useState } from 'react';
 import { Grid,Box,TextField,Typography,Button,ToggleButton,ToggleButtonGroup,Hidden } from '@mui/material'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import house from '../../public/house.svg'
-import {roleHook, handleLogin} from './code'
-import { api } from '../layout'
+import { signIn } from 'next-auth/react';
+import { loginauth } from '../auth';
 
 
 export default function Login(){
-
-    const {role,handleRole} =  roleHook()
-    const [userdata, setUserdata] = useState({username: "", password: ""});
-    const router = useRouter();
-    var success = false;
+    loginauth()
+    const [userdata, setUserdata] = useState({role:"tenant", username: "", password: ""});
 
     return(
         <body style={{backgroundColor: "#F5F5F5"}}>
@@ -37,9 +33,9 @@ export default function Login(){
                     </Box>
 
                     <ToggleButtonGroup
-                    value={role}
+                    value={userdata.role}
                     exclusive
-                    onChange={handleRole}
+                    onChange={(e) => {setUserdata(Object.assign({}, userdata, { role: e.target.value }))}}
                     color="primary"
                     >
                         <ToggleButton value="tenant">Tenant</ToggleButton>
@@ -71,17 +67,15 @@ export default function Login(){
 
                     <Button 
                     onClick={async () => {
-                        success = await handleLogin(role, userdata.username, userdata.password, api)
-                        // console.log(role)
-                        // console.log(userdata.username)
-                        // console.log(userdata.password)
-                        // console.log(success)
-                        if (success === true) {
-                            router.push(`/${role}`);
-                        }
-                        else {
-                            console.log("login failed")
-                        }
+                        console.log(userdata)
+                        const user = await signIn("credentials", {
+                            role: userdata.role,
+                            username: userdata.username,
+                            password: userdata.password,
+                            redirect: true,
+                            callbackUrl: "/"
+                        })
+
                     } }
                     variant="contained" 
                     style={{borderRadius: 15,

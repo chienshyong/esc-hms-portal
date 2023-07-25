@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MemoryStore = require('memorystore')(session)
 const app = express();
@@ -18,8 +17,6 @@ app.use(logRequests);
 
 //Handle preflight requests
 app.use(cors({origin: true, credentials: true}));
-
-app.use(cookieParser());
 
 //Middleware to parse JSON
 app.use(express.json()); 

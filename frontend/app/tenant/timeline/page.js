@@ -3,7 +3,6 @@ import { Typography, Grid } from '@mui/material';
 import Timeline from './timeline';
 import Navbar from '../navbar';
 
-
 export default function TenantTimeline() {
   return (
     <body style={{backgroundColor: "#F5F5F5"}}>

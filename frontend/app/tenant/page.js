@@ -5,6 +5,8 @@ import { Grid } from '@mui/material'
 import Options from './options'
 import Navbar from './navbar'
 
+
+
 export default function TenantOptions() {
   return (
     <main>

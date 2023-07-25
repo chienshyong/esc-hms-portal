@@ -25,7 +25,7 @@ async function loginUser(username, password, userType, callback) {
         if (isMatch) {
           // Passwords match, authentication successful
           console.log("%s login for %s successful", userType, username)
-          return callback(null, user);
+          return callback(null, {id: user.id, username: user.username});
         } else {
           // Passwords do not match
           return callback(new Error('Password does not match'));

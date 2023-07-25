@@ -2,7 +2,6 @@
   "name": "ticket-portal",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,9 +15,8 @@
     "@mui/material": "^5.14.1",
     "@mui/x-data-grid": "^6.10.0",
     "autoprefixer": "10.4.14",
-    "js-cookie": "^3.0.5",
     "next": "13.4.6",
-    "next-cookies": "^2.0.3",
+    "next-auth": "^4.22.3",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",

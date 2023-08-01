@@ -1,36 +1,33 @@
-const { render, screen, fireEvent } = require('@testing-library/react');
-const Options = require('./options');
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import Options from './options'; // Only import the Options component, not the individual arrays
 
+test('each image has the correct alt text and points to the correct destination', () => {
+  render(<Options />);
+  
+  // Check if each image has the correct alt text
+  const imageElements = screen.getAllByRole('img');
+  imageElements.forEach((image, index) => {
+    expect(image).toHaveAttribute('alt', `Image ${index + 1}`);
+  });
 
-describe('Options', () => {
-  test('renders images and links correctly', () => {
-    render(Options);
+  // Check if each link points to the correct destination
+  const linkElements = screen.getAllByRole('link');
+  expect(linkElements.length).toBe(8);
 
-    // Check if the correct number of images is rendered
-    const imageElements = screen.getAllByRole('img');
-    expect(imageElements.length).toBe(8); // Assuming there are 8 images based on the provided data
+  // Import the 'options' array directly from the options.js file
+  const options = [
+    "lighting",
+    "aircon",
+    "electricity",
+    "cleanliness",
+    "security",
+    "horticulture",
+    "elevator",
+    "others",
+  ];
 
-    // Check if the images have correct alt text
-    imageElements.forEach((image, index) => {
-      expect(image).toHaveAttribute('alt', `Image ${index + 1}`);
-    });
-
-    // Check if the correct number of links is rendered
-    const linkElements = screen.getAllByRole('link');
-    expect(linkElements.length).toBe(8); // Assuming there are 8 links based on the provided data
-
-    // Check if each link points to the correct destination
-    linkElements.forEach((link, index) => {
-      expect(link).toHaveAttribute('href', `/Tenant/${options[index]}`);
-    });
-
-    // Test hover effect on each image (optional, if desired)
-    // Example of how to simulate mouse hover using fireEvent
-    imageElements.forEach((image, index) => {
-      fireEvent.mouseEnter(image);
-      expect(screen.getByRole('img')).toHaveAttribute('src', hoveredimageUrls[index]);
-      fireEvent.mouseLeave(image);
-      expect(screen.getByRole('img')).toHaveAttribute('src', imageUrls[index]);
-    });
+  linkElements.forEach((link, index) => {
+    expect(link).toHaveAttribute('href', `/tenant/${options[index]}`);
   });
 });

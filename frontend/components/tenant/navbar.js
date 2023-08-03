@@ -1,6 +1,6 @@
 'use client'
 import { styled } from "@mui/material/styles";
-import { AccountBox, SpaceDashboardOutlined ,NoteAltOutlined,Menu } from "@mui/icons-material";
+import { AccountBox, SpaceDashboardOutlined, NoteAltOutlined, Logout, Menu } from "@mui/icons-material";
 
 import React from 'react';
 import {
@@ -57,7 +57,7 @@ export default function Navbar() {
               <ListItemText primary="Track Cases"/>  
             </ListItemButton>
             <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
-              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemIcon><Logout sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Log Out"/>  
             </ListItemButton>
           </List>
@@ -81,7 +81,7 @@ export default function Navbar() {
                 <ListItemText primary="Track Cases"/>  
               </ListItemButton>
               <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
-              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemIcon><Logout sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Log Out"/>  
             </ListItemButton>
             </List>

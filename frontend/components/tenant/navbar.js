@@ -47,7 +47,7 @@ export default function Navbar() {
             <ListItem style={{display:'flex', justifyContent:'center'}} divider>
               <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
             </ListItem>
-            <ListItemButton href="\tenant" divider>
+            <ListItemButton href="\tenant\serveoption" divider>
               <ListItemIcon><NoteAltOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="New Case"/>  
             </ListItemButton>
@@ -67,7 +67,7 @@ export default function Navbar() {
               <ListItem style={{display:'flex', justifyContent:'center'}} divider>
                 <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
               </ListItem>
-              <ListItemButton href="\tenant" divider>
+              <ListItemButton href="\tenant\serveoption" divider>
                 <ListItemIcon><NoteAltOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
                 <ListItemText primary="New Case"/>  
               </ListItemButton>

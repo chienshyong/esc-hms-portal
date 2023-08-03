@@ -1,6 +1,6 @@
 'use client'
-import { redirect } from 'next/navigation'
+import { rootauth } from './auth'
 
 export default function Home() {
-    redirect("/login")
+    rootauth()
 }

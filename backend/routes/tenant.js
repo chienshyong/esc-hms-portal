@@ -6,7 +6,7 @@ const upload = require('../models/upload-middleware');
 var router = express.Router();
 
 router.put('/link-email', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const email = req.body.email;
     authModel.linkEmail(tenantID, authModel.USERTYPE.TENANT, email, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -15,7 +15,7 @@ router.put('/link-email', (req, res) => {
 })
 
 router.get('/get-leases', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     leaseModel.getLeasesByTenant(tenantID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
         res.status(200).json(results); 
@@ -23,7 +23,7 @@ router.get('/get-leases', (req, res) => {
 });
 
 router.get('/get-svc-requests', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     svcModel.getSvcRequestByTenant(tenantID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
         res.status(200).json(results); 
@@ -31,7 +31,7 @@ router.get('/get-svc-requests', (req, res) => {
 });
 
 router.get('/get-svc-request-details', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const svcID = req.body.svcID;
     svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
         if(isAuth){
@@ -46,7 +46,7 @@ router.get('/get-svc-request-details', (req, res) => {
 });
 
 router.get('/get-svc-request-photo', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const svcID = req.body.svcID;
     svcModel.verifyMatchingLandlordAndSVC(tenantID, svcID, (isAuth) => {
         if(isAuth){
@@ -69,7 +69,7 @@ router.get('/get-svc-request-photo', (req, res) => {
 router.post('/create-svc-request-photo', upload.single('photo'), (req, res) => {
     console.log(req.file); //Log uploaded file data
     console.log("creating tenant svc req")
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const {leaseID, title, description} = req.body;
     svcModel.createSvcRequest(tenantID, leaseID, title, description, photoPath, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -80,7 +80,7 @@ router.post('/create-svc-request-photo', upload.single('photo'), (req, res) => {
 router.post('/create-svc-request', (req, res) => {
     console.log(req.file); //Log uploaded file data
     console.log("creating tenant svc req")
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const {leaseID, title, description} = req.body;
     svcModel.createSvcRequest(tenantID, leaseID, title, description, null, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -89,7 +89,7 @@ router.post('/create-svc-request', (req, res) => {
 });
 
 router.patch('/cancel-svc-request', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const svcID = req.body.svcID;
     svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
         if(isAuth){
@@ -104,7 +104,7 @@ router.patch('/cancel-svc-request', (req, res) => {
 });
 
 router.get('/get-svc-quotation', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const svcID = req.body.svcID;
     svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
         if(isAuth){
@@ -125,7 +125,7 @@ router.get('/get-svc-quotation', (req, res) => {
 });
 
 router.patch('/accept-svc-quotation', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const svcID = req.body.svcID;
     svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
         if(isAuth){
@@ -140,7 +140,7 @@ router.patch('/accept-svc-quotation', (req, res) => {
 });
 
 router.patch('/svc-feedback', (req, res) => {
-    const tenantID = req.session.user.id;
+    const tenantID = req.headers['id'];
     const {svcID, feedback} = req.body;
     svcModel.verifyMatchingTenantAndSVC(tenantID, svcID, (isAuth) => {
         if(isAuth){

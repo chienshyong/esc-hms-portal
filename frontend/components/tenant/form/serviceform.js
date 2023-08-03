@@ -23,7 +23,6 @@ export default function ServiceForm() {
   const [checkClear, setCheckClear] = useState(false)
   const [leases, setLeases] = useState(null)
   const [isLoading, setLoading] = useState(true)
-  console.log(session)
   
   const handleFilesChange = (newFiles) => {
     // Handle the updated files data in the parent component
@@ -55,8 +54,6 @@ export default function ServiceForm() {
       setLoading(false)
     })
   }, [])
-  
-  console.log(leases)
 
   // return(
     //     <form className={`flex flex-col justify-center items-center p-3`} onSubmit={handleSubmit}>
@@ -67,7 +64,7 @@ export default function ServiceForm() {
     // )
     return(
       <form className={`flex flex-col justify-center items-center p-3`} onSubmit={handleSubmit}>
-      <SelectLease></SelectLease>
+      <SelectLease leases={leases}></SelectLease>
       <DescriptionField description={description} ondescriptionChange={handleChangedescription}></DescriptionField>
       <SubmitButton></SubmitButton>
       </form>

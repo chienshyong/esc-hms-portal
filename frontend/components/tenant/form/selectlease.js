@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { TextField } from '@mui/material';
     
 export default function SelectLease({leases}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -12,7 +13,21 @@ export default function SelectLease({leases}) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    
+
+    let Leases = () => (
+      <>
+        {<p>No Leases Found.</p>}
+      </>
+    ); 
+    if (leases != []) {
+        let Leases = () => (
+            <>
+              {leases.map(lease => (
+                <MenuItem onClick={handleClose} key={lease.unitID} className='lease'>{station.tradeType}{station.unitID}</MenuItem>
+              ))}
+            </>
+          ); 
+    }
     return (
         <div>
         <Button
@@ -33,7 +48,7 @@ export default function SelectLease({leases}) {
             'aria-labelledby': 'basic-button',
         }}
         >
-        <MenuItem onClick={handleClose}>Placeholder</MenuItem>
+        <Leases/>
         </Menu>
         </div>
         );

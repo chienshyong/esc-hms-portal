@@ -14,6 +14,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { signOut } from "next-auth/react";
 
 const drawerWidth = 220;
 
@@ -55,6 +56,10 @@ export default function Navbar() {
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Track Cases"/>  
             </ListItemButton>
+            <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Log Out"/>  
+            </ListItemButton>
           </List>
         </StyledDrawer>
       ) : (
@@ -75,6 +80,10 @@ export default function Navbar() {
                 <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
                 <ListItemText primary="Track Cases"/>  
               </ListItemButton>
+              <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Log Out"/>  
+            </ListItemButton>
             </List>
           </Drawer>
         </div>

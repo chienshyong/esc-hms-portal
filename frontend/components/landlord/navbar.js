@@ -14,6 +14,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { signOut } from "next-auth/react"
 
 const drawerWidth = 220;
 
@@ -47,13 +48,21 @@ export default function Navbar() {
             <ListItem style={{display:'flex', justifyContent:'center'}} divider>
               <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
             </ListItem>
-            <ListItemButton href="\landlord" divider>
+            <ListItemButton href="\landlord\manageunits" divider>
               <ListItemIcon><ApartmentOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Manage Units"/>  
             </ListItemButton>
             <ListItemButton href="\landlord\trackcases" divider>
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Track Cases"/>  
+            </ListItemButton>
+            <ListItemButton href="\landlord\addunit" divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Add Unit"/>  
+            </ListItemButton>
+            <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Log Out"/>  
             </ListItemButton>
           </List>
         </StyledDrawer>
@@ -67,13 +76,21 @@ export default function Navbar() {
             <ListItem style={{display:'flex', justifyContent:'center'}} divider>
               <ListItemIcon><AccountBox sx= {{color:"#6C63FF",fontSize:"3.5rem", margin:"10px 0"}}/></ListItemIcon>   
             </ListItem>
-            <ListItemButton href="\landlord" divider>
+            <ListItemButton href="\landlord\manageunits" divider>
               <ListItemIcon><ApartmentOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Manage Units"/>  
             </ListItemButton>
             <ListItemButton href="\landlord\trackcases" divider>
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Track Cases"/>  
+            </ListItemButton>
+            <ListItemButton href="\landlord\addunit" divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Add Unit"/>  
+            </ListItemButton>
+            <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Log Out"/>  
             </ListItemButton>
           </List>
           </Drawer>

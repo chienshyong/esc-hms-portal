@@ -3,6 +3,10 @@ import React, {useState} from 'react';
 import { TextField, Button, Box, Typography,Grid, InputAdornment} from '@mui/material';
 
 import Navbar from '../navbar'
+import { getSession } from 'next-auth/react';
+
+const session = async () => {await getSession()}
+console.log(session)
 
 export default function UnitForm() {
     const [formData, setFormData] = useState({
@@ -17,16 +21,17 @@ export default function UnitForm() {
         tradeType:'',
       });
     
-      const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-      };
-    
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission here, e.g., send data to the server or perform other actions
-        console.log('Form Data:', formData);
-      };
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // Handle form submission here, e.g., send data to the server or perform other actions
+      console.log('Form Data:', formData);
+    };
+
 
     return (
     <main>

@@ -1,13 +1,12 @@
-@import 'typeface-inter';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 60, 60, 60;
   --background-start-rgb: 248, 248, 248;
   --background-end-rgb: 248, 248, 248;
-}
+} */
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -17,7 +16,7 @@
   }
 } */
 
-body {
+/* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -25,4 +24,4 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-}
+} */

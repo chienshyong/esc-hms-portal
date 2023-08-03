@@ -1,24 +1,26 @@
 "use client"
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { ThemeProvider} from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from '@/config/theme';
 import { SessionProvider } from "next-auth/react"
 
-const inter = Inter({ subsets: ['latin'] })
-
-// export const metadata = {
-//   title: 'HMS Portal',
-//   description: 'Created by Group C414',
-// }
-
-export default function RootLayout({ children, session }) {
-  
+export default function RootLayout({children, session}) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
+        <title>ESC Project 3</title>
+        <meta name="A service request platform" content="Made by group C414" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <body>        
         <SessionProvider session={session}>
-        {children}
+          {children}
         </SessionProvider>
-      </body>
+        </body>
+      </ThemeProvider>
     </html>
-  )
+  );
 }

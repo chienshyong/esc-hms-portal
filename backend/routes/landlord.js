@@ -6,7 +6,7 @@ const svcModel = require('../models/svc-model');
 const upload = require('../models/upload-middleware');
 var router = express.Router();
 
-router.put('/link-email', authModel.requireLandlordLogin, (req, res) => {
+router.put('/link-email', (req, res) => {
     const landlordID = req.session.user.id;
     const email = req.body.email;
     authModel.linkEmail(landlordID, authModel.USERTYPE.LANDLORD, email, (err, results) => {
@@ -15,7 +15,7 @@ router.put('/link-email', authModel.requireLandlordLogin, (req, res) => {
     });
 })
 
-router.post('/add-unit', authModel.requireLandlordLogin, (req, res) => {
+router.post('/add-unit', (req, res) => {
     const {address} = req.body;
     const landlordID = req.session.user.id;
     unitModel.addUnit(address, landlordID, (err, results) => {
@@ -25,7 +25,7 @@ router.post('/add-unit', authModel.requireLandlordLogin, (req, res) => {
 });
 
 //Returns all rows from UNIT table, including id, address and lease_id, that matches the logged in landlord.
-router.get('/get-units', authModel.requireLandlordLogin, (req, res) => {
+router.get('/get-units', (req, res) => {
     const landlordID = req.session.user.id;
     unitModel.getUnits(landlordID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -33,7 +33,7 @@ router.get('/get-units', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
-router.delete('/remove-unit', authModel.requireLandlordLogin, (req, res) => {
+router.delete('/remove-unit', (req, res) => {
     const unitID = req.body.id;
     unitModel.deleteUnit(unitID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -41,7 +41,7 @@ router.delete('/remove-unit', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
-router.post('/add-lease', authModel.requireLandlordLogin, (req, res) => {
+router.post('/add-lease', (req, res) => {
     const {tenantUsername, unitID, monthlyRental, commencementDate, expiryDate, areaInSq, tradeType} = req.body;
     leaseModel.addLease(tenantUsername, unitID, monthlyRental, commencementDate, expiryDate, areaInSq, tradeType, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -49,7 +49,7 @@ router.post('/add-lease', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
-router.get('/get-leases', authModel.requireLandlordLogin, (req, res) => {
+router.get('/get-leases', (req, res) => {
     const landlordID = req.session.user.id;
     leaseModel.getLeasesByLandlord(landlordID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -57,7 +57,7 @@ router.get('/get-leases', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
-router.delete('/delete-lease', authModel.requireLandlordLogin, (req, res) => {
+router.delete('/delete-lease', (req, res) => {
     const landlordID = req.session.user.id;
     const leaseID = req.body.id;
     leaseModel.deleteLease(landlordID, leaseID, (err, results) => {
@@ -66,7 +66,7 @@ router.delete('/delete-lease', authModel.requireLandlordLogin, (req, res) => {
     });
 })
 
-router.patch('/terminate-lease', authModel.requireLandlordLogin, (req, res) => {
+router.patch('/terminate-lease', (req, res) => {
     const landlordID = req.session.user.id;
     const leaseID = req.body.id;
     const terminationDate = req.body.terminationDate;
@@ -76,7 +76,7 @@ router.patch('/terminate-lease', authModel.requireLandlordLogin, (req, res) => {
     });
 })
 
-router.get('/get-svc-requests', authModel.requireLandlordLogin, (req, res) => {
+router.get('/get-svc-requests', (req, res) => {
     const landlordID = req.session.user.id;
     svcModel.getSvcRequestByLandlord(landlordID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -84,7 +84,7 @@ router.get('/get-svc-requests', authModel.requireLandlordLogin, (req, res) => {
     });
 });
 
-router.get('/get-svc-request-details', authModel.requireLandlordLogin, (req, res) => {
+router.get('/get-svc-request-details', (req, res) => {
     const landlordID = req.session.user.id;
     const svcID = req.body.svcID;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
@@ -99,7 +99,7 @@ router.get('/get-svc-request-details', authModel.requireLandlordLogin, (req, res
     });
 });
 
-router.get('/get-svc-request-photo', authModel.requireLandlordLogin, (req, res) => {
+router.get('/get-svc-request-photo', (req, res) => {
     const landlordID = req.session.user.id;
     const svcID = req.body.svcID;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
@@ -120,7 +120,7 @@ router.get('/get-svc-request-photo', authModel.requireLandlordLogin, (req, res) 
     });
 });
 
-router.patch('/accept-svc-request', authModel.requireLandlordLogin, (req, res) => {
+router.patch('/accept-svc-request', (req, res) => {
     const landlordID = req.session.user.id;
     const svcID = req.body.svcID;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
@@ -135,7 +135,7 @@ router.patch('/accept-svc-request', authModel.requireLandlordLogin, (req, res) =
     });
 });
 
-router.patch('/reject-svc-request', authModel.requireLandlordLogin, (req, res) => {
+router.patch('/reject-svc-request', (req, res) => {
     const landlordID = req.session.user.id;
     const svcID = req.body.svcID;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
@@ -150,7 +150,7 @@ router.patch('/reject-svc-request', authModel.requireLandlordLogin, (req, res) =
     });
 });
 
-router.patch('/complete-svc-request', authModel.requireLandlordLogin, (req, res) => {
+router.patch('/complete-svc-request', (req, res) => {
     const landlordID = req.session.user.id;
     const svcID = req.body.svcID;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
@@ -165,7 +165,7 @@ router.patch('/complete-svc-request', authModel.requireLandlordLogin, (req, res)
     });
 });
 
-router.patch('/svc-add-quotation', authModel.requireLandlordLogin, upload.single('file'), (req, res) => {
+router.patch('/svc-add-quotation', upload.single('file'), (req, res) => {
     console.log(req.file); //Log uploaded file data
     const landlordID = req.session.user.id;
     const filePath = req.file.path;

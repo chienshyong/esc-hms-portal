@@ -4,6 +4,7 @@ import { Typography,Grid,Button,Box,Link,IconButton } from '@mui/material'
 import SearchField from '../trackcases/search';
 import { Add,Edit, Delete } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
+import { getUnits } from './model';
 
 import Navbar from '../navbar'
 
@@ -11,6 +12,8 @@ import Navbar from '../navbar'
 // TO DO: If id is pressed, landlord can only view unit and lease infomration (user cannot interact with values)
 // TO DO: If pen icon is pressed, landlord can modify the information
 // TO DO: If bin icon is pressed, landlord deletes this unit (ought to prompt for confirmation)
+
+getUnits();
 
 const columns = [
     { field: 'id', headerName: 'Unit ID', width: 90, 

@@ -61,7 +61,6 @@ async function linkEmail(id, userType, email, callback) {
 
 //Middleware to only allow request if logged in as tenant
 const requireTenantLogin = (req, res, next) => {
-  console.log(req.session)
   if (req.session.user && req.session.userType === USERTYPE.TENANT) {
     next();
   } else {

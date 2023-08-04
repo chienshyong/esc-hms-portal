@@ -16,7 +16,7 @@ function logRequests(req, res, next) {
 app.use(logRequests);
 
 //Handle preflight requests
-app.use(cors({origin: true, credentials: true}));
+app.use(cors({origin: true, credentials: true, exposedHeaders: ['Set-Cookie']}));
 
 //Middleware to parse JSON
 app.use(express.json()); 

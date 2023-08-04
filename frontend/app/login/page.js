@@ -3,12 +3,9 @@ import React, { useState } from 'react';
 import { Grid,Box,TextField,Typography,Button,ToggleButton,ToggleButtonGroup,Hidden } from '@mui/material'
 import Image from 'next/image'
 import house from '../../public/house.svg'
-import { signIn } from 'next-auth/react';
-import { loginauth } from '../auth';
-
+import { handleLogin } from '../auth';
 
 export default function Login(){
-    loginauth()
     const [userdata, setUserdata] = useState({role:"tenant", username: "", password: ""});
 
     return(
@@ -67,15 +64,7 @@ export default function Login(){
 
                     <Button 
                     onClick={async () => {
-                        console.log(userdata)
-                        const user = await signIn("credentials", {
-                            role: userdata.role,
-                            username: userdata.username,
-                            password: userdata.password,
-                            redirect: true,
-                            callbackUrl: "/"
-                        })
-
+                        handleLogin(userdata.role,userdata.username,userdata.password)
                     } }
                     variant="contained" 
                     style={{borderRadius: 15,

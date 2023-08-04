@@ -6,14 +6,14 @@ export default function LeaseField({formData,handleInputChange}) {
           <TextField
             name="tenantUsername"
             label="Tenant Username"
-            value={formData.tenantId}
+            value={formData.tenantUsername}
             onChange={handleInputChange}
             required
           />
           <TextField
-            name="unitId"
+            name="unitID"
             label="Unit ID"
-            value={formData.unitId}
+            value={formData.unitID}
             onChange={handleInputChange}
             required
           />

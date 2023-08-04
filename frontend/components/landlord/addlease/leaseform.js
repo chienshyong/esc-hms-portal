@@ -7,7 +7,7 @@ import { getSession } from 'next-auth/react';
 export default function LeaseForm() {
   const [formData, setFormData] = useState({
     tenantUsername: '',
-    unitId: '',
+    unitID: '',
     monthlyRent: '',
     commencementDate: '',
     terminationDate: '',
@@ -40,12 +40,14 @@ export default function LeaseForm() {
       }
       console.log(requestOptions)
       const response = await fetch(`${process.env.api}/landlord/add-lease`, requestOptions)
+      const data = await response.json()
       if (response.status == 200) {
         alert("Lease Added Successfully!")
-              } else {
-                alert("Failed to add Lease")
-              }
-            }}></SubmitButton>
+      } else {
+        alert("Failed to add Lease")
+        console.log(data)
+      }
+      }}></SubmitButton>
         </form>
     </section>
   )

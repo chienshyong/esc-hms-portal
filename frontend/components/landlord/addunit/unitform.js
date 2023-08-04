@@ -10,14 +10,6 @@ export default function UnitForm() {
   })
   const [formData, setFormData] = useState({
     address:'',
-    tenantUsername: '',
-    unitId: '',
-    monthlyRent: '',
-    commencementDate: '',
-    terminationDate: '',
-    expiryDate: '',
-    areaInSq:'',
-    tradeType:'',
   });
   
   const handleInputChange = (e) => {
@@ -42,6 +34,11 @@ export default function UnitForm() {
               body: {address: formData.address}
             }
               const response = await fetch(`${process.env.api}/landlord/add-unit`, requestOptions)
+              if (response.status == 200) {
+                alert("Unit Added Successfully!")
+              } else {
+                alert("Failed to add Unit")
+              }
             }}></SubmitButton>
         </form>
     </section>

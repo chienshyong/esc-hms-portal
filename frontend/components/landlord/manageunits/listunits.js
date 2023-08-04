@@ -3,6 +3,8 @@ import { IconButton } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import Link from 'next/link';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 // TO DO: Add in the data here
 // TO DO: If id is pressed, landlord can only view unit and lease infomration (user cannot interact with values)

@@ -29,10 +29,11 @@ export default function UnitForm() {
     <UnitField formData={formData} handleInputChange={handleInputChange}></UnitField>
     <SubmitButton onClick={async () =>{
               const requestOptions = {
-              method: "GET",
+              method: "POST",
               headers: { 'Content-Type': 'application/json', "id": session.user.id },
-              body: {address: formData.address}
-            }
+              body: JSON.stringify(formData)
+              }
+              console.log(requestOptions)
               const response = await fetch(`${process.env.api}/landlord/add-unit`, requestOptions)
               if (response.status == 200) {
                 alert("Unit Added Successfully!")

@@ -60,6 +60,10 @@ export default function Navbar() {
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Add Unit"/>  
             </ListItemButton>
+            <ListItemButton href="\landlord\addlease" divider>
+            <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+            <ListItemText primary="Add Lease"/>  
+          </ListItemButton>
             <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
               <ListItemIcon><Logout sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Log Out"/>  
@@ -87,6 +91,10 @@ export default function Navbar() {
             <ListItemButton href="\landlord\addunit" divider>
               <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Add Unit"/>  
+            </ListItemButton>
+            <ListItemButton href="\landlord\addlease" divider>
+              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemText primary="Add Lease"/>  
             </ListItemButton>
             <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
               <ListItemIcon><Logout sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   

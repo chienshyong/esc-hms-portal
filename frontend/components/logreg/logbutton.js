@@ -12,6 +12,6 @@ export default function LogButton({role, username, password, label}){
                 callbackUrl: "/"
             })
         }}
-        variant="contained" className="mt-6 w-32" type="submit">{label}</Button>
+        variant="contained" className="mt-6 mb-6 w-32n bg-blue-500  hover:bg-blue-700" type="submit">{label}</Button>
     )
 }

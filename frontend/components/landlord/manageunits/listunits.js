@@ -10,6 +10,23 @@ import Link from 'next/link';
 // TO DO: If bin icon is pressed, landlord deletes this unit (ought to prompt for confirmation)
 
 export default function ListUnits() {
+  const [units, setUnits] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+  const { data: session, status } = useSession({
+    required: true,
+  })
+    const requestOptions = {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json', "id": session.user.id }
+  }
+  useEffect(() => {
+    fetch(`${process.env.api}/landlord/get-units`, requestOptions)
+    .then((res) => res.json())
+    .then((data) => {
+      setUnits(data)
+      setLoading(false)
+    })
+  }, [])
     const columns = [
         { field: 'id', headerName: 'Unit ID', width: 90, 
         renderCell: (params) => (

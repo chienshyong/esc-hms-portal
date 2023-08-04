@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import SubmitButton from '../../shared/submitbutton';
 import UploadImage from './uploadimage';
-import { useSession, getSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import SelectLease from './selectlease';
 import dynamic from 'next/dynamic';
 
@@ -11,13 +11,6 @@ const DescriptionField = dynamic(() => import('./descriptionfield'), {
 });
 
 export default function ServiceForm() {
-  const { data: session, status } = useSession({
-    required: true,
-  })
-    const requestOptions = {
-    method: "GET",
-    headers: { 'Content-Type': 'application/json', "id": session.user.id }
-  }
   const [description, setdescription] = useState("")
   const [acceptedFiles,setAcceptedFiles] = useState([])
   const [checkClear, setCheckClear] = useState(false)
@@ -46,7 +39,12 @@ export default function ServiceForm() {
     setCheckClear(true)
   };
   
-  useEffect(() => {
+  useEffect(async () => {
+    const session = await getSession()
+      const requestOptions = {
+      method: "GET",
+      headers: { 'Content-Type': 'application/json', "id": session.user.id }
+    }
     fetch(`${process.env.api}/tenant/get-leases`, requestOptions)
     .then((res) => res.json())
     .then((data) => {

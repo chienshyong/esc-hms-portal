@@ -34,7 +34,7 @@ router.get('/get-units', (req, res) => {
 });
 
 router.delete('/remove-unit', (req, res) => {
-    const unitID = req.headers['id'];
+    const unitID = req.body.id;
     unitModel.deleteUnit(unitID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
         res.status(200).json(results); 
@@ -59,7 +59,7 @@ router.get('/get-leases', (req, res) => {
 
 router.delete('/delete-lease', (req, res) => {
     const landlordID = req.headers['id'];
-    const leaseID = req.headers['id'];
+    const leaseID = req.body.id;
     leaseModel.deleteLease(landlordID, leaseID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
         res.status(200).json(results); 
@@ -68,7 +68,7 @@ router.delete('/delete-lease', (req, res) => {
 
 router.patch('/terminate-lease', (req, res) => {
     const landlordID = req.headers['id'];
-    const leaseID = req.headers['id'];
+    const leaseID = req.body.id;
     const terminationDate = req.body.terminationDate;
     leaseModel.terminateLease(landlordID, leaseID, terminationDate, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
@@ -86,7 +86,7 @@ router.get('/get-svc-requests', (req, res) => {
 
 router.get('/get-svc-request-details', (req, res) => {
     const landlordID = req.headers['id'];
-    const svcID = req.body.svcID;
+    const svcID = req.body.id;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
         if(isAuth){
             svcModel.getSvcRequestDetails(svcID, (err, results) => {
@@ -101,7 +101,7 @@ router.get('/get-svc-request-details', (req, res) => {
 
 router.get('/get-svc-request-photo', (req, res) => {
     const landlordID = req.headers['id'];
-    const svcID = req.body.svcID;
+    const svcID = req.body.id;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
         if(isAuth){
             svcModel.getPhotoPathFromSvcID(svcID, (err, path) => {
@@ -122,7 +122,7 @@ router.get('/get-svc-request-photo', (req, res) => {
 
 router.patch('/accept-svc-request', (req, res) => {
     const landlordID = req.headers['id'];
-    const svcID = req.body.svcID;
+    const svcID = req.body.id;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
         if(isAuth){
             svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.ACCEPTED, (err, results) => {
@@ -137,7 +137,7 @@ router.patch('/accept-svc-request', (req, res) => {
 
 router.patch('/reject-svc-request', (req, res) => {
     const landlordID = req.headers['id'];
-    const svcID = req.body.svcID;
+    const svcID = req.body.id;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
         if(isAuth){
             svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.REJECTED, (err, results) => {
@@ -152,7 +152,7 @@ router.patch('/reject-svc-request', (req, res) => {
 
 router.patch('/complete-svc-request', (req, res) => {
     const landlordID = req.headers['id'];
-    const svcID = req.body.svcID;
+    const svcID = req.body.id;
     svcModel.verifyMatchingLandlordAndSVC(landlordID, svcID, (isAuth) => {
         if(isAuth){
             svcModel.changeSvcRequestStatus(svcID, svcModel.STATUS.COMPLETED, (err, results) => {
@@ -169,7 +169,7 @@ router.patch('/svc-add-quotation', upload.single('file'), (req, res) => {
     console.log(req.file); //Log uploaded file data
     const landlordID = req.headers['id'];
     const filePath = req.file.path;
-    const svcID = req.body.svcID;
+    const svcID = req.body.id;
     const quotationAmount = req.body.quotationAmount;
     if(filePath == null || svcID == null || quotationAmount == null){
         return res.status(400).json({ message: 'Missing fields' });

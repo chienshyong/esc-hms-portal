@@ -3,8 +3,8 @@ import { IconButton } from '@mui/material'
 import { Edit, Delete } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import Link from 'next/link';
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { getSession } from 'next-auth/react';
 
 // TO DO: Add in the data here
 // TO DO: If id is pressed, landlord can only view unit and lease infomration (user cannot interact with values)
@@ -14,14 +14,13 @@ import { useSession } from 'next-auth/react';
 export default function ListUnits() {
   const [units, setUnits] = useState(null)
   const [isLoading, setLoading] = useState(true)
-  const { data: session, status } = useSession({
-    required: true,
-  })
+  useEffect(async () => {
+    const session = await getSession()
+    console.log(session)
     const requestOptions = {
     method: "GET",
     headers: { 'Content-Type': 'application/json', "id": session.user.id }
-  }
-  useEffect(() => {
+    }
     fetch(`${process.env.api}/landlord/get-units`, requestOptions)
     .then((res) => res.json())
     .then((data) => {
@@ -66,6 +65,7 @@ export default function ListUnits() {
           },
     ]
     
+    console.log(units)
     
     const rows = [
         {

@@ -2,12 +2,9 @@
 import React, {useState} from 'react';
 import UnitField from './unitfields';
 import SubmitButton from '@/components/shared/submitbutton';
-import { useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 export default function UnitForm() {
-  const { data: session, status } = useSession({
-    required: true,
-  })
   const [formData, setFormData] = useState({
     address:'',
   });
@@ -28,6 +25,7 @@ export default function UnitForm() {
     <form onSubmit={handleSubmit} className='flex flex-col'>
     <UnitField formData={formData} handleInputChange={handleInputChange}></UnitField>
     <SubmitButton onClick={async () =>{
+              const session = await getSession()
               const requestOptions = {
               method: "POST",
               headers: { 'Content-Type': 'application/json', "id": session.user.id },

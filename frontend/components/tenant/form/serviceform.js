@@ -39,18 +39,17 @@ export default function ServiceForm() {
     setCheckClear(true)
   };
   
-  useEffect(async () => {
+  useEffect(() => { (async () => {    
     const session = await getSession()
-      const requestOptions = {
-      method: "GET",
-      headers: { 'Content-Type': 'application/json', "id": session.user.id }
-    }
-    fetch(`${process.env.api}/tenant/get-leases`, requestOptions)
-    .then((res) => res.json())
-    .then((data) => {
-      setLeases(data)
-      setLoading(false)
-    })
+    const requestOptions = {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json', "id": session.user.id }
+  }
+  const res = await fetch(`${process.env.api}/tenant/get-leases`, requestOptions)
+  const data = await res.json
+  setLeases(data)
+  setLoading(false)
+  })()
   }, [])
 
   // return(

@@ -12,21 +12,20 @@ import { getSession } from 'next-auth/react';
 // TO DO: If bin icon is pressed, landlord deletes this unit (ought to prompt for confirmation)
 
 export default function ListUnits() {
-  const [units, setUnits] = useState(null)
+  const [units, setUnits] = useState({})
   const [isLoading, setLoading] = useState(true)
-  useEffect(async () => {
+  useEffect(() => { (async () => {    
     const session = await getSession()
     console.log(session)
     const requestOptions = {
     method: "GET",
     headers: { 'Content-Type': 'application/json', "id": session.user.id }
     }
-    fetch(`${process.env.api}/landlord/get-units`, requestOptions)
-    .then((res) => res.json())
-    .then((data) => {
-      setUnits(data)
-      setLoading(false)
-    })
+    const res = await fetch(`${process.env.api}/landlord/get-units`, requestOptions)
+    const data = await res.json()
+    setUnits(data)
+    setLoading(false)
+  })()
   }, [])
     const columns = [
         { field: 'id', headerName: 'Unit ID', width: 90, 
@@ -36,7 +35,7 @@ export default function ListUnits() {
           </Link>)
         },
         { field: 'address', headerName: 'Address', width: 250 },
-        { field: 'leadID', headerName: 'Lease ID', width: 90 },
+        { field: 'lease_id', headerName: 'Lease ID', width: 90 },
         {
             field: 'actions',
             headerName: 'Actions',
@@ -66,15 +65,7 @@ export default function ListUnits() {
     ]
     
     console.log(units)
-    
-    const rows = [
-        {
-          id: 1,
-          address: '123 Main St',
-          leadID:'12345',
-        },
-       
-      ];
+    const rows = units
 
     const handleEdit = (id) => {
         // Implement your edit logic here based on the row id

@@ -8,9 +8,8 @@ export default function LeaseForm() {
   const [formData, setFormData] = useState({
     tenantUsername: '',
     unitID: '',
-    monthlyRent: '',
+    monthlyRental: '',
     commencementDate: '',
-    terminationDate: '',
     expiryDate: '',
     areaInSq:'',
     tradeType:'',

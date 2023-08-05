@@ -46,7 +46,7 @@ export default function ServiceForm() {
     headers: { 'Content-Type': 'application/json', "id": session.user.id }
   }
   const res = await fetch(`${process.env.api}/tenant/get-leases`, requestOptions)
-  const data = await res.json
+  const data = await res.json()
   setLeases(data)
   setLoading(false)
   })()

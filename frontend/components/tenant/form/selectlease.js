@@ -12,21 +12,15 @@ export default function SelectLease({leases}) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
+  
     let Leases = () => (
-      <>
-        {<p>No Leases Found.</p>}
-      </>
-    ); 
-    if (leases != []) {
-        let Leases = () => (
-            <>
-              {leases.map(lease => (
-                <MenuItem onClick={handleClose} key={lease.unitID} className='lease'>{station.tradeType}{station.unitID}</MenuItem>
-              ))}
-            </>
-          ); 
-    }
+        <>
+          {leases.map(lease => (
+            <MenuItem onClick={handleClose} key={lease.unitID} className='lease'>{lease.tradeType} {lease.unitID}</MenuItem>
+          ))}
+        </>
+      );
+       
     return (
         <div>
         <Button

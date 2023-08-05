@@ -18,7 +18,7 @@ async function getUnits(landlordID, callback) {
         const nullError = new Error('Error: Landlord field empty');
         return callback(nullError);
     }
-    const query = 'SELECT unit.id, unit.address, lease.id FROM unit LEFT JOIN lease ON unit.id=lease.unit_id WHERE landlord_id = ?';
+    const query = 'SELECT unit.id, unit.address, lease.id AS "lease_id" FROM unit LEFT JOIN lease ON unit.id=lease.unit_id WHERE landlord_id = ?';
     connection.query(query, [landlordID], (error, results) => {
         if (error) return callback(error);
         console.log("getUnits successful, %i records fetched", results.length);

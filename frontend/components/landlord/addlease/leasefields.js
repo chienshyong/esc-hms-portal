@@ -18,9 +18,9 @@ export default function LeaseField({formData,handleInputChange}) {
             required
           />
           <TextField
-            name="monthlyRent"
+            name="monthlyRental"
             label="Monthly Rent"
-            value={formData.monthlyRent}
+            value={formData.monthlyRental}
             onChange={handleInputChange}
             InputProps={{
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -38,17 +38,6 @@ export default function LeaseField({formData,handleInputChange}) {
               shrink: true,
             }}
           />
-          <TextField
-            name="terminationDate"
-            label="Termination Date"
-            type="date"
-            value={formData.terminationDate}
-            onChange={handleInputChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-         />
         <TextField
           name="expiryDate"
           label="Expiry Date"

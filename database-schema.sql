@@ -29,7 +29,6 @@ CREATE TABLE lease (
   FOREIGN KEY (unit_id) REFERENCES unit (id),
   monthly_rental FLOAT(24),
   commencement_date DATE,
-  termination_date DATE,
   expiry_date DATE,
   area_in_sq FLOAT(24),
   trade_type VARCHAR(50)

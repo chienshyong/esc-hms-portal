@@ -3,9 +3,7 @@ import React,{useRef} from 'react';
 import { ArrowDropDown } from '@mui/icons-material';
 import { Button,ButtonGroup,ClickAwayListener,Grow,Paper,Popper,MenuItem,MenuList } from '@mui/material';
 
-export default function GroupByButton({options,selectedIndex,handleMenuItemClick, open,handleToggle, handleClose}) {
-  const anchorRef = useRef(null);
-
+export default function GroupByButton({options,selectedIndex,handleMenuItemClick, open,handleToggle, handleClose,anchorRef}) {
   return (
     <React.Fragment>
       <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" size="small" sx={{ boxShadow: 'none' }}>

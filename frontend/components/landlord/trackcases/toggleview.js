@@ -281,6 +281,7 @@ export default function ToggleView() {
     const options = ['status','category','tenant'];
 
     const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const anchorRef = React.useRef(null);
 
     const handleMenuItemClick = (event, index) => {
       setSelectedIndex(index);
@@ -332,7 +333,7 @@ export default function ToggleView() {
                 {view === 'dashboard' ? null : <CloseCaseSwitch checked={checked} handleChange={handleChange}></CloseCaseSwitch>}
             </div>
             <div>
-                {view === 'dashboard' ? <DashboardView data={data} option={options[selectedIndex]}/> : checked === false ? <ListView columns={columns} rows={rows}/> : <TicketSelection closecasecolumns={closecasecolumns} closecaserows={closecaserows} selectedIds={selectedIds} handleCloseTicket={handleCloseTicket} handleSelectionModelChange={handleSelectionModelChange}></TicketSelection>}
+                {view === 'dashboard' ? <DashboardView data={data} option={options[selectedIndex]}/> : checked === false ? <ListView columns={columns} rows={rows}/> : <TicketSelection closecasecolumns={closecasecolumns} closecaserows={closecaserows} selectedIds={selectedIds} handleCloseTicket={handleCloseTicket} handleSelectionModelChange={handleSelectionModelChange} anchorRef={anchorRef}></TicketSelection>}
             </div>
         </section>
     )

@@ -23,7 +23,7 @@ export default function Box({id,name,timeupload,tag,phonenumber,email,leaseid}) 
     };
 
     return(
-        <Link  href={`/tenant/timeline/${id}`} className="h-56 w-64 m-2 bg-white rounded-md hover:bg-gray-300 no-underline text-black">
+        <Link  href={`/landlord/timeline/${id}`} className="h-56 w-64 m-2 bg-white rounded-md hover:bg-gray-300 no-underline text-black">
             <section className="flex items-center justify-between m-3 mb-1">
                 <div className='flex items-center gap-1'>
                     <div className="rounded-full bg-indigo-400 h-12 w-12 flex items-center justify-center text-white font-bold text-md">

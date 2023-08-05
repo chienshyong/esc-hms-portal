@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react';
 import SubmitButton from '../../shared/submitbutton';
 import UploadImage from './uploadimage';
 import { getSession } from 'next-auth/react';
-import SelectLease from './selectlease';
 import dynamic from 'next/dynamic';
+import { Button, MenuItem, Menu } from '@mui/material';
 
 const DescriptionField = dynamic(() => import('./descriptionfield'), {
   ssr: false
@@ -12,10 +12,13 @@ const DescriptionField = dynamic(() => import('./descriptionfield'), {
 
 export default function ServiceForm() {
   const [description, setdescription] = useState("")
-  const [acceptedFiles,setAcceptedFiles] = useState([])
+  const [acceptedFiles, setAcceptedFiles] = useState([])
   const [checkClear, setCheckClear] = useState(false)
   const [leases, setLeases] = useState(null)
   const [isLoading, setLoading] = useState(true)
+  const [leaseMenu, setLeaseMenu] = useState(null)
+  const [activeLease, setActiveLease] = useState(null)
+  const [activeName, setActiveName] = useState("Select Lease")
   
   const handleFilesChange = (newFiles) => {
     // Handle the updated files data in the parent component
@@ -30,6 +33,19 @@ export default function ServiceForm() {
     setCheckClear(false);
   };
   
+  const open = Boolean(leaseMenu);
+  const handleMenuClick = (e) => {
+      setLeaseMenu(e.currentTarget);
+  };
+  const handleMenuClose = () => {
+      setLeaseMenu(null)
+  };
+  const handleActiveLease = (e) => {
+      setActiveLease(e.target.value)
+      setActiveName(leases[e.target.value].address)
+      handleMenuClose()
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log('Submitting service form...')
@@ -52,6 +68,13 @@ export default function ServiceForm() {
   })()
   }, [])
 
+  const Leases = () => (
+    <>
+      {leases.map(lease => (
+        <MenuItem onClick={handleActiveLease} key={lease.unit_id} className='lease'>{lease.address}</MenuItem>
+      ))}
+    </>
+  );
   // return(
     //     <form className={`flex flex-col justify-center items-center p-3`} onSubmit={handleSubmit}>
     //         <DescriptionField description={description} ondescriptionChange={handleChangedescription}></DescriptionField>
@@ -59,9 +82,26 @@ export default function ServiceForm() {
     //         <SubmitButton></SubmitButton>
     //     </form>
     // )
-    return(
+    return (
       <form className={`flex flex-col justify-center items-center p-3`} onSubmit={handleSubmit}>
-      <SelectLease leases={leases}></SelectLease>
+      <Button
+      id="basic-button"
+      aria-controls={open ? 'basic-menu' : undefined}
+      aria-haspopup="true"
+      aria-expanded={open ? 'true' : undefined}
+      onClick={handleMenuClick}>
+      {activeName}
+      </Button>
+      <Menu
+      id="basic-menu"
+        anchorEl={leaseMenu}
+        open={open}
+        onClose={handleMenuClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+      }}>
+      <Leases/>
+      </Menu>
       <DescriptionField description={description} ondescriptionChange={handleChangedescription}></DescriptionField>
       <SubmitButton></SubmitButton>
       </form>

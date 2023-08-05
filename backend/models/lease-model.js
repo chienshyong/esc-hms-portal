@@ -20,7 +20,7 @@ async function addLease(tenantUsername, unitID, monthlyRental, commencementDate,
 }
 
 async function getLeasesByTenant(tenantID, callback) {
-    const query = 'SELECT * FROM lease WHERE tenant_id = ?';
+    const query = 'SELECT unit.id, unit.address, lease.id AS "lease_id" FROM lease INNER JOIN unit ON lease.unit_id=unit.id WHERE tenant_id = ?';
     connection.query(query, [tenantID], (err, results) => {
         if (err) return callback(err);
         return callback(null, results);

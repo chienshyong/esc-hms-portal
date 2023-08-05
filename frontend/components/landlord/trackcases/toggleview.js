@@ -3,11 +3,12 @@ import React,{useState} from "react";
 import ToggleViewButton from "./toggleviewbutton"
 import DashboardView from "./dashboard/dashboardview";
 import GroupByButton from "./dashboard/groupby";
-import ListView from "./listview";
+import ListView from "./listview/listview";
+import CloseCaseSwitch from "./listview/closecase/closeticketswitch";
+import TicketSelection from "./listview/closecase/closetickets";
 import Link from "next/link";
 
-// Listview: Hardcoded example
-
+// Listview: Hardcoded example (fecth all)
 const columns = [
   { field: 'id', headerName: 'ID', width: 130, 
   renderCell: (params) => (
@@ -50,9 +51,52 @@ const rows = [
   { id: "SR00002", name:"Johnathan Tan", timeOfRequest: '22/12/2022  12:02:00 PM', requestType: 'Cleanliness', quotationRequired: 'N', quotationAmount:0,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
 ];
 
+// TicketSelection: Hardcoded example (fecth tickets that under "Submitted by Tenant" -> changes status to "Completed by Landlord"
+// in the database once close case button is pressed
+const closecasecolumns = [
+  { field: 'id', headerName: 'ID', width: 130, 
+  renderCell: (params) => (
+    // TO DO: Link the id of the link here
+    <Link href={`/landlord/timeline/${params.value}`}>
+      {params.value}
+    </Link>
+
+  ), },
+  { field: 'name', headerName: 'Name', width: 130 },
+  { field: 'timeOfRequest', headerName: 'Time of Request', width: 130 },
+  {
+    field: 'requestType',
+    headerName: 'Request Type',
+    width: 130
+  },
+  {
+    field: 'quotationRequired',
+    headerName: 'Quotation Required',
+    width: 150
+  },
+  {
+    field: 'quotationAmount',
+    headerName: 'Quotation Amount',
+    type: 'number',
+    width: 130,
+  },
+  {
+    field: 'quotationUploadedBy',
+    headerName: 'Quotation Uploaded By',
+    width: 180,
+  },
+  { field: 'completedTime', headerName: 'Completed Time', width: 130 },
+  { field: 'status', headerName: 'Status', width: 130 },
+  { field: 'feedbackRating', headerName: 'Feedback Rating', type: 'number', width: 130, },
+];
+
+const closecaserows = [
+    { id: "SR00001", name:"Johnathan Tan", timeOfRequest: '20/12/2022  12:02:00 PM', requestType: 'Electricity', quotationRequired: 'Y', quotationAmount:500,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
+    { id: "SR00002", name:"Johnathan Tan", timeOfRequest: '22/12/2022  12:02:00 PM', requestType: 'Cleanliness', quotationRequired: 'N', quotationAmount:0,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
+  ];
+
 
 // Dashboard view: this is hardcoded, but it is meant to be grouped either by status, category or tenant
-
 // Example grouped by category
 // const data = [
 //     {
@@ -222,6 +266,8 @@ const data = [
   ];
 
 export default function ToggleView() {
+
+    // Toggle View between Dashboard and List
     const [view, setView] = useState('dashboard');
 
     const handleViewChange = (event) => {
@@ -231,6 +277,7 @@ export default function ToggleView() {
         }
     }
 
+    // Select Options under Dashboard
     const options = ['status','category','tenant'];
 
     const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -254,6 +301,27 @@ export default function ToggleView() {
       setOpen(false);
     };
 
+    // Close Ticket Switch
+    const [checked, setChecked] = useState(false);
+
+    const handleChange = (event) => {
+      setChecked(event.target.checked);
+    };
+
+    // Handle Ticket Closes to backend
+    const [selectedIds, setSelectedIds] = useState([]);
+
+    const handleSelectionModelChange = (selectionModel) => {
+      setSelectedIds(selectionModel);
+    };
+
+    const handleCloseTicket = (event) => {
+        event.preventDefault()
+        console.log('Closing service tickets...')
+        console.log("Cases Selected: ", selectedIds)
+        setSelectedIds([]); // unselect checkboxes after submission
+      };
+
     return(
         <section>
             <div className="flex flex-col gap-2 w-36 lg:flex-row lg:w-11/12 lg:justify-between">
@@ -261,7 +329,10 @@ export default function ToggleView() {
                 {view === 'dashboard' ? <GroupByButton options={options} selectedIndex={selectedIndex} handleMenuItemClick={handleMenuItemClick} open={open} handleToggle={handleToggle} handleClose={handleClose}/ > : null}
             </div>
             <div>
-                {view === 'dashboard' ? <DashboardView data={data} option={options[selectedIndex]}/> : <ListView columns={columns} rows={rows}/>}
+                {view === 'dashboard' ? null : <CloseCaseSwitch checked={checked} handleChange={handleChange}></CloseCaseSwitch>}
+            </div>
+            <div>
+                {view === 'dashboard' ? <DashboardView data={data} option={options[selectedIndex]}/> : checked === false ? <ListView columns={columns} rows={rows}/> : <TicketSelection closecasecolumns={closecasecolumns} closecaserows={closecaserows} selectedIds={selectedIds} handleCloseTicket={handleCloseTicket} handleSelectionModelChange={handleSelectionModelChange}></TicketSelection>}
             </div>
         </section>
     )

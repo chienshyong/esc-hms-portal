@@ -15,21 +15,24 @@ import Rating from '@mui/material/Rating';
 
 
 
-// The below code is to open the file/quotation uploaded (can be incorported into a seperate file if needed later):
+// The below code is to open the file uploaded:
 
-export function FileView({ fileName }) {
-    const handleViewFile = () => {
-      // Need to replace the fileURL with the actual URL later
+// Right now, this opens to the options.js page:
+
+export function FileUpload({ fileName }) {
+    const handleUploadFile = () => {
+      // Need to replace this code with the code to upload the screenshot 
       // For now, assume fileName and URL are same
       const fileURL = fileName;
+      // this currently leads to the options.js page
       window.open(fileURL);
     };
   
     return (
       <Box display="flex" alignItems="center" gap={10}>
         <span style={{ fontSize: '12px' }}>{fileName}</span>
-        <Button variant="contained" onClick={handleViewFile}>
-          View
+        <Button variant="contained" onClick={handleUploadFile}>
+          Upload
         </Button>
       </Box>
     );
@@ -43,6 +46,8 @@ export function FileView({ fileName }) {
     const [isCheckedReject, setIsCheckedReject] = React.useState(false);
     const [rating, setRating] = React.useState(0);
 
+
+    // For the Accept / Reject quotation checkbox in Step 2:
 
     const handleCheckboxChange = (event) => {
         const { name, checked } = event.target;
@@ -64,10 +69,12 @@ export function FileView({ fileName }) {
                         <Typography variant="body1"> INSTRUCTIONS :</Typography>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' , marginLeft: '20px'}}>
-                        <Typography variant="body2"> The standard Lorem Ipsum passage, used since the 1500s
-                                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-                                                    Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-                                                    "Sed ut perspiciatis unde" 
+                      {/* Hardcoded instruction for accepting quotation . Can be changed if needed: */}
+                        <Typography variant="body2"> The quotation provided is valid for 30 days.
+                                                     
+                                                     Preferred mode of payment : PayLah/PayNow & bank account transfer
+                                                    
+                                                     Tenant to ensure the necessary access to property for the full duration of the requested service.
                         </Typography>
                     </div>
                 </React.Fragment>
@@ -86,6 +93,9 @@ export function FileView({ fileName }) {
                             noValidate
                             autoComplete="off"
                         >
+
+                          {/* Add code to save the comments to database */}
+
                         <TextField
                             id="outlined-comments-input"
                             label="Type your comments"
@@ -100,7 +110,7 @@ export function FileView({ fileName }) {
         }
       }
 
-  
+  // For the feedback rating in the last step:
 
   const handleRatingChange = (event, newRating) => {
     setRating(newRating);
@@ -109,7 +119,7 @@ export function FileView({ fileName }) {
     const steps = [
         {
           label: 'REQUEST CREATED',
-          description: '20/12/2022 12:02:00 PM', // Can change this to represent actual date and time 
+          description: '20/12/2022 12:02:00 PM', // Change this to retrieve actual data and time
           content: (
             <React.Fragment>
               <div style={{ display: 'flex' , marginTop: '30px' , marginLeft: '20px'}}>
@@ -119,6 +129,7 @@ export function FileView({ fileName }) {
                   noValidate
                   autoComplete="off"
                 >
+                  {/* Add code to retrive from database */}
                   <TextField
                     id="outlined-name-input"
                     label="Name"
@@ -133,6 +144,7 @@ export function FileView({ fileName }) {
                   noValidate
                   autoComplete="off"
                 >
+                  {/* Add code to retrive from database */}
                   <TextField
                     id="outlined-email-input"
                     label="Email"
@@ -149,6 +161,7 @@ export function FileView({ fileName }) {
                   noValidate
                   autoComplete="off"
                 >
+                  {/* Add code to retrive from database */}
                   <TextField
                     id="outlined-number-input"
                     label="Contact Number"
@@ -163,6 +176,7 @@ export function FileView({ fileName }) {
                   noValidate
                   autoComplete="off"
                 >
+                  {/* Add code to retrive from database */}
                   <TextField
                     id="outlined-leaseID-input"
                     label="Lease ID"
@@ -174,8 +188,8 @@ export function FileView({ fileName }) {
               </div>
               <div style={{ marginTop: '30px' , marginLeft: '20px'}}>
               <Typography display="block"> Upload Screenshot </Typography>
-                  {/* Can change this to get the actual file name later: */}
-                  <FileView fileName="cleanliness.jpg" /> 
+                  {/* Change the fileName according to type of SVC to go to the respective options.js page */}
+                  <FileUpload fileName="cleanliness.jpg" /> 
               </div>
               <div style={{ marginTop: '30px', marginLeft: '20px' }}>
               <Typography display="block"> Describe the problem : </Typography>
@@ -185,6 +199,7 @@ export function FileView({ fileName }) {
                   noValidate
                   autoComplete="off"
                 >
+                  {/* Add code to save the description of problem to database */}
                   <TextField
                     id="outlined-problem-input"
                     type="text"
@@ -198,7 +213,7 @@ export function FileView({ fileName }) {
         },
         {
           label: 'QUOTATION SENT',
-          description: '20/12/2022 4:00:00 PM',
+          description: '20/12/2022 4:00:00 PM', // Change this to retrieve actual data and time
           content: (
             <React.Fragment>
               <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px' , marginLeft: '20px'}}>
@@ -212,7 +227,7 @@ export function FileView({ fileName }) {
         },
         {
           label: 'QUOTATION PAID',
-          description: '21/12/2022 2:00:00 PM',
+          description: '21/12/2022 2:00:00 PM', // Change this to retrieve actual data and time
           
         },
         {
@@ -220,6 +235,7 @@ export function FileView({ fileName }) {
             content : (
                 <React.Fragment>
                   <div style={{ display: 'flex', alignItems: 'center' , marginTop: '30px', marginLeft:'20px' }}>
+                    {/* Add code to save rating value to database */}
                   <Rating
                         name="feedback-rating"
                         value={rating}
@@ -235,6 +251,7 @@ export function FileView({ fileName }) {
                   noValidate
                   autoComplete="off"
                 >
+                  {/* Add code to save feedback to database */}
                   <TextField
                     id="outlined-feedback-input"
                     label="Type your feedback"

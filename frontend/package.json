@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test":"jest"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -26,5 +27,14 @@
     "react-dropzone": "^14.2.3",
     "styled-components": "^5.3.11",
     "tailwindcss": "3.3.3"
+  },
+  devDependencies": {
+    "cross-fetch": "^4.0.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@babel/core": "^7.22.9",
+    "jest": "^29.6.2",
+    "jest-fetch-mock": "^3.0.3",
+    "babel-jest": "^29.6.1"
   }
 }

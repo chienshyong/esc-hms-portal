@@ -7,9 +7,10 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import middleware from 'next-auth/middleware';
 
 
-// The below code is to open the file/quotation uploaded (can be incorported into a seperate file if needed later):
+// The below code is to open the file uploaded:
 
 export function FileView({ fileName }) {
     const handleViewFile = () => {
@@ -28,10 +29,33 @@ export function FileView({ fileName }) {
       </Box>
     );
   }
+
+
+// Right now the function is similar to FileView, but need to add the api calls to upload-middleware.js:
+
+  export function FileUpload({ fileName }) {
+    const handleUploadFile = () => {
+       
+      // For now, assume fileName and URL are same
+      const fileURL = fileName;
+      // this currently leads to the options.js page
+      window.open(fileURL);
+    };
+  
+    return (
+      <Box display="flex" alignItems="center" gap={10}>
+        <span style={{ fontSize: '12px' }}>{fileName}</span>
+        <Button variant="contained" onClick={handleUploadFile}>
+          Upload
+        </Button>
+      </Box>
+    );
+  }
+
   const steps = [
     {
       label: 'REQUEST CREATED',
-      description: '20/12/2022 12:02:00 PM', // Can change this to represent actual date and time 
+      description: '20/12/2022 12:02:00 PM', // Change this to retrieve actual data and time 
       content: (
         <React.Fragment>
           <div style={{ display: 'flex' , marginTop: '30px' }}>
@@ -41,6 +65,7 @@ export function FileView({ fileName }) {
               noValidate
               autoComplete="off"
             >
+              {/* Add code to retrive from database */}
               <TextField
                 id="outlined-name-input"
                 label="Name"
@@ -55,6 +80,7 @@ export function FileView({ fileName }) {
               noValidate
               autoComplete="off"
             >
+              {/* Add code to retrive from database */}
               <TextField
                 id="outlined-email-input"
                 label="Email"
@@ -71,6 +97,7 @@ export function FileView({ fileName }) {
               noValidate
               autoComplete="off"
             >
+              {/* Add code to retrive from database */}
               <TextField
                 id="outlined-number-input"
                 label="Contact Number"
@@ -85,6 +112,7 @@ export function FileView({ fileName }) {
               noValidate
               autoComplete="off"
             >
+              {/* Add code to retrive from database */}
               <TextField
                 id="outlined-leaseID-input"
                 label="Lease ID"
@@ -96,7 +124,7 @@ export function FileView({ fileName }) {
           </div>
           <div style={{ marginTop: '30px' }}>
           <Typography display="block"> View Screenshot </Typography>
-              {/* Can change this to get the actual file name later: */}
+              {/* Change this to get the actual file uploaded by tenant: */}
               <FileView fileName="cleanliness.jpg" /> 
           </div>
           <div style={{ marginTop: '30px' }}>
@@ -107,6 +135,7 @@ export function FileView({ fileName }) {
               noValidate
               autoComplete="off"
             >
+              {/* Add code to retrive from database */}
               <TextField
                 id="outlined-problem-input"
                 type="text"
@@ -120,7 +149,7 @@ export function FileView({ fileName }) {
     },
     {
       label: 'QUOTATION CREATED',
-      description: '20/12/2022 4:00:00 PM',
+      description: '20/12/2022 4:00:00 PM', // Change this to retrieve actual data and time
       content: (
         <React.Fragment>
           <div style={{ marginTop: '30px' }}>
@@ -130,6 +159,7 @@ export function FileView({ fileName }) {
               noValidate
               autoComplete="off"
             >
+              {/* Add code to save the quotation amount to database */}
               <TextField
                 id="outlined-amount-input"
                 label="Amount"
@@ -141,15 +171,15 @@ export function FileView({ fileName }) {
           </div>
           <div style={{ marginTop: '30px' }}>
           <Typography display="block"> Upload Quotation </Typography>
-              {/* Can change this to get the actual file name later: */}
-              <FileView fileName="quotes/quotation0001.pdf" /> 
+              {/* Currently, the fileName is hardcoded, but can be changed in the upload function */}
+              <FileUpload fileName="quotes/quotation0001.pdf" /> 
           </div>
         </React.Fragment>
       ),
     },
     {
       label: 'QUOTATION ACCEPTED BY TENANT',
-      content : '--Pending--',
+      content : '--Pending--',    // Need to make this dynamic -- when tenant has accepted quotation, the pending disappears
       
     },
   ];

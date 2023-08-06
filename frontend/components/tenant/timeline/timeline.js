@@ -100,8 +100,11 @@ const Accordion = styled((props) => (
         handleCurrentAction()
 
     }
+
+    const [isRejected, setRejected] = React.useState(false)
     const handleReject = () => {
         console.log("reject quotation")
+        setRejected(true)
     }
     
     // Handling Feedback Form
@@ -133,7 +136,7 @@ const Accordion = styled((props) => (
         {
           label: <div className="font-bold text-lg">VIEW QUOTATION <div className='font-light text-sm'>{quotationData.time}</div></div>,
           icon: <RequestQuoteIcon isCurrentAction={!isCurrentAction}/>, 
-          content: <ViewQuotation amount={quotationData.amount} fileName={quotationData.filepath} isCurrentAction={!isCurrentAction} handleAccept={handleAccept} handleReject={handleReject}/>, // will show accept reject button if isCurrentAction === true
+          content: <ViewQuotation amount={quotationData.amount} fileName={quotationData.filepath} isCurrentAction={!isCurrentAction} handleAccept={handleAccept} isRejected={isRejected} handleReject={handleReject}/>, // will show accept reject button if isCurrentAction === true
         },
         {
           label: <div className="font-bold text-lg">ACCEPTED QUOTATION <div className='font-light text-sm'>{quotationAcceptedData.time}</div></div>,

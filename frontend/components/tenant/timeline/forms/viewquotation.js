@@ -1,9 +1,10 @@
 import { TextField,InputAdornment,Button } from "@mui/material"
 import { FileView } from "./fileview"
 
-export default function ViewQuotation({amount,fileName,isCurrentAction,handleAccept,handleReject}) {
+export default function ViewQuotation({amount,fileName,isCurrentAction,handleAccept,isRejected, handleReject}) {
     return(
         <section>
+            {isRejected === false ? null : <p className="mt-0 font-light text-red-500">--- Pending Re-evaluation ---</p>}
             <TextField
                 id="outlined-amount-input"
                 label="Amount"
@@ -22,7 +23,7 @@ export default function ViewQuotation({amount,fileName,isCurrentAction,handleAcc
                 </div>
             </section>
             <div>
-                {isCurrentAction === true ? (
+                {isCurrentAction === true && isRejected === false ? (
                   <section className="flex gap-8 justify-center mt-12">
                     <Button variant="contained" color="success" onClick={handleAccept}>Accept</Button>
                     <Button variant="contained" color="error" onClick={handleReject}>Reject</Button>

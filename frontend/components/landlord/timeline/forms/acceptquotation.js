@@ -1,25 +1,17 @@
 import { TextField,Rating} from "@mui/material"
-import SubmitButton from "@/components/shared/submitbutton"
 
-export default function AcceptQuotation({isCurrentAction,
-  rating,
-  handleRatingChange,
-  feedback,
-  handleFeedbackChange,
-  isSubmitted,
-  handleFeedbackSubmit,}) {
+export default function AcceptQuotation({isCurrentAction,rating,feedback}) {
     
     return(
         <section>
           {isCurrentAction === true ? (
-            <form onSubmit={handleFeedbackSubmit} className="flex flex-col items-center">
+            <section className="flex flex-col items-center">
               <div className="flex gap-3">
                 Rate Our Service!:
                 <Rating
                 name="simple-controlled"
                 value={rating}
-                onChange={handleRatingChange}
-                readOnly ={isSubmitted}
+                readOnly ={true}
               />
               </div>
               <TextField
@@ -29,14 +21,12 @@ export default function AcceptQuotation({isCurrentAction,
                 rows={4}
                 fullWidth
                 value={feedback}
-                onChange={handleFeedbackChange}
                 margin="normal"
                 InputProps={{
-                  readOnly: isSubmitted,
+                  readOnly: true,
                 }}
               />
-              {isSubmitted === true ? null : <SubmitButton onClick={handleFeedbackSubmit} />}
-            </form>
+            </section>
           ) : null}
         </section>
     )

@@ -9,7 +9,7 @@ const STATUS = Object.freeze({
     CANCELED : 'canceled'
 });
 
-async function createSvcRequest(tenantID, leaseID, title, description, photoPath, callback){
+async function createSvcRequest(tenantID, leaseID, title, description, quot_required, photoPath, callback){
     const now = new Date();
     const formattedDateTime = now.toISOString().slice(0, 19).replace('T', ' '); 
     //First check if unit assoc with lease is owned by logged in landlord
@@ -22,8 +22,8 @@ async function createSvcRequest(tenantID, leaseID, title, description, photoPath
         if(results[0].id != tenantID){
             return callback(new Error('Unauthorized: User does not own this lease'));
         }
-        query = 'INSERT INTO svc_request (lease_id, submit_time, status, title, description, photo_path) VALUES (?, ?, ?, ?, ?, ?)';
-        connection.query(query, [leaseID, formattedDateTime, STATUS.NEW, title, description, photoPath], (err, results) => {
+        query = 'INSERT INTO svc_request (lease_id, submit_time, status, title, description, quot_required, photo_path) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        connection.query(query, [leaseID, formattedDateTime, STATUS.NEW, title, description, quot_required, photoPath], (err, results) => {
             if (err) return callback(err);
             return callback(null,results);
         })

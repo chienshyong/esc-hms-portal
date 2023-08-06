@@ -39,7 +39,6 @@ CREATE TABLE svc_request (
   lease_id INT,
   FOREIGN KEY (lease_id) REFERENCES lease (id),
   submit_time DATETIME,
-  closed_time DATETIME,
   status VARCHAR(50) NOT NULL,
   title VARCHAR(50) NOT NULL,
   description TEXT NOT NULL,

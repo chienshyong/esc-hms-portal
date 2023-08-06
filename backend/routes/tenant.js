@@ -70,8 +70,8 @@ router.post('/create-svc-request-photo', upload.single('photo'), (req, res) => {
     console.log(req.file); //Log uploaded file data
     console.log("creating tenant svc req")
     const tenantID = req.headers['id'];
-    const {leaseID, title, description} = req.body;
-    svcModel.createSvcRequest(tenantID, leaseID, title, description, photoPath, (err, results) => {
+    const {leaseID, title, description, quot_required} = req.body;
+    svcModel.createSvcRequest(tenantID, leaseID, title, description, quot_required, photoPath, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
         res.status(200).json(results); 
     });
@@ -81,9 +81,11 @@ router.post('/create-svc-request', (req, res) => {
     console.log(req.file); //Log uploaded file data
     console.log("creating tenant svc req")
     const tenantID = req.headers['id'];
-    const {leaseID, title, description} = req.body;
-    svcModel.createSvcRequest(tenantID, leaseID, title, description, null, (err, results) => {
-        if (err) { return res.status(400).send(err.message); }
+    const {leaseID, title, description, quot_required} = req.body;
+    svcModel.createSvcRequest(tenantID, leaseID, title, description, quot_required, null, (err, results) => {
+        if (err) {
+            console.log(err.message) 
+            return res.status(400).send(err.message); }
         res.status(200).json(results); 
     });
 });

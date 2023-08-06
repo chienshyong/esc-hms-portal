@@ -4,13 +4,13 @@ import SubmitButton from '../../shared/submitbutton';
 import UploadImage from './uploadimage';
 import { getSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-import { Button, MenuItem, Menu } from '@mui/material';
+import { Button, MenuItem, Menu, Switch, FormGroup, FormControlLabel } from '@mui/material';
 
 const DescriptionField = dynamic(() => import('./descriptionfield'), {
   ssr: false
 });
 
-export default function ServiceForm() {
+export default function ServiceForm({title}) {
   const [description, setdescription] = useState("")
   const [acceptedFiles, setAcceptedFiles] = useState([])
   const [checkClear, setCheckClear] = useState(false)
@@ -19,6 +19,7 @@ export default function ServiceForm() {
   const [leaseMenu, setLeaseMenu] = useState(null)
   const [activeLease, setActiveLease] = useState(null)
   const [activeName, setActiveName] = useState("Select Lease")
+  const [checked, setChecked] = useState(false)
   
   const handleFilesChange = (newFiles) => {
     // Handle the updated files data in the parent component
@@ -54,6 +55,15 @@ export default function ServiceForm() {
     setdescription("")
     setCheckClear(true)
   };
+
+  const handleCheck = () => {
+    if (checked === false) {
+      setChecked(true)
+    }
+    else {
+      setChecked(false)
+    }
+  }
   
   useEffect(() => { (async () => {    
     const session = await getSession()
@@ -102,8 +112,29 @@ export default function ServiceForm() {
       }}>
       <Leases/>
       </Menu>
+      <FormGroup>
+      <FormControlLabel control={<Switch
+      checked={checked}
+      onChange={handleCheck}
+      inputProps={{ 'aria-label': 'controlled' }}
+      />} label="Requires Quotation" />
+      </FormGroup>
       <DescriptionField description={description} ondescriptionChange={handleChangedescription}></DescriptionField>
-      <SubmitButton></SubmitButton>
+      <SubmitButton onClick={async () =>{
+        const session = await getSession()
+        const requestOptions = {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json', "id": session.user.id },
+        body: JSON.stringify({leaseID:leases[activeLease].id, title:title, description:description, quot_required:checked})
+        }
+        console.log(requestOptions)
+        const response = await fetch(`${process.env.api}/tenant/create-svc-request`, requestOptions)
+        if (response.status == 200) {
+          alert("Request created Successfully!")
+        } else {
+          alert("Failed to create Request")
+        }
+      }}></SubmitButton>
       </form>
       )
   }

@@ -1,6 +1,6 @@
 'use client'
 import { styled } from "@mui/material/styles";
-import { AccountBox, SpaceDashboardOutlined, ApartmentOutlined, Logout, Menu,Home } from "@mui/icons-material";
+import { AccountBox, SpaceDashboardOutlined, ApartmentOutlined, Logout, Menu,Home,NewReleases,AddBusiness } from "@mui/icons-material";
 
 import React from 'react';
 import {
@@ -61,11 +61,11 @@ export default function Navbar() {
               <ListItemText primary="Track Cases"/>  
             </ListItemButton>
             <ListItemButton href="\landlord\addunit" divider>
-              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemIcon><AddBusiness sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Add Unit"/>  
             </ListItemButton>
             <ListItemButton href="\landlord\addlease" divider>
-            <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+            <ListItemIcon><NewReleases sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
             <ListItemText primary="Add Lease"/>  
           </ListItemButton>
             <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>
@@ -97,11 +97,11 @@ export default function Navbar() {
               <ListItemText primary="Track Cases"/>  
             </ListItemButton>
             <ListItemButton href="\landlord\addunit" divider>
-              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemIcon><AddBusiness sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Add Unit"/>  
             </ListItemButton>
             <ListItemButton href="\landlord\addlease" divider>
-              <ListItemIcon><SpaceDashboardOutlined sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
+              <ListItemIcon><NewReleases sx= {{color:"#6C63FF",fontSize:"3rem"}}/></ListItemIcon>   
               <ListItemText primary="Add Lease"/>  
             </ListItemButton>
             <ListItemButton onClick={() => signOut({ callbackUrl: '/' })} divider>

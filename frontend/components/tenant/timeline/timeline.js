@@ -53,7 +53,7 @@ const Accordion = styled((props) => (
   }));
   
   
-  export default function StepperView() {
+  export default function StepperView({svcid}) {
     const [expanded, setExpanded] = React.useState(null);
   
     const handleChange = (panel) => (event, isExpanded) => {
@@ -63,6 +63,7 @@ const Accordion = styled((props) => (
     // Note: If there is no data in view quotation or accept quotation, the accordian summary would remain empty
 
     // --- SHOULD ONLY DEAL WITH ONE SERVICE REQUEST ID ---
+    console.log(svcid) // can be found under app/tenant/timeline/page.js
     // Handling submission is done via pressing da buuton
 
     // Hardcoded request data example for service requesr: don't need to input anything cuz its alr done

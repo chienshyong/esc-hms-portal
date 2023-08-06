@@ -1,280 +1,188 @@
 'use client'
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import middleware from 'next-auth/middleware';
+import React from 'react';
+import {Accordion as MuiAccordion, AccordionSummary as MuiAccordionSummary, AccordionDetails as MuiAccordionDetails} from '@mui/material';
+import { styled } from "@mui/material/styles";
+
+import QuoteAcceptIcon from './icons/quoteaccepticon';
+import ServiceRequestIcon from './icons/servicerequesticon';
+import RequestQuoteIcon from './icons/requestquoteicon';
+
+import ServiceRequest from './forms/servicequest';
+import CreateQuotation from './forms/createquotation';
+import AcceptQuotation from './forms/acceptquotation';
+
+import {ExpandMore} from '@mui/icons-material';
 
 
-// The below code is to open the file uploaded:
+// The below code is to open the file/quotation uploaded (can be incorported into a seperate file if needed later):
 
-export function FileView({ fileName }) {
-    const handleViewFile = () => {
-      // Need to replace the fileURL with the actual URL later
-      // For now, assume fileName and URL are same
-      const fileURL = fileName;
-      window.open(fileURL);
+const Accordion = styled((props) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+  ))(({ theme }) => ({
+    backgroundColor:"transparent",
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+  }));
+  
+  const AccordionSummary = styled((props) => (
+    <MuiAccordionSummary
+      expandIcon={<ExpandMore />}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    backgroundColor:"transparent",
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transform: 'rotate(180deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+      marginLeft: theme.spacing(2),
+    },
+  }));
+  
+  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    paddingRight: theme.spacing(12),
+    backgroundColor:"transparent",
+    marginLeft: theme.spacing(13),
+    borderTop: 'none',
+    marginBottom: 0, 
+    marginTop: 0, 
+  }));
+  
+  
+  export default function StepperView({svcid}) {
+    const [expanded, setExpanded] = React.useState(null);
+  
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
     };
+
+    // Note: If there is no data in view quotation or accept quotation, the accordian summary would remain empty
+
+    // --- SHOULD ONLY DEAL WITH ONE SERVICE REQUEST ID ---
+    console.log(svcid) // can be found under app/tenant/timeline/page.js
+    // Handling submission is done via pressing da buuton
+
+    // Hardcoded request data example for service requesr: don't need to input anything cuz its alr done
+    const requestData = {
+        tenantname: 'John Doe',
+        email: 'johndoe@example.com',
+        phonenumber: '123-456-7890',
+        leaseid: 'ABC123XYZ',
+        description: 'Request for maintenance',
+        filepath: '/path/to/file.pdf',
+        time: '20/12/2022  12:02:00 PM',
+      };
+    
+    // Hardcoded quotation created: tenant does not need to input anything
+    const quotationData = {
+        amount: "500",
+        time: '24/12/2022  1:02:00 PM',
+        filepath: '/path/to/file.pdf',
+      };
+    
+    // Hardcoded Time when tenant accepted quotation
+    const quotationAcceptedData = {
+        time: '25/12/2022  3:52:00 PM',
+        rating: 1, // should be a number
+        feedback: 'mouldy walls'
+      };
+
+    // 1. Service Request: Form logic to see whether it is my current action
+    const [isCurrentAction,setCurrentAction] = React.useState(true)
+    const handleCurrentAction = () => {
+        setCurrentAction(false)
+    };
+
+    const [isChecked, setIsChecked] = React.useState(false);
+
+    const handleCheckboxChange = (event) => {
+      setIsChecked(event.target.checked);
+    };
+
+    const [isContinueClicked, setClicked ] = React.useState(false);
+    const handleClickChange = () => {
+      setClicked(true);
+      handleCurrentAction()
+    };
+
+    // 2. Create Quotation
+    const [amount,setAmount] = React.useState('')
+    const handleAmountChange = (e) => {
+      setAmount(e.target.value);
+  };
+  
+    // File 
+    const [fileName, setFileName] = React.useState('');
+
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setFileName(file.name);
+      } else {
+        setFileName('No file selected');
+      }
+    };
+
+    const [stepper, setStepper] = React.useState(true);
+    const handleStepper = () => {
+      setStepper(false)
+    };
+
+    const [isQuotationSubmitted, setQuotationSubmitted] = React.useState(false);
+    const handleQuotationSubmitted = (e) => {
+      e.preventDefault()
+      setQuotationSubmitted(true);
+      console.log("fileName:", fileName)
+      console.log("Amount:", amount)
+      handleStepper()
+    };
+
+    const steps = [
+        {
+          label: <div className="font-bold text-lg">REQUEST CREATED <div className='font-light text-sm'>{requestData.time}</div></div>,
+          icon: <ServiceRequestIcon isCurrentAction={isCurrentAction}/>,
+          content: <ServiceRequest tenantname={requestData.tenantname} email={requestData.email} phonenumber={requestData.phonenumber} leaseid={requestData.leaseid} description={requestData.description} fileName={requestData.filepath} isChecked={isChecked} handleCheckboxChange={handleCheckboxChange} isContinueClicked={isContinueClicked} handleClickChange={handleClickChange}/>,
+        },
+        {
+          label: <div className="font-bold text-lg">CREATE QUOTATION <div className='font-light text-sm'>{quotationData.time}</div></div>,
+          icon: <RequestQuoteIcon isCurrentAction={isChecked && isContinueClicked && stepper}/>, 
+          content: <CreateQuotation isCurrentAction={isChecked && isContinueClicked && stepper} amount={amount} handleAmountChange={handleAmountChange} fileName={fileName} handleFileChange={handleFileChange} isQuotationSubmitted={isQuotationSubmitted} handleQuotationSubmitted={handleQuotationSubmitted} />, 
+        },
+        {
+          label: <div className="font-bold text-lg">ACCEPTED QUOTATION <div className='font-light text-sm'>{quotationAcceptedData.time}</div></div>,
+          icon: <QuoteAcceptIcon isCurrentAction={!isCurrentAction && isQuotationSubmitted}/>,
+          content: <AcceptQuotation isCurrentAction={!isCurrentAction && isQuotationSubmitted} rating={quotationAcceptedData.rating}  feedback={quotationAcceptedData.feedback}/>, // ifisCurrentAction == true, tenant gives feedback
+        },
+      ];
+
   
     return (
-      <Box display="flex" alignItems="center" gap={10}>
-        <span style={{ fontSize: '12px' }}>{fileName}</span>
-        <Button variant="contained" onClick={handleViewFile}>
-          View
-        </Button>
-      </Box>
+      <div className='mt-6'>
+        {steps.map((step, index) => (
+          <Accordion
+            key={index}
+            expanded={expanded === `panel${index}`}
+            onChange={handleChange(`panel${index}`)}
+          >
+            <AccordionSummary
+              aria-controls={`panel${index}d-content`}
+              id={`panel${index}d-header`}
+            >
+                <div className='flex gap-4 items-center'> 
+                    {step.icon}
+                    {step.label}
+                </div>
+            </AccordionSummary>
+            <AccordionDetails>{step.content}</AccordionDetails>
+          </Accordion>
+        ))}
+      </div>
     );
   }
-
-
-// Right now the function is similar to FileView, but need to add the api calls to upload-middleware.js:
-
-  export function FileUpload({ fileName }) {
-    const handleUploadFile = () => {
-       
-      // For now, assume fileName and URL are same
-      const fileURL = fileName;
-      // this currently leads to the options.js page
-      window.open(fileURL);
-    };
-  
-    return (
-      <Box display="flex" alignItems="center" gap={10}>
-        <span style={{ fontSize: '12px' }}>{fileName}</span>
-        <Button variant="contained" onClick={handleUploadFile}>
-          Upload
-        </Button>
-      </Box>
-    );
-  }
-
-  const steps = [
-    {
-      label: 'REQUEST CREATED',
-      description: '20/12/2022 12:02:00 PM', // Change this to retrieve actual data and time 
-      content: (
-        <React.Fragment>
-          <div style={{ display: 'flex' , marginTop: '30px' }}>
-            <Box
-              component="form"
-              sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              {/* Add code to retrive from database */}
-              <TextField
-                id="outlined-name-input"
-                label="Name"
-                type="text"
-                autoComplete="Enter your name"
-                defaultValue = "John Tan"
-              />
-            </Box>
-            <Box
-              component="form"
-              sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              {/* Add code to retrive from database */}
-              <TextField
-                id="outlined-email-input"
-                label="Email"
-                type="email"
-                autoComplete="Enter your email"
-                value = "john@7eleven.com"
-              />
-            </Box>
-          </div>
-          <div style={{ display: 'flex' }}>
-            <Box
-              component="form"
-              sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              {/* Add code to retrive from database */}
-              <TextField
-                id="outlined-number-input"
-                label="Contact Number"
-                type="tel"
-                autoComplete="Enter your contact number"
-                defaultValue = "900000"
-              />
-            </Box>
-            <Box
-              component="form"
-              sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              {/* Add code to retrive from database */}
-              <TextField
-                id="outlined-leaseID-input"
-                label="Lease ID"
-                type="text"
-                autoComplete="Enter your lease ID"
-                defaultValue = "RC/0001"
-              />
-            </Box>
-          </div>
-          <div style={{ marginTop: '30px' }}>
-          <Typography display="block"> View Screenshot </Typography>
-              {/* Change this to get the actual file uploaded by tenant: */}
-              <FileView fileName="cleanliness.jpg" /> 
-          </div>
-          <div style={{ marginTop: '30px' }}>
-          <Typography display="block"> Describe the problem </Typography>
-          <Box
-              component="form"
-              sx={{ '& .MuiTextField-root': { m: 1, width: '80ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              {/* Add code to retrive from database */}
-              <TextField
-                id="outlined-problem-input"
-                type="text"
-                autoComplete="Describe the problem"
-                defaultValue = "Some stain on the wall"
-              />
-            </Box>
-          </div>
-        </React.Fragment>
-      ),
-    },
-    {
-      label: 'QUOTATION CREATED',
-      description: '20/12/2022 4:00:00 PM', // Change this to retrieve actual data and time
-      content: (
-        <React.Fragment>
-          <div style={{ marginTop: '30px' }}>
-            <Box
-              component="form"
-              sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
-              noValidate
-              autoComplete="off"
-            >
-              {/* Add code to save the quotation amount to database */}
-              <TextField
-                id="outlined-amount-input"
-                label="Amount"
-                type="text"
-                autoComplete="Enter the quotation amount"
-                defaultValue = "$500"
-              />
-            </Box>
-          </div>
-          <div style={{ marginTop: '30px' }}>
-          <Typography display="block"> Upload Quotation </Typography>
-              {/* Currently, the fileName is hardcoded, but can be changed in the upload function */}
-              <FileUpload fileName="quotes/quotation0001.pdf" /> 
-          </div>
-        </React.Fragment>
-      ),
-    },
-    {
-      label: 'QUOTATION ACCEPTED BY TENANT',
-      content : '--Pending--',    // Need to make this dynamic -- when tenant has accepted quotation, the pending disappears
-      
-    },
-  ];
-  
-  export default function Timeline() {
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
-  
-    const totalSteps = () => {
-      return steps.length;
-    };
-  
-    const completedSteps = () => {
-      return Object.keys(completed).length;
-    };
-  
-    const isLastStep = () => {
-      return activeStep === totalSteps() - 1;
-    };
-  
-    const allStepsCompleted = () => {
-      return completedSteps() === totalSteps();
-    };
-
-    const handleNext = () => {
-        const newActiveStep =
-          isLastStep() && !allStepsCompleted()
-            ? steps.findIndex((step, i) => !(i in completed))
-            : activeStep + 1;
-        setActiveStep(newActiveStep);
-      };
-    
-      const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-      };
-    
-      const handleStep = (step) => () => {
-        setActiveStep(step);
-      };
-    
-      const handleComplete = () => {
-        const newCompleted = completed;
-        newCompleted[activeStep] = true;
-        setCompleted(newCompleted);
-        handleNext();
-      };
-    
-      const handleReset = () => {
-        setActiveStep(0);
-        setCompleted({});
-      };
-    
-    
-    
-      return (    
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100%'}}>
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map((step, index) => (
-              <Step key={step.label}>
-                <StepLabel>{step.label}</StepLabel>
-                <Typography>{step.description}</Typography>
-                {activeStep === index && !completedSteps()[index] && (
-                  <Box>{step.content}</Box>
-                )}
-              </Step>
-            ))}
-          </Stepper>
-          <Box sx={{ mt: 2 }}>
-            {allStepsCompleted() ? (
-              <React.Fragment>
-                <Typography>All steps completed - you're finished</Typography>
-                
-                
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    sx={{ mr: 1 }}
-                  >
-                    Back
-                  </Button>
-                  <Button variant="contained" onClick={handleNext}>
-                    {activeStep === steps.length - 1 ? 'Close Case' : 'Next'}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-          </Box>
-        </Box>
-      );
-    }
     
     
     

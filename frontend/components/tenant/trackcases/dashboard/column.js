@@ -5,7 +5,7 @@ export default function ColumnWithBoxes({boxes, groupby}) {
     let groupbyvalue;
     
     if (groupby === 'status') {
-      tagKey = 'category';
+      tagKey = 'title';
       groupbyvalue = boxes[0].status
     } else if (groupby === 'category') {
       tagKey = 'status';

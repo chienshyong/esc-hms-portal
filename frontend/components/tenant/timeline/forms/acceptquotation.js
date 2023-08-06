@@ -8,7 +8,7 @@ export default function AcceptQuotation({isCurrentAction,
   handleFeedbackChange,
   isSubmitted,
   handleFeedbackSubmit,}) {
-    isCurrentAction = true
+    // isCurrentAction = true
     return(
         <section>
           {isCurrentAction === true ? (

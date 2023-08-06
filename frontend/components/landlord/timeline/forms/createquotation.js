@@ -3,7 +3,7 @@ import SubmitButton from "@/components/shared/submitbutton"
 import { FileView } from "./fileview"
 
 export default function CreateQuotation({isCurrentAction,amount,handleAmountChange,fileName,handleFileChange,isQuotationSubmitted,handleQuotationSubmitted}) {
-    if (!isCurrentAction && !isQuotationSubmitted) {
+    if (!isCurrentAction) {
         return null;
     }
 

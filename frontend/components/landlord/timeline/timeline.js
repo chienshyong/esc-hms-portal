@@ -142,22 +142,22 @@ const Accordion = styled((props) => (
     };
 
     const steps = [
-        {
-          label: <div className="font-bold text-lg">REQUEST CREATED <div className='font-light text-sm'>{requestData.time}</div></div>,
-          icon: <ServiceRequestIcon isCurrentAction={isCurrentAction}/>,
-          content: <ServiceRequest tenantname={requestData.tenantname} email={requestData.email} phonenumber={requestData.phonenumber} leaseid={requestData.leaseid} description={requestData.description} fileName={requestData.filepath} isChecked={isChecked} handleCheckboxChange={handleCheckboxChange} isContinueClicked={isContinueClicked} handleClickChange={handleClickChange}/>,
-        },
-        {
-          label: <div className="font-bold text-lg">CREATE QUOTATION <div className='font-light text-sm'>{quotationData.time}</div></div>,
-          icon: <RequestQuoteIcon isCurrentAction={isChecked && isContinueClicked && stepper}/>, 
-          content: <CreateQuotation isCurrentAction={isChecked && isContinueClicked && stepper} amount={amount} handleAmountChange={handleAmountChange} fileName={fileName} handleFileChange={handleFileChange} isQuotationSubmitted={isQuotationSubmitted} handleQuotationSubmitted={handleQuotationSubmitted} />, 
-        },
-        {
-          label: <div className="font-bold text-lg">ACCEPTED QUOTATION <div className='font-light text-sm'>{quotationAcceptedData.time}</div></div>,
-          icon: <QuoteAcceptIcon isCurrentAction={!isCurrentAction && isQuotationSubmitted}/>,
-          content: <AcceptQuotation isCurrentAction={!isCurrentAction && isQuotationSubmitted} rating={quotationAcceptedData.rating}  feedback={quotationAcceptedData.feedback}/>, // ifisCurrentAction == true, tenant gives feedback
-        },
-      ];
+      {
+        label: <div className="font-bold text-lg">REQUEST CREATED <div className='font-light text-sm'>{requestData.time}</div></div>,
+        icon: <ServiceRequestIcon isCurrentAction={isCurrentAction}/>,
+        content: <ServiceRequest tenantname={requestData.tenantname} email={requestData.email} phonenumber={requestData.phonenumber} leaseid={requestData.leaseid} description={requestData.description} fileName={requestData.filepath} isChecked={isChecked} handleCheckboxChange={handleCheckboxChange} isContinueClicked={isContinueClicked} handleClickChange={handleClickChange}/>,
+      },
+      {
+        label: <div className="font-bold text-lg">CREATE QUOTATION <div className='font-light text-sm'>{quotationData.time}</div></div>,
+        icon: <RequestQuoteIcon isCurrentAction={isChecked && isContinueClicked && stepper}/>, 
+        content: <CreateQuotation isCurrentAction={isChecked && isContinueClicked} amount={amount} handleAmountChange={handleAmountChange} fileName={fileName} handleFileChange={handleFileChange} isQuotationSubmitted={isQuotationSubmitted} handleQuotationSubmitted={handleQuotationSubmitted} />, 
+      },
+      {
+        label: <div className="font-bold text-lg">ACCEPTED QUOTATION <div className='font-light text-sm'>{quotationAcceptedData.time}</div></div>,
+        icon: <QuoteAcceptIcon isCurrentAction={isChecked === false ?  !isCurrentAction : !isCurrentAction && isQuotationSubmitted}/>,
+        content: <AcceptQuotation isCurrentAction={isChecked === false ?  !isCurrentAction : !isCurrentAction && isQuotationSubmitted} rating={quotationAcceptedData.rating}  feedback={quotationAcceptedData.feedback}/>, // ifisCurrentAction == true, tenant gives feedback
+      },
+    ];
 
   
     return (

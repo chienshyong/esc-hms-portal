@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import Options from './options'; // Only import the Options component, not the individual arrays
+import Options from '../../frontend_old/app/tenant/options'; // Only import the Options component, not the individual arrays
 
 test('each image has the correct alt text and points to the correct destination', () => {
   render(<Options />);

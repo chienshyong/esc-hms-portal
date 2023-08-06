@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Page from './page';
+import Page from '../../frontend_old/app/tenant/timeline/page';
 
 describe('Page', () => {
   it('renders the page component correctly', () => {

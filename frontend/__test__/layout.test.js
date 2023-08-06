@@ -1,6 +1,6 @@
 import 'cross-fetch/polyfill';
 import { render, screen } from '@testing-library/react';
-import RootLayout from './layout';
+import RootLayout from '../../frontend_old/app/layout';
 
 // Mock the 'next/font/google' module and the 'Inter' function
 jest.mock('next/font/google', () => ({

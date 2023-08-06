@@ -1,4 +1,4 @@
-import { handleTenantForm } from './code';
+import { handleTenantForm } from '../../frontend_old/app/tenant/[form]/code';
 import { render, screen } from '@testing-library/react';
 
 global.fetch = jest.fn();

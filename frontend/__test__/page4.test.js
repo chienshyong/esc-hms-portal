@@ -1,4 +1,4 @@
-const TenantOptions = require('../page.js');
+const TenantOptions = require('../../frontend_old/app/page.js');
 
 
 describe('pages', () => {

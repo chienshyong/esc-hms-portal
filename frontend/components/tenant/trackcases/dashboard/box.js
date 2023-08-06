@@ -3,7 +3,7 @@ import { Divider} from '@mui/material';
 import Link from 'next/link';
 
 //tag represents status and category
-export default function Box({id,timeupload,tag,leaseid, description}) {
+export default function Box({id, timeupload, tag, address, description}) {
 
     const maxLength = 70
     var truncatedDescription = description
@@ -13,10 +13,12 @@ export default function Box({id,timeupload,tag,leaseid, description}) {
     }
 
     const colorDictionary = {
-        "Submitted by Tenant": "bg-blue-400",
-        "Rejected by Tenant": "bg-red-400",
-        "Completed by Landlord": "bg-green-400",
-        "Accepted by Tenant": "bg-orange-400",
+        "Submitted": "bg-blue-400",
+        "Rejected": "bg-red-400",
+        "Completed": "bg-green-400",
+        "Accepted": "bg-yellow-400",
+        "Pending Quotation": "bg-orange-400",
+        "Canceled": "bg-black-400",
 
         "Lighting": "bg-blue-500",
         "Electricity": "bg-yellow-500",
@@ -38,8 +40,8 @@ export default function Box({id,timeupload,tag,leaseid, description}) {
             <Divider variant="middle"></Divider>
             <section className='mt-4 ml-3'>
                 <p className="flex items-center gap-2 text-sm my-1.5"><AccessTime/> {timeupload}</p>
-                <p className="flex items-center gap-2 text-sm my-1.5"><Grid3x3/> {leaseid}</p>
-                <p className="flex items-center gap-2 text-sm my-1.5"><HomeRepairService/> {id}</p>
+                <p className="flex items-center gap-2 text-sm my-1.5"><Grid3x3/> {id}</p>
+                <p className="flex items-center gap-2 text-sm my-1.5"><HomeRepairService/> {address}</p>
                 <p className="flex gap-2 text-sm my-1.5 pr-5">< Description/> {truncatedDescription}</p>
             </section>
         </Link>

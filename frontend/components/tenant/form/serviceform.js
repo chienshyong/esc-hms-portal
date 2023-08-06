@@ -1,7 +1,7 @@
 "use client"
 import React, {useState, useEffect} from 'react';
 import SubmitButton from '../../shared/submitbutton';
-import UploadImage from './uploadimage';
+//import UploadImage from './uploadimage';
 import { getSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { Button, MenuItem, Menu, Switch, FormGroup, FormControlLabel } from '@mui/material';
@@ -12,19 +12,19 @@ const DescriptionField = dynamic(() => import('./descriptionfield'), {
 
 export default function ServiceForm({title}) {
   const [description, setdescription] = useState("")
-  const [acceptedFiles, setAcceptedFiles] = useState([])
+  // const [acceptedFiles, setAcceptedFiles] = useState([])
   const [checkClear, setCheckClear] = useState(false)
   const [leases, setLeases] = useState(null)
-  const [isLoading, setLoading] = useState(true)
+  //const [isLoading, setLoading] = useState(true)
   const [leaseMenu, setLeaseMenu] = useState(null)
   const [activeLease, setActiveLease] = useState(null)
   const [activeName, setActiveName] = useState("Select Lease")
   const [checked, setChecked] = useState(false)
   
-  const handleFilesChange = (newFiles) => {
-    // Handle the updated files data in the parent component
-    setAcceptedFiles(newFiles);
-  };
+  // const handleFilesChange = (newFiles) => {
+  //   // Handle the updated files data in the parent component
+  //   setAcceptedFiles(newFiles);
+  // };
   
   const handleChangedescription = (e) => {
     setdescription(e.target.value);
@@ -74,7 +74,6 @@ export default function ServiceForm({title}) {
   const res = await fetch(`${process.env.api}/tenant/get-leases`, requestOptions)
   const data = await res.json()
   setLeases(data)
-  setLoading(false)
   })()
   }, [])
 
@@ -95,12 +94,12 @@ export default function ServiceForm({title}) {
     return (
       <form className={`flex flex-col justify-center items-center p-3`} onSubmit={handleSubmit}>
       <Button
-      id="basic-button"
-      aria-controls={open ? 'basic-menu' : undefined}
-      aria-haspopup="true"
-      aria-expanded={open ? 'true' : undefined}
-      onClick={handleMenuClick}>
-      {activeName}
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleMenuClick}>
+        {activeName}
       </Button>
       <Menu
       id="basic-menu"
@@ -110,14 +109,14 @@ export default function ServiceForm({title}) {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
       }}>
-      <Leases/>
+        <Leases/>
       </Menu>
       <FormGroup>
-      <FormControlLabel control={<Switch
-      checked={checked}
-      onChange={handleCheck}
-      inputProps={{ 'aria-label': 'controlled' }}
-      />} label="Requires Quotation" />
+        <FormControlLabel control={<Switch
+        checked={checked}
+        onChange={handleCheck}
+        inputProps={{ 'aria-label': 'controlled' }}
+        />} label="Requires Quotation" />
       </FormGroup>
       <DescriptionField description={description} ondescriptionChange={handleChangedescription}></DescriptionField>
       <SubmitButton onClick={async () =>{

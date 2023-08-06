@@ -1,7 +1,5 @@
 'use client'
 import { landlordauth } from "@/app/auth"
-import TicketSelection from "@/components/landlord/trackcases-old/ticketselection"
-
 import ToggleView from "@/components/landlord/trackcases/toggleview"
 
 // export default function TrackCases() {

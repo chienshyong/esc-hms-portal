@@ -41,7 +41,7 @@ async function getSvcRequestByTenant(tenantID, callback){
 
 //Returns only ID, lease ID, title and status of ALL svc requests
 async function getSvcRequestByLandlord(landlordID, callback){
-    const query = 'SELECT svc_request.id, address, status, title, submit_time, description, quot_required, quot_amount from svc_request JOIN lease ON svc_request.lease_id = lease.id INNER JOIN unit ON lease.unit_id=unit.id WHERE lease.landlord_id = ?';
+    const query = 'SELECT svc_request.id, tenant_id, tenant.username, address, status, title, submit_time, description, quot_required, quot_amount from svc_request JOIN lease ON svc_request.lease_id = lease.id INNER JOIN unit ON lease.unit_id=unit.id INNER JOIN tenant ON lease.tenant_id=tenant.id WHERE unit.landlord_id = ?';
     connection.query(query, [landlordID], (err, results) => {
         if (err) return callback(err);
         return callback(null,results);

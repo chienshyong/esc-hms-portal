@@ -1,12 +1,12 @@
 const connection = require('./db.js');
 
 const STATUS = Object.freeze({
-    NEW : 'new',
-    QUOT_PENDING : 'quot_pending',
-    ACCEPTED: 'accepted',
-    REJECTED : 'rejected',
-    COMPLETED : 'completed',
-    CANCELED : 'canceled'
+    NEW : 'Submitted',
+    QUOT_PENDING : 'Pending Quotation',
+    ACCEPTED: 'Accepted',
+    REJECTED : 'Rejected',
+    COMPLETED : 'Completed',
+    CANCELED : 'Canceled'
 });
 
 async function createSvcRequest(tenantID, leaseID, title, description, quot_required, photoPath, callback){
@@ -32,7 +32,7 @@ async function createSvcRequest(tenantID, leaseID, title, description, quot_requ
 
 //Returns only ID, lease ID, title and status of ALL svc requests
 async function getSvcRequestByTenant(tenantID, callback){
-    const query = 'SELECT svc_request.id, lease_id, status, title from svc_request JOIN lease ON svc_request.lease_id = lease.id WHERE lease.tenant_id = ?';
+    const query = 'SELECT svc_request.id, address, status, title, submit_time, description, quot_required, quot_amount from svc_request JOIN lease ON svc_request.lease_id = lease.id INNER JOIN unit ON lease.unit_id=unit.id WHERE lease.tenant_id = ?';
     connection.query(query, [tenantID], (err, results) => {
         if (err) return callback(err);
         return callback(null,results);
@@ -41,7 +41,7 @@ async function getSvcRequestByTenant(tenantID, callback){
 
 //Returns only ID, lease ID, title and status of ALL svc requests
 async function getSvcRequestByLandlord(landlordID, callback){
-    const query = 'SELECT svc_request.id, lease_id, status, title from svc_request JOIN lease ON svc_request.lease_id = lease.id JOIN unit ON lease.unit_id = unit.id WHERE unit.landlord_id = ?';
+    const query = 'SELECT svc_request.id, address, status, title, submit_time, description, quot_required, quot_amount from svc_request JOIN lease ON svc_request.lease_id = lease.id INNER JOIN unit ON lease.unit_id=unit.id WHERE lease.landlord_id = ?';
     connection.query(query, [landlordID], (err, results) => {
         if (err) return callback(err);
         return callback(null,results);

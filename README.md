@@ -56,6 +56,7 @@ https://www.jetbrains.com/aqua/download/#section=windows
 https://www.oracle.com/sg/java/technologies/javase/jdk11-archive-downloads.html
 
 3. you can copy the file into your new project with gradle and selenium:
+
 file directory:
 ..\Selenium Test\gradle2\src\test\java\com\example\gradle2
 

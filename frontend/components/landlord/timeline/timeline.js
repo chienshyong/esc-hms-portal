@@ -86,7 +86,7 @@ const Accordion = styled((props) => (
     
     // Hardcoded Time when tenant accepted quotation
     const quotationAcceptedData = {
-        time: '25/12/2022  3:52:00 PM',
+
         rating: 1, // should be a number
         feedback: 'mouldy walls'
       };

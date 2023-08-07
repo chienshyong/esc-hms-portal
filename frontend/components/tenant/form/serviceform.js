@@ -51,7 +51,7 @@ export default function ServiceForm({title}) {
     event.preventDefault()
     console.log('Submitting service form...')
     console.log("Description: ", description)
-    console.log("Files: ", acceptedFiles)
+    //console.log("Files: ", acceptedFiles)
     setdescription("")
     setCheckClear(true)
   };
@@ -126,7 +126,6 @@ export default function ServiceForm({title}) {
         headers: { 'Content-Type': 'application/json', "id": session.user.id },
         body: JSON.stringify({leaseID:leases[activeLease].id, title:title, description:description, quot_required:checked})
         }
-        console.log(requestOptions)
         const response = await fetch(`${process.env.api}/tenant/create-svc-request`, requestOptions)
         if (response.status == 200) {
           alert("Request created Successfully!")

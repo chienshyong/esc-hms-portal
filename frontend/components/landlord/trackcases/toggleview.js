@@ -1,60 +1,17 @@
 "use client"
-import React,{useState} from "react";
+import {useState, useRef, useEffect} from "react";
 import ToggleViewButton from "./toggleviewbutton"
-import DashboardView from "./dashboard/dashboardview";
 import GroupByButton from "./dashboard/groupby";
-import ListView from "./listview/listview";
-import CloseCaseSwitch from "./listview/closecase/closeticketswitch";
-import TicketSelection from "./listview/closecase/closetickets";
+import ListView from "./listview";
+import CloseCaseSwitch from "./closecase/closeticketswitch";
+import TicketSelection from "./closecase/closetickets";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
+import ColumnWithBoxes from "./dashboard/column";
 
 // Listview: Hardcoded example (fecth all)
 const columns = [
-  { field: 'id', headerName: 'ID', width: 130, 
-  renderCell: (params) => (
-    // TO DO: Link the id of the link here
-    <Link href={`/tenant/timeline/${params.value}`}>
-      {params.value}
-    </Link>
-
-  ), },
-  { field: 'name', headerName: 'Name', width: 130 },
-  { field: 'timeOfRequest', headerName: 'Time of Request', width: 130 },
-  {
-    field: 'requestType',
-    headerName: 'Request Type',
-    width: 130
-  },
-  {
-    field: 'quotationRequired',
-    headerName: 'Quotation Required',
-    width: 150
-  },
-  {
-    field: 'quotationAmount',
-    headerName: 'Quotation Amount',
-    type: 'number',
-    width: 130,
-  },
-  {
-    field: 'quotationUploadedBy',
-    headerName: 'Quotation Uploaded By',
-    width: 180,
-  },
-  { field: 'completedTime', headerName: 'Completed Time', width: 130 },
-  { field: 'status', headerName: 'Status', width: 130 },
-  { field: 'feedbackRating', headerName: 'Feedback Rating', type: 'number', width: 130, },
-];
-
-const rows = [
-  { id: "SR00001", name:"Johnathan Tan", timeOfRequest: '20/12/2022  12:02:00 PM', requestType: 'Electricity', quotationRequired: 'Y', quotationAmount:500,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
-  { id: "SR00002", name:"Johnathan Tan", timeOfRequest: '22/12/2022  12:02:00 PM', requestType: 'Cleanliness', quotationRequired: 'N', quotationAmount:0,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
-];
-
-// TicketSelection: Hardcoded example (fecth tickets that under "Submitted by Tenant" -> changes status to "Completed by Landlord"
-// in the database once close case button is pressed
-const closecasecolumns = [
-  { field: 'id', headerName: 'ID', width: 130, 
+  { field: 'id', headerName: 'ID', width: 40, 
   renderCell: (params) => (
     // TO DO: Link the id of the link here
     <Link href={`/landlord/timeline/${params.value}`}>
@@ -62,279 +19,147 @@ const closecasecolumns = [
     </Link>
 
   ), },
-  { field: 'name', headerName: 'Name', width: 130 },
-  { field: 'timeOfRequest', headerName: 'Time of Request', width: 130 },
   {
-    field: 'requestType',
+    field: 'address',
+    headerName: 'Lease Address',
+    width: 230
+  },
+  {
+    field: 'username',
+    headerName: 'Leasee username',
+    width: 140
+  },
+  {
+    field: 'title',
     headerName: 'Request Type',
-    width: 130
+    width: 100
   },
+  { field: 'submit_time', headerName: 'Time of Request', width: 160 },
+  { field: 'status', headerName: 'Status', width: 140 },
   {
-    field: 'quotationRequired',
-    headerName: 'Quotation Required',
-    width: 150
-  },
-  {
-    field: 'quotationAmount',
+    field: 'quot_amount',
     headerName: 'Quotation Amount',
     type: 'number',
-    width: 130,
+    width: 140,
   },
   {
-    field: 'quotationUploadedBy',
-    headerName: 'Quotation Uploaded By',
-    width: 180,
+    field: 'quot_required',
+    headerName: 'Quotation Required',
+    width: 140
   },
-  { field: 'completedTime', headerName: 'Completed Time', width: 130 },
-  { field: 'status', headerName: 'Status', width: 130 },
-  { field: 'feedbackRating', headerName: 'Feedback Rating', type: 'number', width: 130, },
-];
-
-const closecaserows = [
-    { id: "SR00001", name:"Johnathan Tan", timeOfRequest: '20/12/2022  12:02:00 PM', requestType: 'Electricity', quotationRequired: 'Y', quotationAmount:500,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
-    { id: "SR00002", name:"Johnathan Tan", timeOfRequest: '22/12/2022  12:02:00 PM', requestType: 'Cleanliness', quotationRequired: 'N', quotationAmount:0,quotationUploadedBy:'Wendy Sim',completedTime:'24/12/2022  1:15:00 AM',status:'Submitted by Tenant',feedbackRating:4 },
-  ];
-
-
-// Dashboard view: this is hardcoded, but it is meant to be grouped either by status, category or tenant
-// Example grouped by category
-// const data = [
-//     {
-//         category: "Lighting",
-//     boxes: [
-//       {
-//         id: "SR00001",
-//         name: "Jonathan Tan",
-//         timeupload: "Today 12:59pm",
-//         status: "Submitted by Tenant",
-//         email: "jontan@711.com",
-//         phonenumber: "91426543",
-//         leaseid: "SR122344",
-//       },
-//     ],
-//   },
-//   {
-//     category: "Electricity",
-//     boxes: [
-//       {
-//         id: "SR00002",
-//         name: "Jane Doe",
-//         timeupload: "Yesterday 3:45pm",
-//         status: "Submitted by Tenant",
-//         email: "janedoe@example.com",
-//         phonenumber: "91426543",
-//         leaseid: "SR122345",
-//       },
-//       {
-//         id: "SR00003",
-//         name: "John Smith",
-//         timeupload: "2 days ago",
-//         status: "Rejected by Tenant",
-//         email: "johnsmith@example.com",
-//         phonenumber: "91426543",
-//         leaseid: "SR122346",
-//       },
-//     ],
-//       },
-//       {
-//         category: "Horticulture",
-//     boxes: [
-//       {
-//         id: "SR00004",
-//         name: "Samantha Yo",
-//         timeupload: "Yesterday 3:45pm",
-//         status: "Completed by Landlord",
-//         email: "samyo@example.com",
-//         phonenumber: "91426543",
-//         leaseid: "SR1224845",
-//       },
-//       {
-//         id: "SR00005",
-//         name: "Hamilton Ee",
-//         timeupload: "2 days ago",
-//         status: "Accepted by Tenant",
-//         email: "hamee@example.com",
-//         phonenumber: "91426543",
-//         leaseid: "SR123296",
-//       },]
-//       }
-// ]
-
-// Example grouped by status
-const data = [
-    {
-      status: "Submitted by Tenant",
-      boxes: [
-        {
-          id: "SR00001",
-          name: "Jonathan Tan",
-          timeupload: "Today 12:59pm",
-          category: "Lighting",
-          email: "jontan@711.com",
-          phonenumber: "91426543",
-          leaseid: "SR122344",
-        },
-        {
-          id: "SR00002",
-          name: "Jane Doe",
-          timeupload: "Yesterday 3:45pm",
-          category: "Electricity",
-          email: "janedoe@example.com",
-          phonenumber: "91426543",
-          leaseid: "SR122345",
-        },
-        {
-            id: "SR00009",
-            name: "Jane Doe",
-            timeupload: "Yesterday 3:45pm",
-            category: "Aircon",
-            email: "janedoe@example.com",
-            phonenumber: "91426543",
-            leaseid: "SR122345",
-          },
-          {
-            id: "SR00006",
-            name: "Jane Doe",
-            timeupload: "Yesterday 3:45pm",
-            category: "Security",
-            email: "janedoe@example.com",
-            phonenumber: "91426543",
-            leaseid: "SR122345",
-          },
-          {
-            id: "SR00007",
-            name: "Jane Doe",
-            timeupload: "Yesterday 3:45pm",
-            category: "Others",
-            email: "janedoe@example.com",
-            phonenumber: "91426543",
-            leaseid: "SR122345",
-          },
-          {
-            id: "SR00008",
-            name: "Jane Doe",
-            timeupload: "Yesterday 3:45pm",
-            category: "Elevator",
-            email: "janedoe@example.com",
-            phonenumber: "91426543",
-            leaseid: "SR122345",
-          },
-      ],
-    },
-    {
-      status: "Rejected by Tenant",
-      boxes: [
-        {
-          id: "SR00003",
-          name: "John Smith",
-          timeupload: "2 days ago",
-          category: "Electricity",
-          email: "johnsmith@example.com",
-          phonenumber: "91426543",
-          leaseid: "SR122346",
-        },
-      ],
-    },
-    {
-      status: "Completed by Landlord",
-      boxes: [
-        {
-          id: "SR00004",
-          name: "Samantha Yo",
-          timeupload: "Yesterday 3:45pm",
-          category: "Horticulture",
-          email: "samyo@example.com",
-          phonenumber: "91426543",
-          leaseid: "SR1224845",
-        },
-      ],
-    },
-    {
-      status: "Accepted by Tenant",
-      boxes: [
-        {
-          id: "SR00005",
-          name: "Hamilton Ee",
-          timeupload: "2 days ago",
-          category: "Horticulture",
-          email: "hamee@example.com",
-          phonenumber: "91426543",
-          leaseid: "SR123296",
-        },
-      ],
-    },
-  ];
+]
 
 export default function ToggleView() {
+  const [svcReqs, setSvcReqs] = useState({})
+  // Toggle View between Dashboard and List
+  const [view, setView] = useState('dashboard');
+  const options = ['status','category','tenant'];
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const anchorRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
 
-    // Toggle View between Dashboard and List
-    const [view, setView] = useState('dashboard');
+  const handleViewChange = (event) => {
+    const newView = event.target.value
+      if (newView !== undefined) {
+          setView(newView);
+      }
+  }
 
-    const handleViewChange = (event) => {
-        const newView = event.target.value
-        if (newView !== undefined) {
-            setView(newView);
-        }
+  // Select Options under Dashboard
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setOpen(false);
+  };
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
     }
 
-    // Select Options under Dashboard
-    const options = ['status','category','tenant'];
+    setOpen(false);
+  };
 
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-    const anchorRef = React.useRef(null);
+  // Close Ticket Switch
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
-    const handleMenuItemClick = (event, index) => {
-      setSelectedIndex(index);
-      setOpen(false);
-    };
+  // Handle Ticket Closes to backend
+  const handleSelectionModelChange = (selectionModel) => {
+    setSelectedIds(selectionModel);
+  };
 
-    const [open, setOpen] = React.useState(false);
+  const handleCloseTicket = (event) => {
+      event.preventDefault()
+      console.log('Closing service tickets...')
+      console.log("Cases Selected: ", selectedIds)
+      setSelectedIds([]); // unselect checkboxes after submission
+  };
 
-    const handleToggle = () => {
-      setOpen((prevOpen) => !prevOpen);
-    };
+  useEffect(() => { (async () => {    
+    const session = await getSession()
+    const requestOptions = {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json', "id": session.user.id }
+    }
+    const res = await fetch(`${process.env.api}/landlord/get-svc-requests`, requestOptions)
+    const data = await res.json()
+    setSvcReqs(data)
+  })()
+  }, [])
 
-    const handleClose = (event) => {
-      if (anchorRef.current && anchorRef.current.contains(event.target)) {
-        return;
+  const rows = Object.values(svcReqs)
+  let boxes = {}
+
+  for (let i=0; i<rows.length; i++) {
+      if (options[selectedIndex]=="status") {
+        if (!Object.keys(boxes).includes(rows[i].status)) {
+          boxes[rows[i].status] = []
+        }
+        boxes[rows[i].status].push(rows[i])
       }
+      else if (options[selectedIndex]=="category") {
+        if (!Object.keys(boxes).includes(rows[i].title)) {
+          boxes[rows[i].title] = []
+        }
+        boxes[rows[i].title].push(rows[i])
+      }
+      else {
+        if (!Object.keys(boxes).includes(rows[i].username)) {
+          boxes[rows[i].username] = []
+        }
+        boxes[rows[i].username].push(rows[i])
+      }
+  }
+  let boxcol = Object.values(boxes)
+  let classifier = options[selectedIndex]
 
-      setOpen(false);
-    };
+  const Dashboard = () => (
+    <>
+      {boxcol.map(box => (
+        <ColumnWithBoxes key={box[0][classifier]} groupby={classifier} boxes={box}/>
+      ))}
+    </>
+  );
 
-    // Close Ticket Switch
-    const [checked, setChecked] = useState(false);
-
-    const handleChange = (event) => {
-      setChecked(event.target.checked);
-    };
-
-    // Handle Ticket Closes to backend
-    const [selectedIds, setSelectedIds] = useState([]);
-
-    const handleSelectionModelChange = (selectionModel) => {
-      setSelectedIds(selectionModel);
-    };
-
-    const handleCloseTicket = (event) => {
-        event.preventDefault()
-        console.log('Closing service tickets...')
-        console.log("Cases Selected: ", selectedIds)
-        setSelectedIds([]); // unselect checkboxes after submission
-      };
-
-    return(
-        <section>
-            <div className="flex flex-col gap-2 w-36 lg:flex-row lg:w-11/12 lg:justify-between">
-                <ToggleViewButton view ={view} onViewChange={handleViewChange} ></ToggleViewButton>
-                {view === 'dashboard' ? <GroupByButton options={options} selectedIndex={selectedIndex} handleMenuItemClick={handleMenuItemClick} open={open} handleToggle={handleToggle} handleClose={handleClose}/ > : null}
-            </div>
-            <div>
-                {view === 'dashboard' ? null : <CloseCaseSwitch checked={checked} handleChange={handleChange}></CloseCaseSwitch>}
-            </div>
-            <div>
-                {view === 'dashboard' ? <DashboardView data={data} option={options[selectedIndex]}/> : checked === false ? <ListView columns={columns} rows={rows}/> : <TicketSelection closecasecolumns={closecasecolumns} closecaserows={closecaserows} selectedIds={selectedIds} handleCloseTicket={handleCloseTicket} handleSelectionModelChange={handleSelectionModelChange} anchorRef={anchorRef}></TicketSelection>}
-            </div>
-        </section>
-    )
+  return(
+      <section>
+          <div className="flex flex-col gap-2 w-36 lg:flex-row lg:w-11/12 lg:justify-between">
+              <ToggleViewButton view ={view} onViewChange={handleViewChange} ></ToggleViewButton>
+              {view === 'dashboard' ? <GroupByButton options={options} selectedIndex={selectedIndex} handleMenuItemClick={handleMenuItemClick} open={open} handleToggle={handleToggle} handleClose={handleClose} anchorRef={anchorRef}/ > : null}
+          </div>
+          <div>
+              {view === 'dashboard' ? null : <CloseCaseSwitch checked={checked} handleChange={handleChange}></CloseCaseSwitch>}
+          </div>
+          <div style={{display:"flex"}}>
+              {view === 'dashboard' ? <Dashboard/> : checked === false ? <ListView columns={columns} rows={rows}/> : <TicketSelection closecasecolumns={columns} closecaserows={rows} selectedIds={selectedIds} handleCloseTicket={handleCloseTicket} handleSelectionModelChange={handleSelectionModelChange} anchorRef={anchorRef}></TicketSelection>}
+          </div>
+      </section>
+  )
 }

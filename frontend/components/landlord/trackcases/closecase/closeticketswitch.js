@@ -4,7 +4,7 @@ export default function CloseCaseSwitch({checked, handleChange}) {
     return (
     <FormControlLabel
       control={<Switch checked={checked} onChange={handleChange} />}
-      label="Close Case"
+      label="Close Cases"
       className='mt-2'
     />
   );

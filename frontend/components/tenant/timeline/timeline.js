@@ -86,7 +86,7 @@ const Accordion = styled((props) => (
     
     // Hardcoded Time when tenant accepted quotation
     const quotationAcceptedData = {
-        time: '25/12/2022  3:52:00 PM',
+
       };
 
     // Form logic to see whether it is my current action

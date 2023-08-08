@@ -67,7 +67,7 @@ router.get('/get-svc-request-photo', (req, res) => {
 });
 
 router.post('/create-svc-request-photo', upload.single('photo'), (req, res) => {
-    console.log(req.file); //Log uploaded file data
+    console.log(req.file, req.body); //Log uploaded file data
     console.log("creating tenant svc req")
     const tenantID = req.headers['id'];
     const {leaseID, title, description, quot_required} = req.body;
@@ -78,7 +78,7 @@ router.post('/create-svc-request-photo', upload.single('photo'), (req, res) => {
 });
 
 router.post('/create-svc-request', (req, res) => {
-    console.log(req.file); //Log uploaded file data
+    console.log(req.body); //Log uploaded file data
     console.log("creating tenant svc req")
     const tenantID = req.headers['id'];
     const {leaseID, title, description, quot_required} = req.body;

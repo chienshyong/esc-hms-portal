@@ -45,3 +45,22 @@ __Require login session as Landlord:__
 - PATCH landlord/accept-svc-request: svcID
 - PATCH landlord/svc-add-quotation: file, svcID, quotationAmount
 - PATCH landlord/complete-svc-request: svcID
+
+
+## Selenium Test Run:
+
+1. download auqa via links:
+https://www.jetbrains.com/aqua/download/#section=windows
+
+2. install oracle 11 JDK:
+https://www.oracle.com/sg/java/technologies/javase/jdk11-archive-downloads.html
+
+3. you can copy the file into your new project with gradle and selenium:
+
+file directory:
+..\Selenium Test\gradle2\src\test\java\com\example\gradle2
+
+New project creation(do not select "Add sample code"):
+![image](https://github.com/chienshyong/esc-hms-portal/assets/50765120/2d354b70-3b2e-4c73-b26b-f6367b4af5a3)
+
+

@@ -40,94 +40,90 @@ const columns = [
     headerName: 'Quotation Required',
     width: 140
   },
-
-];
+]
 
 export default function ToggleView() {
-    // Toggle between Dashboard and List View
-    const [svcReqs, setSvcReqs] = useState({})
-    const [view, setView] = useState('dashboard');
-    const anchorRef = useRef(null);
-    const [selectedIndex, setSelectedIndex] = useState(1);
-    const [open, setOpen] = useState(false);
-    const options = ['status','category'];
-    
-    const handleViewChange = (event) => {
-        const newView = event.target.value
-        if (newView !== undefined) {
-          setView(newView);
-        }
+  // Toggle between Dashboard and List View
+  const [svcReqs, setSvcReqs] = useState({})
+  const [view, setView] = useState('dashboard');
+  const anchorRef = useRef(null);
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [open, setOpen] = useState(false);
+  const options = ['status','category'];
+  
+  const handleViewChange = (event) => {
+      const newView = event.target.value
+      if (newView !== undefined) {
+        setView(newView);
       }
-
-    // Handles Options
-    
-    const handleMenuItemClick = (event, index) => {
-      setSelectedIndex(index);
-      setOpen(false);
-    };
-    
-    
-    const handleToggle = () => {
-      setOpen((prevOpen) => !prevOpen);
-    };
-    
-    const handleClose = (event) => {
-      if (anchorRef.current && anchorRef.current.contains(event.target)) {
-        return;
-      }
-      
-      setOpen(false);
-    };
-
-    useEffect(() => { (async () => {    
-      const session = await getSession()
-      const requestOptions = {
-      method: "GET",
-      headers: { 'Content-Type': 'application/json', "id": session.user.id }
     }
-    const res = await fetch(`${process.env.api}/tenant/get-svc-requests`, requestOptions)
-    const data = await res.json()
-    setSvcReqs(data)
-    })()
-    }, [])
 
-    const rows = Object.values(svcReqs)
-    let boxes = {}
-
-    for (let i=0; i<rows.length; i++) {
-        if (options[selectedIndex]=="status") {
-            if (!Object.keys(boxes).includes(rows[i].status)) {
-                boxes[rows[i].status] = []
-            }
-            boxes[rows[i].status].push(rows[i])
-        }
-        else {
-            if (!Object.keys(boxes).includes(rows[i].title)) {
-                boxes[rows[i].title] = []
-            }
-            boxes[rows[i].title].push(rows[i])
-        }
+  // Handles Options
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setOpen(false);
+  };
+  
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+  
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
     }
-    let boxcol = Object.values(boxes)
-    let classifier = options[selectedIndex]
+    setOpen(false);
+  };
 
-    const Dashboard = () => (
-      <>
-        {boxcol.map(box => (
-          <ColumnWithBoxes key={box[0][classifier]} groupby={classifier} boxes={box}/>
-        ))}
-      </>
-    );
+  useEffect(() => { (async () => {    
+    const session = await getSession()
+    const requestOptions = {
+    method: "GET",
+    headers: { 'Content-Type': 'application/json', "id": session.user.id }
+  }
+  const res = await fetch(`${process.env.api}/tenant/get-svc-requests`, requestOptions)
+  const data = await res.json()
+  setSvcReqs(data)
+  })()
+  }, [])
 
-    return(
-        <section>
-            <div className="flex flex-col gap-2 w-36 lg:flex-row lg:w-11/12 lg:justify-between">
-                <ToggleViewButton view ={view} onViewChange={handleViewChange} ></ToggleViewButton>
-                {view === 'dashboard' ? <GroupByButton options={options} selectedIndex={selectedIndex} handleMenuItemClick={handleMenuItemClick} open={open} handleToggle={handleToggle} handleClose={handleClose} anchorRef={anchorRef}/ > : null}
-            </div>
-            <div>
-            {view === 'dashboard' ? <Dashboard/> : <ListView columns={columns} rows={rows}/>}
-            </div>
-            </section>
-            )
+  const rows = Object.values(svcReqs)
+  let boxes = {}
+
+  for (let i=0; i<rows.length; i++) {
+      if (options[selectedIndex]=="status") {
+          if (!Object.keys(boxes).includes(rows[i].status)) {
+              boxes[rows[i].status] = []
           }
+          boxes[rows[i].status].push(rows[i])
+      }
+      else {
+          if (!Object.keys(boxes).includes(rows[i].title)) {
+              boxes[rows[i].title] = []
+          }
+          boxes[rows[i].title].push(rows[i])
+      }
+  }
+  let boxcol = Object.values(boxes)
+  let classifier = options[selectedIndex]
+
+  const Dashboard = () => (
+    <>
+      {boxcol.map(box => (<span>
+        <ColumnWithBoxes key={box[0][classifier]} groupby={classifier} boxes={box}/></span>
+      ))}
+    </>
+  );
+
+  return(
+      <section>
+          <div className="flex flex-col gap-2 w-36 lg:flex-row lg:w-11/12 lg:justify-between">
+              <ToggleViewButton view ={view} onViewChange={handleViewChange} ></ToggleViewButton>
+              {view === 'dashboard' ? <GroupByButton options={options} selectedIndex={selectedIndex} handleMenuItemClick={handleMenuItemClick} open={open} handleToggle={handleToggle} handleClose={handleClose} anchorRef={anchorRef}/ > : null}
+          </div>
+          <div style={{display:"flex"}}>
+          {view === 'dashboard' ? <Dashboard/> : <ListView columns={columns} rows={rows}/>}
+          </div>
+          </section>
+      )
+}

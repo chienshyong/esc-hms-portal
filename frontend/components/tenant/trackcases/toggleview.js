@@ -109,8 +109,8 @@ export default function ToggleView() {
 
   const Dashboard = () => (
     <>
-      {boxcol.map(box => (
-        <ColumnWithBoxes key={box[0][classifier]} groupby={classifier} boxes={box}/>
+      {boxcol.map(box => (<span>
+        <ColumnWithBoxes key={box[0][classifier]} groupby={classifier} boxes={box}/></span>
       ))}
     </>
   );
@@ -121,7 +121,7 @@ export default function ToggleView() {
               <ToggleViewButton view ={view} onViewChange={handleViewChange} ></ToggleViewButton>
               {view === 'dashboard' ? <GroupByButton options={options} selectedIndex={selectedIndex} handleMenuItemClick={handleMenuItemClick} open={open} handleToggle={handleToggle} handleClose={handleClose} anchorRef={anchorRef}/ > : null}
           </div>
-          <div>
+          <div style={{display:"flex"}}>
           {view === 'dashboard' ? <Dashboard/> : <ListView columns={columns} rows={rows}/>}
           </div>
           </section>

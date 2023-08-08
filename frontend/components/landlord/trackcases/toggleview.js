@@ -157,7 +157,7 @@ export default function ToggleView() {
           <div>
               {view === 'dashboard' ? null : <CloseCaseSwitch checked={checked} handleChange={handleChange}></CloseCaseSwitch>}
           </div>
-          <div>
+          <div style={{display:"flex"}}>
               {view === 'dashboard' ? <Dashboard/> : checked === false ? <ListView columns={columns} rows={rows}/> : <TicketSelection closecasecolumns={columns} closecaserows={rows} selectedIds={selectedIds} handleCloseTicket={handleCloseTicket} handleSelectionModelChange={handleSelectionModelChange} anchorRef={anchorRef}></TicketSelection>}
           </div>
       </section>

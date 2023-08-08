@@ -26,20 +26,27 @@ async function getUnits(landlordID, callback) {
     });
 }
 
-async function deleteUnit(unitID, callback) {
-    if(unitID.length == 0){
-        const nullError = new Error('Error: Unit ID field empty');
-        return callback(nullError);
-    }
-    const query = 'DELETE FROM unit WHERE id = ?';
-    connection.query(query, [unitID], (error, results) => {
-        if (error) return callback(error);
-        if(results.affectedRows === 0){
-            return callback(new Error('Error: ID does not exist or has already been deleted'), results);
+async function deleteUnit(landlordID, unitID, callback) {
+    let query = 'SELECT landlord.id FROM landlord JOIN unit ON landlord.id = unit.landlord_id WHERE unit.id = ?'
+    connection.query(query, [unitID], (err, results) => {
+        if (err) return callback(err);
+        if(results[0].id != landlordID){
+            return callback(new Error('Unauthorized: User does not own this unit'));
         }
-        console.log("Unit %i deleted", unitID);
-        return callback(null, results);
-    });
+        if(unitID.length == 0){
+            const nullError = new Error('Error: Unit ID field empty');
+            return callback(nullError);
+        }
+        const query = 'DELETE FROM unit WHERE id = ?';
+        connection.query(query, [unitID], (error, results) => {
+            if (error) return callback(error);
+            if(results.affectedRows === 0){
+                return callback(new Error('Error: ID does not exist or has already been deleted'), results);
+            }
+            console.log("Unit %i deleted", unitID);
+            return callback(null, results);
+        });
+    })
 }
 
 module.exports = {addUnit, getUnits, deleteUnit};

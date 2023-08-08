@@ -55,7 +55,7 @@ export default function ListUnits() {
                 {/* Delete Icon */}
                 <IconButton
                   color="error"
-                  onClick={() => handleDelete(params.row.id)} // TODO
+                  onClick={() => handleDelete(params.row.id, params.row.lease_id)} // TODO
                 >
                   <Delete />
                 </IconButton>
@@ -72,8 +72,24 @@ export default function ListUnits() {
         console.log(`Editing row with ID: ${id}`);
     };
     
-    const handleDelete = (id) => {
-        // Implement your delete logic here based on the row id
+    const handleDelete = async (id, lease_id) => {
+      const session = await getSession()
+      if (lease_id != null) {
+        const requestOptions = {
+          method: "DELETE",
+          headers: { 'Content-Type': 'application/json', "id": session.user.id },
+          body: JSON.stringify({id:lease_id})
+          }
+          const res = await fetch(`${process.env.api}/landlord/delete-lease`, requestOptions)
+          const data = await res.json()
+      }
+      const requestOptions = {
+        method: "DELETE",
+        headers: { 'Content-Type': 'application/json', "id": session.user.id },
+        body: JSON.stringify({id:id})
+        }
+        const res = await fetch(`${process.env.api}/landlord/remove-unit`, requestOptions)
+          const data = await res.json()
         console.log(`Deleting row with ID: ${id}`);
     };
 

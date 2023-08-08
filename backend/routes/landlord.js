@@ -34,8 +34,9 @@ router.get('/get-units', (req, res) => {
 });
 
 router.delete('/remove-unit', (req, res) => {
+    const landlordID = req.headers['id'];
     const unitID = req.body.id;
-    unitModel.deleteUnit(unitID, (err, results) => {
+    unitModel.deleteUnit(landlordID, unitID, (err, results) => {
         if (err) { return res.status(400).send(err.message); }
         res.status(200).json(results); 
     });

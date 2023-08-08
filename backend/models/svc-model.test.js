@@ -12,23 +12,21 @@ describe('Service Model Tests', () => {
 
   describe('createSvcRequest', () => {
     it('should create a new service request', async () => {
-        db.query.mockImplementationOnce((query, values, callback) => {
-          if (query.includes('SELECT')) {
-            callback(null, [{ id: 1 }]);
-          }
-        }).mockImplementationOnce((query, values, callback) => {
-          if (query.includes('INSERT INTO')) {
-            callback(null, { affectedRows: 1 });
-          }
-        });
-      
-        const callback = jest.fn();
-      
-        await svcModel.createSvcRequest(1, 1, 'Title', 'Description', 'photo.jpg', callback);
-      
-        expect(db.query).toHaveBeenCalledTimes(2);
-        expect(callback).toHaveBeenCalledWith(null, { affectedRows: 1 });
+      db.query.mockImplementation((query, values, callback) => {
+        if (query.includes('SELECT')) {
+          callback(null, [{ id: 1 }]);
+        } else if (query.includes('INSERT INTO')) {
+          callback(null, { affectedRows: 1 });
+        }
       });
+
+      const callback = jest.fn();
+
+      await svcModel.createSvcRequest(1, 1, 'Title', 'Description', false, 'photo.jpg', callback);
+
+      expect(db.query).toHaveBeenCalledTimes(2);
+      expect(callback).toHaveBeenCalledWith(null, { affectedRows: 1 });
+    });
 
     it('should return an error if lease not found', async () => {
       db.query.mockImplementation((query, values, callback) => {
@@ -39,26 +37,28 @@ describe('Service Model Tests', () => {
 
       const callback = jest.fn();
 
-      await svcModel.createSvcRequest(1, 1, 'Title', 'Description', 'photo.jpg', callback);
+      await svcModel.createSvcRequest(1, 1, 'Title', 'Description', false, 'photo.jpg', callback);
 
       expect(db.query).toHaveBeenCalledTimes(1);
       expect(callback).toHaveBeenCalledWith(expect.any(Error));
     });
 
     it('should return an error if unauthorized', async () => {
-      db.query.mockImplementation((query, values, callback) => {
-        if (query.includes('SELECT')) {
-          callback(null, [{ id: 2 }]);
-        }
-      });
-
+      db.query
+        .mockImplementationOnce((query, values, callback) => {
+          if (query.includes('SELECT')) {
+            callback(null, []);
+          }
+        });
+    
       const callback = jest.fn();
-
-      await svcModel.createSvcRequest(1, 1, 'Title', 'Description', 'photo.jpg', callback);
-
+    
+      await svcModel.createSvcRequest(1, 1, 'Title', 'Description', false, 'photo.jpg', callback);
+    
       expect(db.query).toHaveBeenCalledTimes(1);
       expect(callback).toHaveBeenCalledWith(expect.any(Error));
     });
+    
   });
 
   describe('getSvcRequestByTenant', () => {

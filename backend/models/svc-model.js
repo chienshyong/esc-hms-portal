@@ -63,8 +63,8 @@ async function changeSvcRequestStatus(svcID, status, callback){
     const now = new Date();
     const formattedDateTime = now.toISOString().slice(0, 19).replace('T', ' ');
     if(status == STATUS.REJECTED || status == STATUS.CANCELED || status == STATUS.COMPLETED){
-        const query = `UPDATE svc_request SET status = ?, closed_time = ? WHERE id = ?`;
-        connection.query(query, [status, formattedDateTime, svcID], (err, results) => {
+        const query = `UPDATE svc_request SET status = ? WHERE id = ?`;
+        connection.query(query, [status, svcID], (err, results) => {
             if (err) return callback(err);
             return callback(null,results);
         });

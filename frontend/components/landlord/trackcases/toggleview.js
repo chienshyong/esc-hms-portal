@@ -95,11 +95,22 @@ export default function ToggleView() {
     setSelectedIds(selectionModel);
   };
 
-  const handleCloseTicket = (event) => {
+  const handleCloseTicket = async (event) => {
       event.preventDefault()
+      const session = await getSession()
+      for (let i=0; i<selectedIds.length; i++) {
+        const requestOptions = {
+          method: "PATCH",
+          headers: { 'Content-Type': 'application/json', "id": session.user.id },
+          body: JSON.stringify({id:selectedIds[i]})
+          }
+          console.log(requestOptions)
+          const res = await fetch(`${process.env.api}/landlord/complete-svc-request`, requestOptions)
+          const data = await res.json()
+      }
       console.log('Closing service tickets...')
       console.log("Cases Selected: ", selectedIds)
-      setSelectedIds([]); // unselect checkboxes after submission
+      window.location.reload()
   };
 
   useEffect(() => { (async () => {    

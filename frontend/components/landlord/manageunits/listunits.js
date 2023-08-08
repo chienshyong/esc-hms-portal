@@ -64,7 +64,6 @@ export default function ListUnits() {
           },
     ]
     
-    console.log(units)
     const rows = units
 
     const handleEdit = (id) => {
@@ -91,6 +90,7 @@ export default function ListUnits() {
         const res = await fetch(`${process.env.api}/landlord/remove-unit`, requestOptions)
           const data = await res.json()
         console.log(`Deleting row with ID: ${id}`);
+      window.location.reload()
     };
 
     return (
